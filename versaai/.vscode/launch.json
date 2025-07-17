@@ -1,0 +1,388 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    // ===== CONFIGURACIONES PARA FRONTEND (VUE.JS 3) =====
+    {
+      "name": "🚀 VersaAI Frontend (Vue.js Dev Server)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000,
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "NODE_ENV": "development",
+        "VITE_API_BASE_URL": "http://localhost:8000/api",
+        "VITE_WS_URL": "ws://localhost:8000/ws"
+      },
+      "presentation": {
+        "group": "frontend",
+        "order": 1
+      }
+    },
+    {
+      "name": "🌐 VersaAI Frontend (Chrome Debug)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/frontend/src",
+      "sourceMaps": true,
+      "userDataDir": "${workspaceFolder}/.vscode/chrome-debug-profile",
+      "runtimeArgs": [
+        "--disable-web-security",
+        "--disable-features=VizDisplayCompositor",
+        "--remote-debugging-port=9222"
+      ],
+      "presentation": {
+        "group": "frontend",
+        "order": 2
+      }
+    },
+    {
+      "name": "🧪 VersaAI Frontend Tests (Vitest)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "test"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "presentation": {
+        "group": "frontend",
+        "order": 3
+      }
+    },
+
+    // ===== CONFIGURACIONES PARA BACKEND (FASTAPI/PYTHON) =====
+    {
+      "name": "🐍 VersaAI Backend (FastAPI Server)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/backend/src/main.py",
+      "cwd": "${workspaceFolder}/backend",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/backend/src",
+        "DATABASE_URL": "postgresql://versaai_user:versaai_password@localhost:5432/versaai",
+        "REDIS_URL": "redis://localhost:6379/0",
+        "DEBUG": "true",
+        "SECRET_KEY": "dev-secret-key",
+        "GROQ_API_KEY": "${env:GROQ_API_KEY}"
+      },
+      "args": [],
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "django": false,
+      "autoReload": {
+        "enable": true
+      },
+      "presentation": {
+        "group": "backend",
+        "order": 1
+      }
+    },
+    {
+      "name": "🔧 VersaAI Backend (Uvicorn with Reload)",
+      "type": "python",
+      "request": "launch",
+      "module": "uvicorn",
+      "cwd": "${workspaceFolder}/backend",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/backend/src",
+        "DATABASE_URL": "postgresql://versaai_user:versaai_password@localhost:5432/versaai",
+        "REDIS_URL": "redis://localhost:6379/0",
+        "DEBUG": "true",
+        "SECRET_KEY": "dev-secret-key",
+        "GROQ_API_KEY": "${env:GROQ_API_KEY}"
+      },
+      "args": [
+        "src.main:app",
+        "--reload",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+        "--log-level",
+        "debug"
+      ],
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "presentation": {
+        "group": "backend",
+        "order": 2
+      }
+    },
+    {
+      "name": "🧪 VersaAI Backend Tests (Pytest)",
+      "type": "python",
+      "request": "launch",
+      "module": "pytest",
+      "cwd": "${workspaceFolder}/backend",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/backend/src",
+        "DATABASE_URL": "sqlite:///./test.db",
+        "REDIS_URL": "redis://localhost:6379/1",
+        "DEBUG": "true",
+        "SECRET_KEY": "test-secret-key"
+      },
+      "args": [
+        "tests/",
+        "-v",
+        "--tb=short",
+        "--cov=src",
+        "--cov-report=term-missing"
+      ],
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "presentation": {
+        "group": "backend",
+        "order": 3
+      }
+    },
+    {
+      "name": "🔍 VersaAI Backend (Debug Single Test)",
+      "type": "python",
+      "request": "launch",
+      "module": "pytest",
+      "cwd": "${workspaceFolder}/backend",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/backend/src",
+        "DATABASE_URL": "sqlite:///./test.db",
+        "DEBUG": "true"
+      },
+      "args": [
+        "${file}",
+        "-v",
+        "-s"
+      ],
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "presentation": {
+        "group": "backend",
+        "order": 4
+      }
+    },
+
+    // ===== CONFIGURACIONES PARA BASE DE DATOS =====
+    {
+      "name": "🗄️ VersaAI Database Migration (Alembic)",
+      "type": "python",
+      "request": "launch",
+      "module": "alembic",
+      "cwd": "${workspaceFolder}/backend",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/backend/src",
+        "DATABASE_URL": "postgresql://versaai_user:versaai_password@localhost:5432/versaai"
+      },
+      "args": [
+        "upgrade",
+        "head"
+      ],
+      "console": "integratedTerminal",
+      "presentation": {
+        "group": "database",
+        "order": 1
+      }
+    },
+    {
+      "name": "📊 VersaAI Database Seed",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/backend/scripts/seed_database.py",
+      "cwd": "${workspaceFolder}/backend",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/backend/src",
+        "DATABASE_URL": "postgresql://versaai_user:versaai_password@localhost:5432/versaai"
+      },
+      "console": "integratedTerminal",
+      "presentation": {
+        "group": "database",
+        "order": 2
+      }
+    },
+
+    // ===== CONFIGURACIONES PARA DOCKER =====
+    {
+      "name": "🐳 VersaAI Docker Compose (Development)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "docker-compose",
+      "runtimeArgs": [
+        "up",
+        "--build",
+        "--remove-orphans"
+      ],
+      "console": "integratedTerminal",
+      "presentation": {
+        "group": "docker",
+        "order": 1
+      }
+    },
+    {
+      "name": "🔧 VersaAI Docker Compose (Services Only)",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "docker-compose",
+      "runtimeArgs": [
+        "up",
+        "db",
+        "redis",
+        "-d"
+      ],
+      "console": "integratedTerminal",
+      "presentation": {
+        "group": "docker",
+        "order": 2
+      }
+    },
+
+    // ===== CONFIGURACIONES PARA DEBUGGING AVANZADO =====
+    {
+      "name": "🔬 VersaAI Full Stack Debug",
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/scripts/debug-fullstack.js",
+      "console": "integratedTerminal",
+      "presentation": {
+        "group": "advanced",
+        "order": 1
+      }
+    },
+    {
+      "name": "🚨 VersaAI Error Reproduction",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/backend/scripts/reproduce_error.py",
+      "cwd": "${workspaceFolder}/backend",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/backend/src",
+        "DEBUG": "true",
+        "LOG_LEVEL": "DEBUG"
+      },
+      "args": [
+        "--error-id",
+        "${input:errorId}"
+      ],
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "presentation": {
+        "group": "advanced",
+        "order": 2
+      }
+    },
+
+    // ===== CONFIGURACIONES PARA PERFORMANCE =====
+    {
+      "name": "⚡ VersaAI Performance Profiling",
+      "type": "python",
+      "request": "launch",
+      "module": "cProfile",
+      "cwd": "${workspaceFolder}/backend",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/backend/src"
+      },
+      "args": [
+        "-o",
+        "profile_output.prof",
+        "src/main.py"
+      ],
+      "console": "integratedTerminal",
+      "presentation": {
+        "group": "performance",
+        "order": 1
+      }
+    },
+
+    // ===== CONFIGURACIONES PARA SCRIPTS UTILITARIOS =====
+    {
+      "name": "🛠️ VersaAI Setup Environment",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/setup_environment.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "presentation": {
+        "group": "utilities",
+        "order": 1
+      }
+    },
+    {
+      "name": "🧹 VersaAI Cleanup Development",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/cleanup_dev.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "presentation": {
+        "group": "utilities",
+        "order": 2
+      }
+    }
+  ],
+  
+  // ===== CONFIGURACIONES COMPUESTAS =====
+  "compounds": [
+    {
+      "name": "🚀 VersaAI Full Stack (Frontend + Backend)",
+      "configurations": [
+        "🐍 VersaAI Backend (FastAPI Server)",
+        "🚀 VersaAI Frontend (Vue.js Dev Server)"
+      ],
+      "stopAll": true,
+      "presentation": {
+        "group": "fullstack",
+        "order": 1
+      }
+    },
+    {
+      "name": "🧪 VersaAI Full Testing Suite",
+      "configurations": [
+        "🧪 VersaAI Backend Tests (Pytest)",
+        "🧪 VersaAI Frontend Tests (Vitest)"
+      ],
+      "stopAll": true,
+      "presentation": {
+        "group": "testing",
+        "order": 1
+      }
+    },
+    {
+      "name": "🐳 VersaAI Docker Development",
+      "configurations": [
+        "🔧 VersaAI Docker Compose (Services Only)"
+      ],
+      "preLaunchTask": "docker-cleanup",
+      "presentation": {
+        "group": "docker",
+        "order": 3
+      }
+    }
+  ],
+  
+  // ===== INPUTS PARA CONFIGURACIONES DINÁMICAS =====
+  "inputs": [
+    {
+      "id": "errorId",
+      "description": "ID del error a reproducir",
+      "default": "AUTH_001",
+      "type": "promptString"
+    },
+    {
+      "id": "testFile",
+      "description": "Archivo de test específico",
+      "default": "tests/test_auth.py",
+      "type": "promptString"
+    },
+    {
+      "id": "migrationMessage",
+      "description": "Mensaje para la migración",
+      "default": "Add new feature",
+      "type": "promptString"
+    }
+  ]
+}

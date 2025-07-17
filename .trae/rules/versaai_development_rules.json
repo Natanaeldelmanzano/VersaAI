@@ -1,0 +1,349 @@
+{
+  "versaai_development_rules": {
+    "version": "1.0.0",
+    "last_updated": "2024-12-19",
+    "description": "Reglas específicas de desarrollo para VersaAI que optimizan la productividad y calidad del código",
+    
+    "code_patterns": {
+      "backend_patterns": {
+        "fastapi_endpoints": {
+          "required_decorators": [
+            "@router.{method}()",
+            "summary='Descripción clara'",
+            "description='Descripción detallada'",
+            "response_model=ResponseSchema"
+          ],
+          "required_parameters": [
+            "db: Session = Depends(get_db)",
+            "current_user: User = Depends(get_current_user) # Para endpoints protegidos"
+          ],
+          "error_handling_pattern": {
+            "try_catch_structure": "try: # lógica principal\nexcept HTTPException: raise\nexcept Exception as e: # logging + HTTPException",
+            "logging_requirement": "logger.info() para éxito, logger.error() para errores",
+            "http_exceptions": "Usar status codes apropiados y mensajes en español"
+          },
+          "async_requirement": "Todos los endpoints deben ser async def",
+          "docstring_requirement": "Docstring con descripción, parámetros y retorno"
+        },
+        "service_layer_patterns": {
+          "naming_convention": "*_service.py para archivos, *Service para clases",
+          "dependency_injection": "Usar Depends() para inyección de dependencias",
+          "transaction_management": "Usar db.commit() y db.rollback() apropiadamente",
+          "error_propagation": "Propagar errores con contexto adicional",
+          "async_operations": "Todas las operaciones de BD deben ser async"
+        },
+        "model_patterns": {
+          "sqlalchemy_models": {
+            "base_inheritance": "Heredar de Base (declarative_base)",
+            "table_naming": "__tablename__ en snake_case",
+            "required_fields": ["id (Primary Key)", "created_at", "updated_at"],
+            "relationships": "Usar back_populates para relaciones bidireccionales",
+            "indexes": "Definir índices para campos de búsqueda frecuente"
+          },
+          "pydantic_schemas": {
+            "naming_convention": "*Request para entrada, *Response para salida",
+            "validation": "Usar Field() para validaciones complejas",
+            "orm_mode": "Habilitar orm_mode para modelos de respuesta",
+            "example_values": "Incluir ejemplos en schema para documentación"
+          }
+        }
+      },
+      "frontend_patterns": {
+        "vue_components": {
+          "script_setup": "Usar <script setup lang='ts'> para todos los componentes",
+          "composition_api": "Usar Composition API exclusivamente",
+          "props_definition": "Definir props con TypeScript interfaces",
+          "emits_definition": "Declarar emits explícitamente",
+          "template_structure": "Estructura clara con comentarios para secciones complejas"
+        },
+        "pinia_stores": {
+          "naming_convention": "use*Store para composables de store",
+          "state_definition": "Estado reactivo con ref() y reactive()",
+          "actions_async": "Acciones async para llamadas API",
+          "getters_computed": "Getters como computed properties",
+          "error_handling": "Manejo de errores en acciones con try-catch"
+        },
+        "composables": {
+          "naming_convention": "use* para funciones composables",
+          "return_pattern": "Retornar objeto con propiedades reactivas",
+          "cleanup": "Usar onUnmounted para limpieza de recursos",
+          "type_safety": "TypeScript completo con tipos de retorno"
+        }
+      }
+    },
+    
+    "auto_acceptance_rules": {
+      "always_accept": {
+        "imports_optimization": {
+          "description": "Optimización automática de imports",
+          "patterns": [
+            "Eliminación de imports no utilizados",
+            "Ordenamiento de imports según convención",
+            "Agrupación de imports por categoría",
+            "Conversión a imports relativos cuando corresponde"
+          ]
+        },
+        "type_annotations": {
+          "description": "Adición de type hints y anotaciones",
+          "patterns": [
+            "Type hints en funciones Python",
+            "Tipos TypeScript en variables",
+            "Props types en componentes Vue",
+            "Return types en funciones"
+          ]
+        },
+        "code_formatting": {
+          "description": "Formateo automático de código",
+          "patterns": [
+            "Indentación consistente",
+            "Espaciado según PEP 8 (Python) y Prettier (TypeScript)",
+            "Longitud de línea apropiada",
+            "Comillas consistentes"
+          ]
+        },
+        "logging_improvements": {
+          "description": "Mejoras en logging y debugging",
+          "patterns": [
+            "Adición de logs informativos",
+            "Mejora de mensajes de error",
+            "Adición de correlation IDs",
+            "Logging de performance metrics"
+          ]
+        },
+        "documentation_updates": {
+          "description": "Actualización automática de documentación",
+          "patterns": [
+            "Docstrings en funciones nuevas",
+            "Comentarios en código complejo",
+            "Actualización de README cuando sea necesario",
+            "Documentación de APIs en OpenAPI"
+          ]
+        }
+      },
+      "review_required": {
+        "security_changes": {
+          "description": "Cambios que afectan seguridad",
+          "patterns": [
+            "Modificaciones en autenticación",
+            "Cambios en autorización",
+            "Nuevos endpoints públicos",
+            "Modificaciones en validación de entrada",
+            "Cambios en manejo de archivos"
+          ]
+        },
+        "database_schema_changes": {
+          "description": "Cambios en esquema de base de datos",
+          "patterns": [
+            "Nuevas tablas o modelos",
+            "Modificación de campos existentes",
+            "Cambios en relaciones",
+            "Nuevos índices",
+            "Migraciones de datos"
+          ]
+        },
+        "api_breaking_changes": {
+          "description": "Cambios que rompen compatibilidad de API",
+          "patterns": [
+            "Modificación de endpoints existentes",
+            "Cambios en esquemas de respuesta",
+            "Eliminación de campos",
+            "Cambios en códigos de estado HTTP"
+          ]
+        },
+        "performance_critical": {
+          "description": "Cambios que afectan performance",
+          "patterns": [
+            "Modificaciones en consultas de base de datos",
+            "Cambios en algoritmos de procesamiento",
+            "Modificaciones en caché",
+            "Cambios en integración con IA"
+          ]
+        }
+      },
+      "never_accept": {
+        "hardcoded_secrets": {
+          "description": "Nunca aceptar secretos hardcodeados",
+          "patterns": [
+            "API keys en código",
+            "Passwords en texto plano",
+            "URLs de producción hardcodeadas",
+            "Tokens de acceso en código"
+          ]
+        },
+        "unsafe_operations": {
+          "description": "Operaciones potencialmente peligrosas",
+          "patterns": [
+            "SQL queries sin parametrización",
+            "Ejecución de código dinámico",
+            "Acceso directo al filesystem sin validación",
+            "Deserialización de datos no confiables"
+          ]
+        }
+      }
+    },
+    
+    "quality_gates": {
+      "code_quality": {
+        "test_coverage": {
+          "backend_minimum": 80,
+          "frontend_minimum": 70,
+          "critical_paths_minimum": 95
+        },
+        "complexity_limits": {
+          "cyclomatic_complexity": 10,
+          "cognitive_complexity": 15,
+          "nesting_depth": 4
+        },
+        "maintainability": {
+          "function_length_max": 50,
+          "class_length_max": 300,
+          "file_length_max": 500
+        }
+      },
+      "performance_requirements": {
+        "api_response_time": {
+          "p95_threshold_ms": 200,
+          "p99_threshold_ms": 500,
+          "timeout_ms": 30000
+        },
+        "frontend_performance": {
+          "first_contentful_paint_ms": 1500,
+          "largest_contentful_paint_ms": 2500,
+          "cumulative_layout_shift": 0.1
+        },
+        "database_performance": {
+          "query_timeout_ms": 5000,
+          "connection_pool_size": 20,
+          "max_query_complexity": 100
+        }
+      },
+      "security_requirements": {
+        "authentication": {
+          "token_expiry_minutes": 60,
+          "refresh_token_expiry_days": 7,
+          "password_min_length": 8,
+          "password_complexity": true
+        },
+        "input_validation": {
+          "max_file_size_mb": 10,
+          "allowed_file_types": ["pdf", "docx", "txt", "csv", "xlsx"],
+          "max_request_size_mb": 50,
+          "rate_limit_per_minute": 100
+        }
+      }
+    },
+    
+    "development_workflows": {
+      "feature_development": {
+        "branch_naming": "feature/VERS-{ticket-number}-{short-description}",
+        "commit_message_format": "feat(scope): description\n\nDetailed explanation if needed",
+        "pr_requirements": [
+          "Tests for new functionality",
+          "Documentation updates",
+          "Performance impact assessment",
+          "Security review checklist"
+        ]
+      },
+      "bug_fixes": {
+        "branch_naming": "fix/VERS-{ticket-number}-{short-description}",
+        "commit_message_format": "fix(scope): description\n\nFixes #{issue-number}",
+        "requirements": [
+          "Regression test",
+          "Root cause analysis",
+          "Impact assessment"
+        ]
+      },
+      "hotfixes": {
+        "branch_naming": "hotfix/VERS-{ticket-number}-{critical-issue}",
+        "fast_track_approval": true,
+        "requirements": [
+          "Immediate testing",
+          "Rollback plan",
+          "Post-deployment monitoring"
+        ]
+      }
+    },
+    
+    "ai_integration_rules": {
+      "groq_api_usage": {
+        "model_selection": {
+          "default_model": "llama-3.1-70b-versatile",
+          "fast_responses": "gemma-7b-it",
+          "long_context": "mixtral-8x7b-32768",
+          "selection_criteria": "Based on query complexity and context length"
+        },
+        "prompt_engineering": {
+          "system_prompt_consistency": "Use consistent system prompts for VersaAI context",
+          "user_context_injection": "Always include relevant user and conversation context",
+          "safety_guidelines": "Include content moderation guidelines",
+          "response_formatting": "Structure responses for optimal user experience"
+        },
+        "error_handling": {
+          "api_failures": "Graceful degradation with user-friendly messages",
+          "rate_limiting": "Implement exponential backoff",
+          "timeout_handling": "30-second timeout with progress indicators",
+          "fallback_responses": "Predefined responses for service unavailability"
+        }
+      },
+      "vector_search_optimization": {
+        "embedding_generation": {
+          "model": "sentence-transformers/all-MiniLM-L6-v2",
+          "chunk_size": 512,
+          "chunk_overlap": 50,
+          "batch_processing": true
+        },
+        "search_parameters": {
+          "similarity_threshold": 0.7,
+          "max_results": 5,
+          "context_window": 4000,
+          "reranking": true
+        }
+      }
+    },
+    
+    "monitoring_and_analytics": {
+      "performance_monitoring": {
+        "api_metrics": [
+          "Response time percentiles",
+          "Error rates by endpoint",
+          "Request volume trends",
+          "Database query performance"
+        ],
+        "user_experience_metrics": [
+          "Page load times",
+          "Chat response times",
+          "File upload success rates",
+          "User session duration"
+        ]
+      },
+      "business_metrics": {
+        "user_engagement": [
+          "Daily/Monthly active users",
+          "Chat interactions per user",
+          "Document uploads per user",
+          "Feature adoption rates"
+        ],
+        "ai_usage_metrics": [
+          "Tokens consumed per user",
+          "Model usage distribution",
+          "Response quality ratings",
+          "Context retrieval effectiveness"
+        ]
+      },
+      "alerting_rules": {
+        "critical_alerts": [
+          "API error rate > 5%",
+          "Database connection failures",
+          "AI service unavailability",
+          "Security breach indicators"
+        ],
+        "warning_alerts": [
+          "Response time > 1s for 95th percentile",
+          "High memory usage",
+          "Unusual traffic patterns",
+          "Low test coverage on new code"
+        ]
+      }
+    }
+  }
+}

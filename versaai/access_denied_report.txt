@@ -1,0 +1,74 @@
+=== REPORTE DE ACCESO DENEGADO - 07/12/2025 03:06:06 ===
+An√°lisis de carpetas y archivos con acceso restringido
+
+=== 1. PROBANDO ACCESO A CARPETAS DEL SISTEMA ===
+ACCESO DENEGADO: C:\Windows\System32\config
+ACCESO PERMITIDO: C:\Windows\System32\drivers
+ACCESO PERMITIDO: C:\Windows\System32\DriverStore
+ACCESO PERMITIDO: C:\Windows\WinSxS
+ACCESO PERMITIDO: C:\Windows\servicing
+ACCESO PERMITIDO: C:\Windows\Logs
+ACCESO PERMITIDO: C:\Windows\Panther
+ACCESO PERMITIDO: C:\ProgramData\Microsoft\Windows\WER
+ACCESO DENEGADO: C:\ProgramData\Microsoft\Diagnosis
+ACCESO PERMITIDO: C:\Users\All Users
+ACCESO PERMITIDO: C:\Users\Default
+ACCESO PERMITIDO: C:\Users\Public
+ACCESO DENEGADO: C:\System Volume Information
+ACCESO PERMITIDO: C:\Recovery
+ACCESO DENEGADO: C:\PerfLogs
+ACCESO DENEGADO: C:\Windows\CSC
+ACCESO PERMITIDO: C:\Windows\SystemApps
+ACCESO DENEGADO: C:\Windows\Temp
+
+=== 2. AN√ÅLISIS DE CARPETAS PRINCIPALES ===
+Analizando: C:\Windows
+ACCESO DENEGADO: C:\Windows\CSC
+ACCESO DENEGADO: C:\Windows\LiveKernelReports
+ACCESO DENEGADO: C:\Windows\ModemLogs
+ACCESO DENEGADO: C:\Windows\Prefetch
+ACCESO DENEGADO: C:\Windows\ServiceState
+ACCESO DENEGADO: C:\Windows\SystemTemp
+ACCESO DENEGADO: C:\Windows\Temp
+Analizando: C:\Program Files
+ACCESO DENEGADO: C:\Program Files\Archivos comunes
+ACCESO DENEGADO: C:\Program Files\WindowsApps
+Analizando: C:\Program Files (x86)
+Analizando: C:\ProgramData
+ACCESO DENEGADO: C:\ProgramData\Datos de programa
+ACCESO DENEGADO: C:\ProgramData\Documentos
+ACCESO DENEGADO: C:\ProgramData\Escritorio
+ACCESO DENEGADO: C:\ProgramData\Men˙ Inicio
+ACCESO DENEGADO: C:\ProgramData\Packages
+ACCESO DENEGADO: C:\ProgramData\Plantillas
+ACCESO DENEGADO: C:\ProgramData\WindowsHolographicDevices
+
+=== 3. RESUMEN DE CARPETAS CON ACCESO DENEGADO ===
+Total de carpetas con acceso denegado: 22
+
+Lista completa:
+  - C:\PerfLogs
+  - C:\Program Files\Archivos comunes
+  - C:\Program Files\WindowsApps
+  - C:\ProgramData\Datos de programa
+  - C:\ProgramData\Documentos
+  - C:\ProgramData\Escritorio
+  - C:\ProgramData\Men˙ Inicio
+  - C:\ProgramData\Microsoft\Diagnosis
+  - C:\ProgramData\Packages
+  - C:\ProgramData\Plantillas
+  - C:\ProgramData\WindowsHolographicDevices
+  - C:\System Volume Information
+  - C:\Windows\CSC
+  - C:\Windows\CSC
+  - C:\Windows\LiveKernelReports
+  - C:\Windows\ModemLogs
+  - C:\Windows\Prefetch
+  - C:\Windows\ServiceState
+  - C:\Windows\System32\config
+  - C:\Windows\SystemTemp
+  - C:\Windows\Temp
+  - C:\Windows\Temp
+
+=== REPORTE COMPLETADO ===
+Archivo guardado en: C:\Users\Neizan\Desktop\version max claude\versaai\access_denied_report.txt

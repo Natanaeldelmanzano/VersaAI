@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 VersaAI Platform - Flujo de Desarrollo Interactivo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .workflow-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .phase-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .phase-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .phase-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .phase-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .phase-icon {
+            font-size: 2.5rem;
+            margin-right: 15px;
+            animation: bounce 2s infinite;
+        }
+        
+        .phase-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2d3748;
+        }
+        
+        .phase-steps {
+            list-style: none;
+        }
+        
+        .phase-steps li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e2e8f0;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .phase-steps li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #48bb78;
+            font-weight: bold;
+        }
+        
+        .phase-steps li:last-child {
+            border-bottom: none;
+        }
+        
+        .command-box {
+            background: #1a202c;
+            color: #68d391;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .command-box::before {
+            content: '$ ';
+            color: #4299e1;
+        }
+        
+        .typing-animation {
+            border-right: 2px solid #68d391;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        
+        .tech-stack {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .tech-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .tech-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .tech-item h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .tech-item p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .progress-bar {
+            background: #e2e8f0;
+            height: 8px;
+            border-radius: 4px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 4px;
+            animation: progress 3s ease-in-out infinite;
+        }
+        
+        .interactive-demo {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .demo-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .demo-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .demo-output {
+            background: #1a202c;
+            color: #68d391;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            min-height: 200px;
+            white-space: pre-wrap;
+        }
+        
+        .resources-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .resource-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .resource-card:hover {
+            border-color: #4facfe;
+            transform: translateY(-5px);
+        }
+        
+        .resource-link {
+            color: #4299e1;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .resource-link:hover {
+            text-decoration: underline;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #68d391; }
+        }
+        
+        @keyframes progress {
+            0% { width: 0% }
+            50% { width: 70% }
+            100% { width: 100% }
+        }
+        
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .floating-element {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-active { background: #48bb78; }
+        .status-pending { background: #ed8936; }
+        .status-error { background: #f56565; }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-element" style="top: 10%; left: 10%;">⚛️</div>
+        <div class="floating-element" style="top: 20%; right: 15%; animation-delay: -2s;">🐍</div>
+        <div class="floating-element" style="top: 60%; left: 5%; animation-delay: -4s;">🗄️</div>
+        <div class="floating-element" style="bottom: 20%; right: 10%; animation-delay: -1s;">🤖</div>
+        <div class="floating-element" style="bottom: 40%; left: 20%; animation-delay: -3s;">🔧</div>
+    </div>
+    
+    <div class="container">
+        <header class="header">
+            <h1>🚀 VersaAI Platform</h1>
+            <p>Flujo de Desarrollo Interactivo - Configuración Completa del Stack</p>
+        </header>
+        
+        <div class="workflow-container">
+            <!-- Fase 1: Configuración Inicial -->
+            <div class="phase-card">
+                <div class="phase-header">
+                    <div class="phase-icon">🏗️</div>
+                    <div class="phase-title">Fase 1: Configuración Inicial</div>
+                </div>
+                <ul class="phase-steps">
+                    <li>Crear estructura de directorios</li>
+                    <li>Configurar Docker Compose</li>
+                    <li>Inicializar repositorio Git</li>
+                    <li>Configurar variables de entorno</li>
+                </ul>
+                <div class="command-box">
+                    <span class="typing-animation">mkdir versaai-platform && cd versaai-platform</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 25%;"></div>
+                </div>
+                <p><span class="status-indicator status-active"></span>Estado: Completado</p>
+            </div>
+            
+            <!-- Fase 2: Backend Django -->
+            <div class="phase-card">
+                <div class="phase-header">
+                    <div class="phase-icon">🐍</div>
+                    <div class="phase-title">Fase 2: Backend Django</div>
+                </div>
+                <ul class="phase-steps">
+                    <li>Configurar Django REST Framework</li>
+                    <li>Implementar autenticación JWT</li>
+                    <li>Configurar CORS y seguridad</li>
+                    <li>Crear modelos de datos</li>
+                    <li>Implementar APIs REST</li>
+                </ul>
+                <div class="command-box">
+                    <span class="typing-animation">django-admin startproject backend</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 50%;"></div>
+                </div>
+                <p><span class="status-indicator status-pending"></span>Estado: En Progreso</p>
+            </div>
+            
+            <!-- Fase 3: Frontend React -->
+            <div class="phase-card">
+                <div class="phase-header">
+                    <div class="phase-icon">⚛️</div>
+                    <div class="phase-title">Fase 3: Frontend React</div>
+                </div>
+                <ul class="phase-steps">
+                    <li>Configurar Vite + TypeScript</li>
+                    <li>Instalar Material-UI</li>
+                    <li>Configurar Redux Toolkit</li>
+                    <li>Crear componentes del dashboard</li>
+                    <li>Implementar rutas y navegación</li>
+                </ul>
+                <div class="command-box">
+                    <span class="typing-animation">npm create vite@latest frontend -- --template react-ts</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 30%;"></div>
+                </div>
+                <p><span class="status-indicator status-pending"></span>Estado: Pendiente</p>
+            </div>
+            
+            <!-- Fase 4: Sistema RAG -->
+            <div class="phase-card">
+                <div class="phase-header">
+                    <div class="phase-icon">🤖</div>
+                    <div class="phase-title">Fase 4: Sistema RAG + IA</div>
+                </div>
+                <ul class="phase-steps">
+                    <li>Configurar ChromaDB</li>
+                    <li>Implementar embeddings</li>
+                    <li>Integrar Groq API</li>
+                    <li>Crear pipeline RAG</li>
+                    <li>Optimizar búsqueda semántica</li>
+                </ul>
+                <div class="command-box">
+                    <span class="typing-animation">pip install chromadb langchain groq</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 20%;"></div>
+                </div>
+                <p><span class="status-indicator status-pending"></span>Estado: Pendiente</p>
+            </div>
+            
+            <!-- Fase 5: Widget Embebible -->
+            <div class="phase-card">
+                <div class="phase-header">
+                    <div class="phase-icon">🔧</div>
+                    <div class="phase-title">Fase 5: Widget Embebible</div>
+                </div>
+                <ul class="phase-steps">
+                    <li>Crear Web Components</li>
+                    <li>Optimizar tamaño del bundle</li>
+                    <li>Implementar API de integración</li>
+                    <li>Crear documentación</li>
+                    <li>Testing cross-browser</li>
+                </ul>
+                <div class="command-box">
+                    <span class="typing-animation">npm run build:widget</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 10%;"></div>
+                </div>
+                <p><span class="status-indicator status-pending"></span>Estado: Pendiente</p>
+            </div>
+            
+            <!-- Fase 6: Despliegue -->
+            <div class="phase-card">
+                <div class="phase-header">
+                    <div class="phase-icon">🚀</div>
+                    <div class="phase-title">Fase 6: Despliegue</div>
+                </div>
+                <ul class="phase-steps">
+                    <li>Configurar CI/CD</li>
+                    <li>Optimizar Docker images</li>
+                    <li>Configurar monitoreo</li>
+                    <li>Implementar backups</li>
+                    <li>Documentación final</li>
+                </ul>
+                <div class="command-box">
+                    <span class="typing-animation">docker-compose up -d --build</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 5%;"></div>
+                </div>
+                <p><span class="status-indicator status-pending"></span>Estado: Pendiente</p>
+            </div>
+        </div>
+        
+        <!-- Stack Tecnológico -->
+        <div class="tech-stack">
+            <h2>🛠️ Stack Tecnológico Completo</h2>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <h4>⚛️ Frontend</h4>
+                    <p>React 18 + TypeScript<br>Material-UI + Redux Toolkit<br>Vite + ESLint</p>
+                </div>
+                <div class="tech-item">
+                    <h4>🐍 Backend</h4>
+                    <p>Django REST Framework<br>JWT + CORS + Rate Limiting<br>Celery + WebSockets</p>
+                </div>
+                <div class="tech-item">
+                    <h4>🗄️ Bases de Datos</h4>
+                    <p>PostgreSQL + Redis<br>ChromaDB (Vectorial)<br>SQLite (Local)</p>
+                </div>
+                <div class="tech-item">
+                    <h4>🤖 IA & RAG</h4>
+                    <p>Groq API + LLM Models<br>LangChain + Embeddings<br>Semantic Search</p>
+                </div>
+                <div class="tech-item">
+                    <h4>🔧 Widget</h4>
+                    <p>JavaScript Vanilla<br>Web Components<br>< 50KB gzipped</p>
+                </div>
+                <div class="tech-item">
+                    <h4>🐳 DevOps</h4>
+                    <p>Docker + Compose<br>GitHub Actions<br>Nginx + SSL</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Demo Interactivo -->
+        <div class="interactive-demo">
+            <h2>🎮 Demo Interactivo - Comandos de Desarrollo</h2>
+            <div class="demo-buttons">
+                <button class="demo-btn" onclick="runCommand('setup')">🏗️ Setup Inicial</button>
+                <button class="demo-btn" onclick="runCommand('backend')">🐍 Iniciar Backend</button>
+                <button class="demo-btn" onclick="runCommand('frontend')">⚛️ Iniciar Frontend</button>
+                <button class="demo-btn" onclick="runCommand('docker')">🐳 Docker Compose</button>
+                <button class="demo-btn" onclick="runCommand('test')">🧪 Ejecutar Tests</button>
+                <button class="demo-btn" onclick="runCommand('build')">📦 Build Producción</button>
+            </div>
+            <div class="demo-output" id="demoOutput">
+🚀 VersaAI Platform - Terminal Interactivo
+
+Selecciona un comando para ver la ejecución simulada...
+            </div>
+        </div>
+        
+        <!-- Recursos y Documentación -->
+        <div class="resources-section">
+            <h2>📚 Recursos y Documentación Oficial</h2>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <h4>⚛️ React + TypeScript</h4>
+                    <p>Documentación oficial y mejores prácticas</p>
+                    <a href="https://react.dev/" class="resource-link" target="_blank">React Official Docs</a><br>
+                    <a href="https://www.typescriptlang.org/docs/" class="resource-link" target="_blank">TypeScript Handbook</a><br>
+                    <a href="https://vitejs.dev/guide/" class="resource-link" target="_blank">Vite Guide</a>
+                </div>
+                
+                <div class="resource-card">
+                    <h4>🐍 Django REST Framework</h4>
+                    <p>Backend robusto y APIs escalables</p>
+                    <a href="https://www.django-rest-framework.org/" class="resource-link" target="_blank">DRF Documentation</a><br>
+                    <a href="https://docs.djangoproject.com/" class="resource-link" target="_blank">Django Official Docs</a><br>
+                    <a href="https://django-cors-headers.readthedocs.io/" class="resource-link" target="_blank">CORS Headers</a>
+                </div>
+                
+                <div class="resource-card">
+                    <h4>🗄️ PostgreSQL + Redis</h4>
+                    <p>Bases de datos para producción</p>
+                    <a href="https://www.postgresql.org/docs/" class="resource-link" target="_blank">PostgreSQL Docs</a><br>
+                    <a href="https://redis.io/documentation" class="resource-link" target="_blank">Redis Documentation</a><br>
+                    <a href="https://docs.celeryproject.org/" class="resource-link" target="_blank">Celery Documentation</a>
+                </div>
+                
+                <div class="resource-card">
+                    <h4>🤖 IA & RAG System</h4>
+                    <p>Integración de modelos de lenguaje</p>
+                    <a href="https://console.groq.com/docs" class="resource-link" target="_blank">Groq API Docs</a><br>
+                    <a href="https://python.langchain.com/" class="resource-link" target="_blank">LangChain Documentation</a><br>
+                    <a href="https://docs.trychroma.com/" class="resource-link" target="_blank">ChromaDB Guide</a>
+                </div>
+                
+                <div class="resource-card">
+                    <h4>🎨 Material-UI + Redux</h4>
+                    <p>UI Components y gestión de estado</p>
+                    <a href="https://mui.com/material-ui/" class="resource-link" target="_blank">Material-UI Docs</a><br>
+                    <a href="https://redux-toolkit.js.org/" class="resource-link" target="_blank">Redux Toolkit</a><br>
+                    <a href="https://redux-toolkit.js.org/rtk-query/overview" class="resource-link" target="_blank">RTK Query</a>
+                </div>
+                
+                <div class="resource-card">
+                    <h4>🐳 Docker + DevOps</h4>
+                    <p>Containerización y despliegue</p>
+                    <a href="https://docs.docker.com/compose/" class="resource-link" target="_blank">Docker Compose</a><br>
+                    <a href="https://docs.github.com/en/actions" class="resource-link" target="_blank">GitHub Actions</a><br>
+                    <a href="https://nginx.org/en/docs/" class="resource-link" target="_blank">Nginx Documentation</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const commands = {
+            setup: `🏗️ Configuración Inicial del Proyecto
+
+$ mkdir versaai-platform && cd versaai-platform
+$ git init
+$ mkdir -p frontend backend widget docs docker
+$ touch docker-compose.yml .env.example README.md
+$ echo "# VersaAI Platform" > README.md
+
+✅ Estructura de directorios creada
+✅ Repositorio Git inicializado
+✅ Archivos de configuración preparados
+
+📁 Estructura del proyecto:
+versaai-platform/
+├── frontend/          # React + TypeScript Dashboard
+├── backend/           # Django REST Framework API
+├── widget/            # JavaScript Widget Embebible
+├── docs/              # Documentación del proyecto
+├── docker/            # Configuraciones Docker
+├── docker-compose.yml # Orquestación de servicios
+└── .env.example       # Variables de entorno`,
+            
+            backend: `🐍 Configuración del Backend Django
+
+$ cd backend
+$ python -m venv venv
+$ source venv/bin/activate  # Windows: venv\\Scripts\\activate
+$ pip install django djangorestframework
+$ pip install django-cors-headers djangorestframework-simplejwt
+$ pip install celery redis psycopg2-binary
+$ pip install langchain chromadb groq
+
+$ django-admin startproject versaai_backend .
+$ python manage.py startapp authentication
+$ python manage.py startapp chatbots
+$ python manage.py startapp knowledge_base
+$ python manage.py startapp analytics
+
+✅ Entorno virtual creado
+✅ Dependencias instaladas
+✅ Proyecto Django configurado
+✅ Apps principales creadas
+
+🔧 Configurando settings.py:
+- REST Framework + JWT
+- CORS Headers
+- PostgreSQL Database
+- Redis Cache
+- Celery Configuration`,
+            
+            frontend: `⚛️ Configuración del Frontend React
+
+$ cd frontend
+$ npm create vite@latest . -- --template react-ts
+$ npm install
+$ npm install @mui/material @emotion/react @emotion/styled
+$ npm install @reduxjs/toolkit react-redux
+$ npm install @mui/icons-material @mui/x-data-grid
+$ npm install axios react-router-dom
+$ npm install @types/node
+
+$ npm run dev
+
+✅ Proyecto Vite + React + TypeScript creado
+✅ Material-UI instalado
+✅ Redux Toolkit configurado
+✅ Dependencias de desarrollo instaladas
+
+🎨 Configurando estructura:
+- src/components/     # Componentes reutilizables
+- src/pages/          # Páginas del dashboard
+- src/store/          # Redux store y slices
+- src/services/       # APIs y servicios
+- src/types/          # Tipos TypeScript
+
+🚀 Servidor de desarrollo ejecutándose en http://localhost:3000`,
+            
+            docker: `🐳 Configuración Docker Compose
+
+$ docker-compose up -d
+
+Creating network "versaai_network" ... done
+Creating volume "versaai_postgres_data" ... done
+Creating volume "versaai_redis_data" ... done
+Creating volume "versaai_chroma_data" ... done
+
+Pulling postgres (postgres:15-alpine)...
+Pulling redis (redis:7-alpine)...
+Pulling chromadb (chromadb/chroma:latest)...
+
+Creating versaai_postgres ... done
+Creating versaai_redis    ... done
+Creating versaai_chromadb ... done
+Creating versaai_backend  ... done
+Creating versaai_frontend ... done
+Creating versaai_nginx    ... done
+
+✅ PostgreSQL: Running on port 5432
+✅ Redis: Running on port 6379
+✅ ChromaDB: Running on port 8000
+✅ Backend API: Running on port 8001
+✅ Frontend: Running on port 3000
+✅ Nginx: Running on port 80
+
+🌐 Servicios disponibles:
+- Dashboard: http://localhost
+- API Docs: http://localhost/api/docs
+- Admin: http://localhost/admin`,
+            
+            test: `🧪 Ejecutando Suite de Tests
+
+$ npm run test:frontend
+$ python manage.py test
+$ docker-compose exec backend python manage.py test
+
+⚛️ Frontend Tests (Jest + React Testing Library):
+✅ Component rendering tests: 15 passed
+✅ Redux store tests: 8 passed
+✅ API integration tests: 12 passed
+✅ User interaction tests: 10 passed
+
+🐍 Backend Tests (Django TestCase):
+✅ Authentication tests: 20 passed
+✅ API endpoint tests: 35 passed
+✅ Model validation tests: 18 passed
+✅ RAG system tests: 12 passed
+
+🤖 AI Integration Tests:
+✅ Groq API connection: passed
+✅ Embedding generation: passed
+✅ ChromaDB operations: passed
+✅ RAG pipeline: passed
+
+📊 Coverage Report:
+- Frontend: 92% coverage
+- Backend: 88% coverage
+- Overall: 90% coverage
+
+🎉 All tests passed successfully!`,
+            
+            build: `📦 Build para Producción
+
+$ npm run build:frontend
+$ python manage.py collectstatic
+$ docker-compose -f docker-compose.prod.yml build
+
+⚛️ Building Frontend:
+✅ TypeScript compilation
+✅ Vite optimization
+✅ Asset minification
+✅ Bundle analysis
+
+Bundle size: 245.8 KB (gzipped: 78.2 KB)
+
+🐍 Preparing Backend:
+✅ Static files collected
+✅ Database migrations applied
+✅ Production settings configured
+✅ Security checks passed
+
+🐳 Docker Images:
+✅ versaai_frontend: 89.2 MB
+✅ versaai_backend: 156.7 MB
+✅ versaai_nginx: 23.1 MB
+
+🔧 Widget Build:
+✅ JavaScript minified: 47.3 KB
+✅ CSS optimized: 12.8 KB
+✅ Total widget size: 60.1 KB
+
+🚀 Production build completed!
+📁 Files ready for deployment in ./dist/`
+        };
+        
+        function runCommand(cmd) {
+            const output = document.getElementById('demoOutput');
+            output.textContent = commands[cmd] || 'Comando no encontrado';
+            
+            // Simular typing effect
+            const lines = output.textContent.split('\n');
+            output.textContent = '';
+            
+            let lineIndex = 0;
+            const typeInterval = setInterval(() => {
+                if (lineIndex < lines.length) {
+                    output.textContent += lines[lineIndex] + '\n';
+                    lineIndex++;
+                    output.scrollTop = output.scrollHeight;
+                } else {
+                    clearInterval(typeInterval);
+                }
+            }, 100);
+        }
+        
+        // Animación de elementos flotantes
+        function createFloatingElement() {
+            const elements = ['⚛️', '🐍', '🗄️', '🤖', '🔧', '🚀', '💻', '🔥'];
+            const element = document.createElement('div');
+            element.className = 'floating-element';
+            element.textContent = elements[Math.floor(Math.random() * elements.length)];
+            element.style.left = Math.random() * 100 + '%';
+            element.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            element.style.animationDelay = Math.random() * 2 + 's';
+            
+            document.querySelector('.floating-elements').appendChild(element);
+            
+            setTimeout(() => {
+                element.remove();
+            }, 6000);
+        }
+        
+        // Crear elementos flotantes periódicamente
+        setInterval(createFloatingElement, 3000);
+        
+        // Actualizar barras de progreso
+        function updateProgress() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach((bar, index) => {
+                const currentWidth = parseInt(bar.style.width);
+                if (currentWidth < 100) {
+                    bar.style.width = Math.min(currentWidth + Math.random() * 5, 100) + '%';
+                }
+            });
+        }
+        
+        setInterval(updateProgress, 5000);
+    </script>
+</body>
+</html>

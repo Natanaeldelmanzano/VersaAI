@@ -1,0 +1,219 @@
+{
+  // ===== CONFIGURACIÓN GENERAL DE TRAE AI PARA VERSAAI =====
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": true
+  },
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "editor.wordWrap": "on",
+  "editor.rulers": [80, 120],
+  "editor.minimap.enabled": true,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+  "editor.inlineSuggest.enabled": true,
+  "editor.suggestSelection": "first",
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true
+  },
+
+  // ===== CONFIGURACIÓN ESPECÍFICA PARA VUE.JS 3 =====
+  "[vue]": {
+    "editor.defaultFormatter": "Vue.volar",
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2
+  },
+
+  // ===== CONFIGURACIÓN ESPECÍFICA PARA PYTHON/FASTAPI =====
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  },
+  "python.defaultInterpreterPath": "./backend/venv/Scripts/python.exe",
+  "python.terminal.activateEnvironment": true,
+  "python.linting.enabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.linting.pylintEnabled": false,
+  "python.formatting.provider": "black",
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestArgs": [
+    "backend/tests"
+  ],
+
+  // ===== CONFIGURACIÓN DE ARCHIVOS Y EXCLUSIONES =====
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/node_modules": true,
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/.pytest_cache": true,
+    "**/venv": true,
+    "**/.env": false,
+    "**/dist": true,
+    "**/build": true,
+    "**/.coverage": true,
+    "**/coverage": true
+  },
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/__pycache__/**": true,
+    "**/venv/**": true,
+    "**/dist/**": true,
+    "**/build/**": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/__pycache__": true,
+    "**/venv": true
+  },
+
+  // ===== CONFIGURACIÓN DE TERMINAL =====
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "terminal.integrated.cwd": "${workspaceFolder}",
+  "terminal.integrated.env.windows": {
+    "PYTHONPATH": "${workspaceFolder}/backend/src"
+  },
+
+  // ===== CONFIGURACIÓN DE EMMET =====
+  "emmet.includeLanguages": {
+    "vue-html": "html",
+    "vue": "html",
+    "javascript": "javascriptreact"
+  },
+  "emmet.triggerExpansionOnTab": true,
+
+  // ===== CONFIGURACIÓN DE PRETTIER =====
+  "prettier.configPath": "./frontend/.prettierrc",
+  "prettier.ignorePath": "./frontend/.prettierignore",
+  "prettier.requireConfig": false,
+  "prettier.useEditorConfig": false,
+
+  // ===== CONFIGURACIÓN DE ESLINT =====
+  "eslint.workingDirectories": [
+    "./frontend"
+  ],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue"
+  ],
+
+  // ===== CONFIGURACIÓN DE VUE =====
+  "vue.inlayHints.missingProps": true,
+  "vue.inlayHints.inlineHandlerLeading": true,
+  "vue.inlayHints.optionsWrapper": true,
+  "vue.complete.casing.tags": "kebab",
+  "vue.complete.casing.props": "camel",
+  "vue.updateImportsOnFileMove.enabled": true,
+
+  // ===== CONFIGURACIÓN DE TAILWIND CSS =====
+  "tailwindCSS.includeLanguages": {
+    "vue": "html",
+    "vue-html": "html"
+  },
+  "tailwindCSS.experimental.classRegex": [
+    ["class:\\s*?[\"\']([^\"\']*).*?\"", "[\"\']([^\"\']*).*?\""],
+    ["(?:enter|leave)(?:From|To)?Class(?:es)?\\s*[:=]\\s*[\"\']([^\"\']*)\""]
+  ],
+
+  // ===== CONFIGURACIÓN DE GIT =====
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "git.autofetch": true,
+  "git.enableStatusBarSync": true,
+
+  // ===== CONFIGURACIÓN DE LIVE SERVER =====
+  "liveServer.settings.donotShowInfoMsg": true,
+  "liveServer.settings.donotVerifyTags": true,
+  "liveServer.settings.CustomBrowser": "chrome",
+  "liveServer.settings.root": "/",
+  "liveServer.settings.port": 5500,
+
+  // ===== CONFIGURACIÓN DE DEBUGGING =====
+  "debug.allowBreakpointsEverywhere": true,
+  "debug.inlineValues": "on",
+  "debug.showBreakpointsInOverviewRuler": true,
+
+  // ===== CONFIGURACIÓN DE INTELLISENSE =====
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "javascript.suggest.autoImports": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+
+  // ===== CONFIGURACIÓN DE WORKSPACE =====
+  "workbench.startupEditor": "welcomePage",
+  "workbench.editor.enablePreview": false,
+  "workbench.editor.enablePreviewFromQuickOpen": false,
+  "workbench.tree.indent": 20,
+  "workbench.colorTheme": "Default Dark+",
+  "workbench.iconTheme": "vs-seti",
+
+  // ===== CONFIGURACIÓN DE EXTENSIONES ESPECÍFICAS =====
+  "vetur.validation.template": false,
+  "vetur.validation.script": false,
+  "vetur.validation.style": false,
+  "volar.takeOverMode.enabled": true,
+
+  // ===== CONFIGURACIÓN DE PERFORMANCE =====
+  "extensions.ignoreRecommendations": false,
+  "telemetry.telemetryLevel": "off",
+  "update.mode": "start",
+  "editor.semanticHighlighting.enabled": true,
+  "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+
+  // ===== CONFIGURACIÓN ESPECÍFICA PARA VERSAAI =====
+  "versaai.frontend.port": 3000,
+  "versaai.backend.port": 8000,
+  "versaai.database.url": "postgresql://versaai_user:versaai_password@localhost:5432/versaai",
+  "versaai.redis.url": "redis://localhost:6379/0",
+
+  // ===== CONFIGURACIÓN DE SNIPPETS PERSONALIZADOS =====
+  "editor.snippetSuggestions": "top",
+  "editor.suggest.snippetsPreventQuickSuggestions": false,
+
+  // ===== CONFIGURACIÓN DE MONITOREO =====
+  "problems.decorations.enabled": true,
+  "problems.showCurrentInStatus": true,
+
+  // ===== CONFIGURACIÓN DE AUTO-SAVE =====
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000
+}

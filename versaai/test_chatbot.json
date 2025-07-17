@@ -1,0 +1,9 @@
+{
+  "name": "Chatbot de Prueba IA",
+  "description": "Chatbot para probar las capacidades de Groq AI",
+  "chatbot_type": "general",
+  "ai_model": "llama3-8b-8192",
+  "temperature": 0.7,
+  "max_tokens": 1000,
+  "system_prompt": "Eres un asistente inteligente y útil. Responde de manera clara, concisa y amigable. Puedes ayudar con programación, explicaciones técnicas, y conversación general."
+}

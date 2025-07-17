@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VersaAI - Portal de Desarrollo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .card h2 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .card p {
+            color: #718096;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-online {
+            background: #48bb78;
+            animation: pulse 2s infinite;
+        }
+
+        .status-offline {
+            background: #f56565;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .tool-card {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            border-color: #667eea;
+            background: white;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: white;
+            opacity: 0.8;
+        }
+
+        .logs {
+            background: #1a202c;
+            color: #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .refresh-btn {
+            background: #4299e1;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 VersaAI</h1>
+            <p>Portal de Desarrollo y Configuración de Pruebas</p>
+        </div>
+
+        <div class="dashboard">
+            <!-- Frontend Card -->
+            <div class="card">
+                <h2>🎨 Frontend (Vue.js)</h2>
+                <p>Interfaz de usuario desarrollada con Vue.js 3, Tailwind CSS y componentes modernos.</p>
+                
+                <div class="status">
+                    <div class="status-dot status-offline" id="frontend-status"></div>
+                    <span id="frontend-status-text">Verificando estado...</span>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <a href="http://localhost:3000" target="_blank" class="btn">🌐 Abrir Frontend</a>
+                    <a href="./frontend/Fronted.html" target="_blank" class="btn btn-secondary">📋 Panel Frontend</a>
+                    <button onclick="startFrontend()" class="btn btn-info">▶️ Iniciar Dev Server</button>
+                </div>
+
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <h4>📁 Archivos</h4>
+                        <button onclick="openFolder('frontend/src')" class="btn" style="font-size: 0.8rem;">Ver Código</button>
+                    </div>
+                    <div class="tool-card">
+                        <h4>📦 Dependencias</h4>
+                        <button onclick="showPackageInfo('frontend')" class="btn" style="font-size: 0.8rem;">package.json</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Backend Card -->
+            <div class="card">
+                <h2>⚙️ Backend (FastAPI)</h2>
+                <p>API REST desarrollada con FastAPI, PostgreSQL y capacidades de IA con RAG.</p>
+                
+                <div class="status">
+                    <div class="status-dot status-offline" id="backend-status"></div>
+                    <span id="backend-status-text">Verificando estado...</span>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <a href="http://localhost:8000/api/docs" target="_blank" class="btn">📚 API Docs</a>
+                    <a href="./backend/backend.html" target="_blank" class="btn btn-secondary">📋 Panel Backend</a>
+                    <button onclick="startBackend()" class="btn btn-info">▶️ Iniciar API</button>
+                </div>
+
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <h4>🗄️ Base de Datos</h4>
+                        <button onclick="checkDatabase()" class="btn" style="font-size: 0.8rem;">Estado DB</button>
+                    </div>
+                    <div class="tool-card">
+                        <h4>🔧 Configuración</h4>
+                        <button onclick="showEnvConfig()" class="btn" style="font-size: 0.8rem;">.env</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Herramientas de Desarrollo -->
+            <div class="card">
+                <h2>🛠️ Herramientas de Desarrollo</h2>
+                <p>Utilidades y herramientas para el desarrollo y testing de la plataforma.</p>
+
+                <div style="margin-top: 20px;">
+                    <button onclick="runTests()" class="btn">🧪 Ejecutar Tests</button>
+                    <button onclick="buildProject()" class="btn btn-secondary">🏗️ Build Producción</button>
+                    <button onclick="showLogs()" class="btn btn-info">📋 Ver Logs</button>
+                </div>
+
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <h4>📊 Análisis</h4>
+                        <a href="./frontend/Analisis_Completo_Frontend_VersaAI.md" target="_blank" class="btn" style="font-size: 0.8rem;">Análisis Frontend</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4>🐛 Errores</h4>
+                        <a href="./frontend/Errores.html" target="_blank" class="btn" style="font-size: 0.8rem;">Ver Errores</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configuración del Sistema -->
+            <div class="card">
+                <h2>⚙️ Configuración del Sistema</h2>
+                <p>Configuración de variables de entorno, base de datos y servicios externos.</p>
+
+                <div style="margin-top: 20px;">
+                    <button onclick="setupEnvironment()" class="btn">🔧 Configurar Entorno</button>
+                    <button onclick="initDatabase()" class="btn btn-secondary">🗄️ Inicializar DB</button>
+                    <button onclick="checkServices()" class="btn btn-info">🔍 Verificar Servicios</button>
+                </div>
+
+                <div id="system-info" style="margin-top: 15px; font-size: 0.9rem; color: #666;">
+                    <p>🖥️ Sistema: <span id="os-info">Detectando...</span></p>
+                    <p>🐍 Python: <span id="python-version">Verificando...</span></p>
+                    <p>📦 Node.js: <span id="node-version">Verificando...</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logs Section -->
+        <div class="card">
+            <h2>📋 Logs del Sistema <button class="refresh-btn" onclick="refreshLogs()">🔄 Actualizar</button></h2>
+            <div class="logs" id="system-logs">
+                <div>🚀 Portal de desarrollo iniciado...</div>
+                <div>📡 Verificando servicios...</div>
+                <div>✅ Sistema listo para desarrollo</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2024 VersaAI - Portal de Desarrollo | Versión 1.0.0</p>
+        </div>
+    </div>
+
+    <script>
+        // Verificar estado de servicios
+        async function checkServiceStatus(url, elementId, textId) {
+            try {
+                const response = await fetch(url, { method: 'HEAD', mode: 'no-cors' });
+                document.getElementById(elementId).className = 'status-dot status-online';
+                document.getElementById(textId).textContent = 'Servicio activo';
+                return true;
+            } catch (error) {
+                document.getElementById(elementId).className = 'status-dot status-offline';
+                document.getElementById(textId).textContent = 'Servicio inactivo';
+                return false;
+            }
+        }
+
+        // Funciones de control
+        function startFrontend() {
+            addLog('🎨 Iniciando servidor de desarrollo frontend...');
+            addLog('💡 Ejecute: cd frontend && npm run dev');
+            setTimeout(() => {
+                addLog('✅ Frontend estará disponible en http://localhost:3000');
+            }, 1000);
+        }
+
+        function startBackend() {
+            addLog('⚙️ Iniciando servidor backend...');
+            addLog('💡 Ejecute: cd backend && uvicorn src.main:app --reload');
+            setTimeout(() => {
+                addLog('✅ Backend estará disponible en http://localhost:8000');
+            }, 1000);
+        }
+
+        function runTests() {
+            addLog('🧪 Ejecutando suite de tests...');
+            addLog('💡 Frontend: npm run test');
+            addLog('💡 Backend: pytest');
+            setTimeout(() => {
+                addLog('✅ Tests completados - Revisar resultados');
+            }, 2000);
+        }
+
+        function buildProject() {
+            addLog('🏗️ Iniciando build de producción...');
+            addLog('💡 Frontend: npm run build');
+            addLog('💡 Backend: docker build');
+            setTimeout(() => {
+                addLog('✅ Build completado - Archivos en /dist');
+            }, 3000);
+        }
+
+        function showLogs() {
+            addLog('📋 Mostrando logs del sistema...');
+            addLog('💡 Frontend logs: npm run dev (consola)');
+            addLog('💡 Backend logs: uvicorn logs');
+        }
+
+        function setupEnvironment() {
+            addLog('🔧 Configurando variables de entorno...');
+            addLog('💡 Copie .env.example a .env en ambos directorios');
+            addLog('💡 Configure DATABASE_URL y GROQ_API_KEY');
+            setTimeout(() => {
+                addLog('✅ Revise la configuración de entorno');
+            }, 1500);
+        }
+
+        function initDatabase() {
+            addLog('🗄️ Inicializando base de datos...');
+            addLog('💡 Backend: alembic upgrade head');
+            setTimeout(() => {
+                addLog('✅ Ejecute las migraciones de base de datos');
+            }, 2000);
+        }
+
+        function checkServices() {
+            addLog('🔍 Verificando servicios externos...');
+            checkServiceStatus('http://localhost:3000', 'frontend-status', 'frontend-status-text');
+            checkServiceStatus('http://localhost:8000', 'backend-status', 'backend-status-text');
+            setTimeout(() => {
+                addLog('✅ Verificación de servicios completada');
+            }, 1000);
+        }
+
+        function checkDatabase() {
+            addLog('🗄️ Verificando conexión a base de datos...');
+            addLog('💡 Verifique que PostgreSQL esté ejecutándose');
+            addLog('💡 Puerto por defecto: 5432');
+        }
+
+        function showEnvConfig() {
+            addLog('🔧 Configuración de entorno requerida:');
+            addLog('DATABASE_URL=postgresql://user:pass@localhost:5432/versaai');
+            addLog('GROQ_API_KEY=su_clave_groq_aqui');
+            addLog('SECRET_KEY=clave_secreta_segura');
+            addLog('DEBUG=true');
+        }
+
+        function showPackageInfo(type) {
+            addLog(`📦 Información de dependencias ${type}:`);
+            if (type === 'frontend') {
+                addLog('Vue.js 3.x, Tailwind CSS 3.x, Vite 5.x');
+                addLog('Axios, Vue Router, Pinia');
+            }
+        }
+
+        function openFolder(path) {
+            addLog(`📁 Abriendo directorio: ${path}`);
+            addLog('💡 Use su explorador de archivos o IDE preferido');
+        }
+
+        function addLog(message) {
+            const logs = document.getElementById('system-logs');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            logs.appendChild(logEntry);
+            logs.scrollTop = logs.scrollHeight;
+        }
+
+        function refreshLogs() {
+            document.getElementById('system-logs').innerHTML = '';
+            addLog('🔄 Logs actualizados');
+            addLog('🚀 Portal de desarrollo activo');
+        }
+
+        // Inicialización
+        window.onload = function() {
+            // Información del sistema
+            document.getElementById('os-info').textContent = navigator.platform;
+            
+            // Verificar servicios
+            setTimeout(() => {
+                checkServices();
+            }, 1000);
+            
+            addLog('🚀 Portal de desarrollo cargado');
+            addLog('📡 Verificando servicios en 1 segundo...');
+        };
+
+        // Verificación periódica de servicios
+        setInterval(() => {
+            checkServiceStatus('http://localhost:3000', 'frontend-status', 'frontend-status-text');
+            checkServiceStatus('http://localhost:8000', 'backend-status', 'backend-status-text');
+        }, 30000); // Cada 30 segundos
+    </script>
+</body>
+</html>

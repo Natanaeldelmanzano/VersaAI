@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Login - VersaAI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background-color: #0056b3; }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Debug Login - VersaAI</h1>
+        <p>Herramienta de diagnóstico para probar la comunicación frontend-backend</p>
+
+        <div class="section info">
+            <h2>📊 Estado del Sistema</h2>
+            <div id="systemStatus">Verificando...</div>
+        </div>
+
+        <div class="section">
+            <h2>🔐 Prueba de Login Manual</h2>
+            <input type="email" id="testEmail" placeholder="Email" value="testlogin@versaai.com">
+            <input type="password" id="testPassword" placeholder="Password" value="testpass123">
+            <button onclick="testLogin()">Probar Login</button>
+            <div id="loginResult"></div>
+        </div>
+
+        <div class="section">
+            <h2>🌐 Pruebas de Conectividad</h2>
+            <button onclick="testBackendHealth()">Probar Backend Health</button>
+            <button onclick="testCORS()">Probar CORS</button>
+            <button onclick="testAPIEndpoints()">Probar Endpoints API</button>
+            <div id="connectivityResult"></div>
+        </div>
+
+        <div class="section">
+            <h2>📝 Logs de Diagnóstico</h2>
+            <button onclick="clearLogs()">Limpiar Logs</button>
+            <pre id="debugLogs"></pre>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        const API_URL = `${API_BASE}/api/v1`;
+        
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logElement = document.getElementById('debugLogs');
+            const logEntry = `[${timestamp}] ${type.toUpperCase()}: ${message}\n`;
+            logElement.textContent += logEntry;
+            console.log(logEntry);
+        }
+
+        function clearLogs() {
+            document.getElementById('debugLogs').textContent = '';
+        }
+
+        function updateStatus(elementId, content, className = '') {
+            const element = document.getElementById(elementId);
+            element.innerHTML = content;
+            element.className = className;
+        }
+
+        async function checkSystemStatus() {
+            log('Iniciando verificación del sistema...');
+            
+            try {
+                // Verificar backend health
+                const healthResponse = await fetch(`${API_BASE}/health`);
+                const healthData = await healthResponse.json();
+                
+                if (healthResponse.ok) {
+                    updateStatus('systemStatus', 
+                        `✅ Backend: Activo (${healthData.status})<br>` +
+                        `🌐 URL: ${API_BASE}<br>` +
+                        `📡 API: ${API_URL}`, 
+                        'success'
+                    );
+                    log('Backend health check: OK');
+                } else {
+                    throw new Error(`Health check failed: ${healthResponse.status}`);
+                }
+            } catch (error) {
+                updateStatus('systemStatus', 
+                    `❌ Backend: Error de conexión<br>` +
+                    `🔗 URL: ${API_BASE}<br>` +
+                    `⚠️ Error: ${error.message}`, 
+                    'error'
+                );
+                log(`Error en health check: ${error.message}`, 'error');
+            }
+        }
+
+        async function testLogin() {
+            const email = document.getElementById('testEmail').value;
+            const password = document.getElementById('testPassword').value;
+            
+            log(`Intentando login con: ${email}`);
+            
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    updateStatus('loginResult', 
+                        `✅ Login exitoso!<br>` +
+                        `👤 Usuario: ${data.user?.full_name || data.user?.email}<br>` +
+                        `🔑 Token: ${data.access_token?.substring(0, 20)}...<br>` +
+                        `🏢 Organización: ${data.user?.organization_id || 'N/A'}`, 
+                        'success'
+                    );
+                    log('Login exitoso');
+                } else {
+                    updateStatus('loginResult', 
+                        `❌ Login fallido<br>` +
+                        `📄 Status: ${response.status}<br>` +
+                        `💬 Mensaje: ${data.detail || 'Error desconocido'}`, 
+                        'error'
+                    );
+                    log(`Login fallido: ${response.status} - ${data.detail}`, 'error');
+                }
+            } catch (error) {
+                updateStatus('loginResult', 
+                    `❌ Error de conexión<br>` +
+                    `⚠️ Error: ${error.message}`, 
+                    'error'
+                );
+                log(`Error en login: ${error.message}`, 'error');
+            }
+        }
+
+        async function testBackendHealth() {
+            log('Probando backend health...');
+            
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                
+                updateStatus('connectivityResult', 
+                    `✅ Backend Health: ${data.status}<br>` +
+                    `📊 Status Code: ${response.status}`, 
+                    'success'
+                );
+                log('Backend health: OK');
+            } catch (error) {
+                updateStatus('connectivityResult', 
+                    `❌ Backend Health: Error<br>` +
+                    `⚠️ ${error.message}`, 
+                    'error'
+                );
+                log(`Backend health error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testCORS() {
+            log('Probando configuración CORS...');
+            
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'OPTIONS'
+                });
+                
+                const corsHeaders = {
+                    'Access-Control-Allow-Origin': response.headers.get('Access-Control-Allow-Origin'),
+                    'Access-Control-Allow-Methods': response.headers.get('Access-Control-Allow-Methods'),
+                    'Access-Control-Allow-Headers': response.headers.get('Access-Control-Allow-Headers')
+                };
+                
+                updateStatus('connectivityResult', 
+                    `✅ CORS configurado correctamente<br>` +
+                    `🌐 Origin: ${corsHeaders['Access-Control-Allow-Origin'] || 'No especificado'}<br>` +
+                    `📋 Methods: ${corsHeaders['Access-Control-Allow-Methods'] || 'No especificado'}`, 
+                    'success'
+                );
+                log('CORS: OK');
+            } catch (error) {
+                updateStatus('connectivityResult', 
+                    `❌ CORS: Error<br>` +
+                    `⚠️ ${error.message}`, 
+                    'error'
+                );
+                log(`CORS error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testAPIEndpoints() {
+            log('Probando endpoints de API...');
+            
+            const endpoints = [
+                { name: 'Health', url: `${API_BASE}/health`, method: 'GET' },
+                { name: 'API Docs', url: `${API_BASE}/api/docs`, method: 'GET' },
+                { name: 'Auth Login', url: `${API_URL}/auth/login`, method: 'POST' }
+            ];
+            
+            let results = [];
+            
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(endpoint.url, {
+                        method: endpoint.method === 'POST' ? 'OPTIONS' : endpoint.method
+                    });
+                    
+                    results.push(`✅ ${endpoint.name}: ${response.status}`);
+                    log(`Endpoint ${endpoint.name}: ${response.status}`);
+                } catch (error) {
+                    results.push(`❌ ${endpoint.name}: Error`);
+                    log(`Endpoint ${endpoint.name}: Error - ${error.message}`, 'error');
+                }
+            }
+            
+            updateStatus('connectivityResult', results.join('<br>'), 'info');
+        }
+
+        // Inicializar al cargar la página
+        window.onload = function() {
+            log('Iniciando diagnóstico de login...');
+            checkSystemStatus();
+        };
+    </script>
+</body>
+</html>

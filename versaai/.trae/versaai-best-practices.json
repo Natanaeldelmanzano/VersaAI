@@ -1,0 +1,212 @@
+{
+  "versaai_development_guidelines": {
+    "backend": {
+      "api_design": {
+        "naming_conventions": {
+          "endpoints": "snake_case",
+          "models": "PascalCase",
+          "functions": "snake_case",
+          "variables": "snake_case"
+        },
+        "response_patterns": {
+          "success": {
+            "status_code": "2xx",
+            "structure": "{ data: T, message?: string, meta?: object }"
+          },
+          "error": {
+            "status_code": "4xx/5xx",
+            "structure": "{ error: string, details?: object, code?: string }"
+          }
+        },
+        "authentication": {
+          "required_headers": ["Authorization: Bearer <token>"],
+          "token_validation": "JWT with expiration check",
+          "permission_levels": ["admin", "user", "guest"]
+        }
+      },
+      "database": {
+        "migration_strategy": "Alembic with descriptive names",
+        "model_relationships": "Use SQLAlchemy relationships with lazy loading",
+        "indexing": "Index frequently queried fields",
+        "soft_deletes": "Use deleted_at field instead of hard deletes"
+      },
+      "ai_integration": {
+        "groq_usage": {
+          "model_selection": {
+            "fast_responses": "llama3-8b-8192",
+            "complex_tasks": "llama3-70b-8192",
+            "reasoning": "mixtral-8x7b-32768"
+          },
+          "prompt_engineering": {
+            "system_prompts": "Clear, specific instructions",
+            "context_management": "Include relevant conversation history",
+            "temperature": "0.7 for creative, 0.3 for factual"
+          },
+          "error_handling": "Graceful fallbacks for API failures"
+        }
+      }
+    },
+    "frontend": {
+      "vue_patterns": {
+        "composition_api": "Use <script setup> syntax",
+        "state_management": "Pinia stores for global state",
+        "component_structure": "Single File Components with TypeScript",
+        "props_validation": "Define interfaces for props"
+      },
+      "ui_guidelines": {
+        "design_system": "Tailwind CSS with custom components",
+        "responsive_design": "Mobile-first approach",
+        "accessibility": "ARIA labels and keyboard navigation",
+        "loading_states": "Show loading indicators for async operations"
+      },
+      "chat_interface": {
+        "message_display": "Differentiate user and AI messages",
+        "typing_indicators": "Show when AI is generating response",
+        "error_handling": "Display user-friendly error messages",
+        "auto_scroll": "Scroll to bottom on new messages"
+      }
+    },
+    "testing": {
+      "backend_testing": {
+        "unit_tests": "Test individual functions and methods",
+        "integration_tests": "Test API endpoints with database",
+        "fixtures": "Use pytest fixtures for test data",
+        "mocking": "Mock external services (Groq AI)"
+      },
+      "frontend_testing": {
+        "component_tests": "Test Vue components in isolation",
+        "e2e_tests": "Test complete user workflows",
+        "store_tests": "Test Pinia store actions and getters"
+      }
+    },
+    "security": {
+      "authentication": {
+        "password_hashing": "bcrypt with salt",
+        "jwt_security": "Short-lived access tokens with refresh tokens",
+        "rate_limiting": "Implement rate limiting on sensitive endpoints"
+      },
+      "data_protection": {
+        "input_validation": "Validate all user inputs",
+        "sql_injection": "Use parameterized queries",
+        "xss_protection": "Sanitize user-generated content",
+        "cors_policy": "Configure CORS for production"
+      },
+      "ai_safety": {
+        "prompt_injection": "Sanitize user prompts",
+        "content_filtering": "Filter inappropriate content",
+        "usage_monitoring": "Monitor AI API usage and costs"
+      }
+    },
+    "performance": {
+      "backend_optimization": {
+        "database_queries": "Use eager loading for related data",
+        "caching": "Implement Redis caching for frequent queries",
+        "async_operations": "Use async/await for I/O operations",
+        "pagination": "Implement pagination for large datasets"
+      },
+      "frontend_optimization": {
+        "code_splitting": "Lazy load routes and components",
+        "image_optimization": "Use WebP format and lazy loading",
+        "bundle_size": "Monitor and optimize bundle size",
+        "virtual_scrolling": "Use virtual scrolling for large lists"
+      },
+      "ai_optimization": {
+        "response_streaming": "Stream AI responses for better UX",
+        "context_management": "Limit conversation history size",
+        "model_selection": "Choose appropriate model for task complexity"
+      }
+    },
+    "deployment": {
+      "environment_management": {
+        "development": "Local development with hot reload",
+        "staging": "Production-like environment for testing",
+        "production": "Optimized build with monitoring"
+      },
+      "docker_practices": {
+        "multi_stage_builds": "Use multi-stage builds for smaller images",
+        "health_checks": "Implement health check endpoints",
+        "secrets_management": "Use Docker secrets or environment variables"
+      },
+      "monitoring": {
+        "logging": "Structured logging with correlation IDs",
+        "metrics": "Monitor API response times and error rates",
+        "alerts": "Set up alerts for critical issues"
+      }
+    }
+  },
+  "code_quality_standards": {
+    "python": {
+      "style_guide": "PEP 8 with Black formatter",
+      "type_hints": "Use type hints for all function signatures",
+      "docstrings": "Google-style docstrings for all public functions",
+      "error_handling": "Specific exception types with meaningful messages"
+    },
+    "typescript": {
+      "style_guide": "ESLint with Prettier",
+      "type_safety": "Strict TypeScript configuration",
+      "interfaces": "Define interfaces for all data structures",
+      "error_handling": "Use try-catch blocks with typed errors"
+    },
+    "general": {
+      "naming": "Descriptive and consistent naming",
+      "comments": "Explain why, not what",
+      "functions": "Single responsibility principle",
+      "complexity": "Keep functions under 50 lines when possible"
+    }
+  },
+  "ai_development_patterns": {
+    "conversation_management": {
+      "context_window": "Manage conversation history within token limits",
+      "memory_strategies": "Implement conversation summarization with vector embeddings",
+      "user_preferences": "Store and apply user conversation preferences with ML personalization",
+      "real_time_adaptation": "Adapt responses based on user feedback and interaction patterns",
+      "multi_modal_context": "Integrate text, file, and conversation context seamlessly"
+    },
+    "prompt_templates": {
+      "system_prompts": {
+        "assistant": "You are VersaAI, an intelligent assistant specialized in document analysis and conversational AI",
+        "code_review": "You are a senior developer reviewing VersaAI code with focus on FastAPI, Vue.js, and AI integration best practices",
+        "documentation": "You help generate clear and comprehensive documentation for VersaAI features and APIs",
+        "file_analysis": "You analyze uploaded documents and provide contextual insights for VersaAI users",
+        "debugging": "You help debug VersaAI issues with deep understanding of the FastAPI + Vue.js + Groq AI stack"
+      },
+      "user_prompts": {
+        "clarification": "Could you please clarify [specific aspect]?",
+        "examples": "Can you provide an example of [concept]?",
+        "alternatives": "What are alternative approaches to [problem]?"
+      }
+    },
+    "response_processing": {
+      "streaming": "Implement streaming for real-time responses",
+      "formatting": "Parse and format AI responses appropriately",
+      "validation": "Validate AI responses before displaying"
+    }
+  },
+  "development_workflow": {
+    "trae_integration": {
+      "agent_collaboration": "Leverage specialized agents for different development tasks",
+      "context_sharing": "Share context between agents for consistent development",
+      "automated_workflows": "Use TRAE workflows for repetitive development tasks",
+      "intelligent_suggestions": "Accept AI suggestions for code improvements and optimizations"
+    },
+    "git_practices": {
+      "branch_naming": "feature/description, bugfix/description, hotfix/description, ai-enhancement/description",
+      "commit_messages": "Conventional commits format with AI assistance tags",
+      "pull_requests": "Include description, testing notes, screenshots, and AI impact assessment"
+    },
+    "code_review": {
+      "checklist": [
+        "Code follows style guidelines",
+        "Tests are included and passing",
+        "Documentation is updated",
+        "Security considerations addressed",
+        "Performance impact considered"
+      ]
+    },
+    "testing_strategy": {
+      "test_driven": "Write tests before implementation when possible",
+      "coverage_goals": "Aim for 80%+ test coverage",
+      "integration_testing": "Test API endpoints with real database"
+    }
+  }
+}

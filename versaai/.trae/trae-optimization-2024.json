@@ -1,0 +1,314 @@
+{
+  "trae_optimization_config": {
+    "version": "2.0.0",
+    "optimization_date": "2024-12-19",
+    "description": "Configuración optimizada de TRAE.AI para VersaAI basada en mejores prácticas actuales",
+    
+    "advanced_ai_features": {
+      "context_understanding": {
+        "enabled": true,
+        "depth_level": "deep",
+        "project_awareness": {
+          "architecture_understanding": true,
+          "business_logic_comprehension": true,
+          "code_pattern_recognition": true,
+          "dependency_mapping": true
+        },
+        "conversation_memory": {
+          "enabled": true,
+          "retention_period": "session",
+          "context_preservation": true,
+          "learning_from_interactions": true
+        }
+      },
+      
+      "intelligent_code_completion": {
+        "enabled": true,
+        "prediction_accuracy": "high",
+        "context_aware_suggestions": true,
+        "multi_file_context": true,
+        "framework_specific_completions": {
+          "fastapi": true,
+          "vue3": true,
+          "pinia": true,
+          "sqlalchemy": true,
+          "groq_ai": true
+        }
+      },
+      
+      "adaptive_learning": {
+        "enabled": true,
+        "learning_sources": [
+          "user_preferences",
+          "code_patterns",
+          "error_corrections",
+          "successful_implementations"
+        ],
+        "personalization_level": "high",
+        "team_learning": true
+      }
+    },
+    
+    "specialized_agents_config": {
+      "agent_selection_strategy": "automatic",
+      "collaboration_mode": "enabled",
+      "context_sharing": true,
+      
+      "backend_agent": {
+        "activation_triggers": [
+          "*.py files in src/",
+          "database migrations",
+          "API endpoint creation",
+          "service layer modifications",
+          "authentication changes"
+        ],
+        "specialized_knowledge": {
+          "fastapi_patterns": "expert",
+          "sqlalchemy_optimization": "expert",
+          "groq_ai_integration": "expert",
+          "async_programming": "expert",
+          "security_best_practices": "expert"
+        },
+        "auto_suggestions": {
+          "code_generation": true,
+          "optimization_recommendations": true,
+          "security_improvements": true,
+          "performance_enhancements": true
+        }
+      },
+      
+      "frontend_agent": {
+        "activation_triggers": [
+          "*.vue files",
+          "*.ts files in frontend/",
+          "component creation",
+          "store modifications",
+          "routing changes"
+        ],
+        "specialized_knowledge": {
+          "vue3_composition_api": "expert",
+          "pinia_state_management": "expert",
+          "tailwind_css": "expert",
+          "typescript_patterns": "expert",
+          "responsive_design": "expert"
+        },
+        "auto_suggestions": {
+          "component_optimization": true,
+          "accessibility_improvements": true,
+          "performance_optimizations": true,
+          "ux_enhancements": true
+        }
+      },
+      
+      "ai_integration_agent": {
+        "activation_triggers": [
+          "groq service modifications",
+          "prompt engineering",
+          "vector embedding work",
+          "document processing",
+          "conversation management"
+        ],
+        "specialized_knowledge": {
+          "groq_api_optimization": "expert",
+          "prompt_engineering": "expert",
+          "vector_embeddings": "expert",
+          "document_processing": "expert",
+          "conversation_ai": "expert"
+        },
+        "auto_suggestions": {
+          "prompt_optimization": true,
+          "model_selection": true,
+          "context_management": true,
+          "performance_tuning": true
+        }
+      }
+    },
+    
+    "workflow_automation": {
+      "enabled": true,
+      "automation_level": "high",
+      
+      "code_generation_workflows": {
+        "api_endpoint_creation": {
+          "enabled": true,
+          "includes": [
+            "endpoint_function",
+            "pydantic_schemas",
+            "service_integration",
+            "error_handling",
+            "documentation",
+            "unit_tests"
+          ],
+          "auto_accept_threshold": 0.9
+        },
+        
+        "vue_component_creation": {
+          "enabled": true,
+          "includes": [
+            "component_structure",
+            "typescript_interfaces",
+            "pinia_integration",
+            "tailwind_styling",
+            "accessibility_features",
+            "component_tests"
+          ],
+          "auto_accept_threshold": 0.85
+        },
+        
+        "database_model_creation": {
+          "enabled": true,
+          "includes": [
+            "sqlalchemy_model",
+            "relationships",
+            "indexes",
+            "validation",
+            "migration_script",
+            "model_tests"
+          ],
+          "auto_accept_threshold": 0.8
+        }
+      },
+      
+      "testing_automation": {
+        "auto_test_generation": true,
+        "test_types": [
+          "unit_tests",
+          "integration_tests",
+          "api_tests",
+          "component_tests"
+        ],
+        "coverage_targets": {
+          "backend": 85,
+          "frontend": 75,
+          "critical_paths": 95
+        },
+        "auto_run_on_save": true
+      },
+      
+      "documentation_automation": {
+        "auto_docstring_generation": true,
+        "api_documentation_update": true,
+        "readme_maintenance": true,
+        "changelog_generation": true
+      }
+    },
+    
+    "performance_optimization": {
+      "real_time_analysis": true,
+      "code_quality_monitoring": {
+        "enabled": true,
+        "metrics": [
+          "cyclomatic_complexity",
+          "code_duplication",
+          "maintainability_index",
+          "technical_debt"
+        ],
+        "thresholds": {
+          "complexity_warning": 10,
+          "complexity_error": 15,
+          "duplication_warning": 5,
+          "maintainability_minimum": 70
+        }
+      },
+      
+      "performance_monitoring": {
+        "enabled": true,
+        "metrics": [
+          "response_time",
+          "memory_usage",
+          "database_query_performance",
+          "frontend_bundle_size"
+        ],
+        "auto_optimization_suggestions": true
+      },
+      
+      "security_analysis": {
+        "enabled": true,
+        "vulnerability_scanning": true,
+        "dependency_security_check": true,
+        "code_security_patterns": true,
+        "auto_security_improvements": true
+      }
+    },
+    
+    "collaboration_features": {
+      "team_context_sharing": true,
+      "knowledge_base_integration": true,
+      "best_practices_enforcement": true,
+      "code_review_assistance": {
+        "enabled": true,
+        "automated_suggestions": true,
+        "security_focus": true,
+        "performance_focus": true,
+        "maintainability_focus": true
+      }
+    },
+    
+    "integration_settings": {
+      "version_control": {
+        "git_integration": true,
+        "commit_message_assistance": true,
+        "branch_strategy_enforcement": true,
+        "merge_conflict_resolution": true
+      },
+      
+      "external_tools": {
+        "database_tools": {
+          "postgresql_integration": true,
+          "migration_assistance": true,
+          "query_optimization": true
+        },
+        "ai_services": {
+          "groq_api_optimization": true,
+          "token_usage_monitoring": true,
+          "model_performance_tracking": true
+        },
+        "deployment_tools": {
+          "docker_optimization": true,
+          "environment_management": true,
+          "health_check_generation": true
+        }
+      }
+    },
+    
+    "learning_and_adaptation": {
+      "continuous_learning": true,
+      "pattern_recognition": true,
+      "user_behavior_analysis": true,
+      "project_evolution_tracking": true,
+      "predictive_suggestions": true,
+      
+      "feedback_integration": {
+        "user_feedback_learning": true,
+        "error_pattern_analysis": true,
+        "success_pattern_reinforcement": true,
+        "adaptive_threshold_adjustment": true
+      }
+    },
+    
+    "custom_commands": {
+      "versaai_specific_commands": {
+        "trae:start-dev": {
+          "description": "Start VersaAI development environment with optimized settings",
+          "command": "docker-compose up -d && cd backend && python start_server.py & cd ../frontend && npm run dev",
+          "auto_optimization": true
+        },
+        "trae:test-all": {
+          "description": "Run comprehensive test suite with AI-generated tests",
+          "command": "pytest backend/tests/ && npm run test:unit && npm run test:e2e",
+          "coverage_analysis": true
+        },
+        "trae:optimize-ai": {
+          "description": "Optimize AI integration and prompt engineering",
+          "auto_suggestions": true,
+          "performance_analysis": true
+        },
+        "trae:security-audit": {
+          "description": "Comprehensive security audit with AI assistance",
+          "vulnerability_scanning": true,
+          "security_recommendations": true
+        }
+      }
+    }
+  }
+}

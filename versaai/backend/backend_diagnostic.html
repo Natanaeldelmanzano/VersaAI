@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico Backend VersaAI</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .test-button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .test-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        .result {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success {
+            border-left: 4px solid #2ecc71;
+        }
+        .error {
+            border-left: 4px solid #e74c3c;
+        }
+        .warning {
+            border-left: 4px solid #f39c12;
+        }
+        .url-link {
+            color: #74b9ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .url-link:hover {
+            text-decoration: underline;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-online {
+            background-color: #2ecc71;
+            box-shadow: 0 0 10px #2ecc71;
+        }
+        .status-offline {
+            background-color: #e74c3c;
+            box-shadow: 0 0 10px #e74c3c;
+        }
+        .status-unknown {
+            background-color: #f39c12;
+            box-shadow: 0 0 10px #f39c12;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Diagnóstico Backend VersaAI</h1>
+        
+        <div class="test-section">
+            <h2>📊 Estado del Servidor Backend</h2>
+            <p>Verificando conectividad con el servidor FastAPI...</p>
+            <button class="test-button" onclick="testServerStatus()">🔍 Verificar Estado del Servidor</button>
+            <div id="server-status" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>📚 URLs de Documentación</h2>
+            <p>Probando acceso a las páginas de documentación de la API:</p>
+            
+            <div style="margin: 15px 0;">
+                <span class="status-indicator status-unknown" id="swagger-status"></span>
+                <a href="http://localhost:8000/api/docs" target="_blank" class="url-link">Swagger UI - /api/docs</a>
+                <button class="test-button" onclick="testSwaggerUI()">🧪 Probar Swagger</button>
+            </div>
+            
+            <div style="margin: 15px 0;">
+                <span class="status-indicator status-unknown" id="redoc-status"></span>
+                <a href="http://localhost:8000/api/redoc" target="_blank" class="url-link">ReDoc - /api/redoc</a>
+                <button class="test-button" onclick="testReDoc()">🧪 Probar ReDoc</button>
+            </div>
+            
+            <div style="margin: 15px 0;">
+                <span class="status-indicator status-unknown" id="openapi-status"></span>
+                <a href="http://localhost:8000/openapi.json" target="_blank" class="url-link">OpenAPI JSON - /openapi.json</a>
+                <button class="test-button" onclick="testOpenAPIJSON()">🧪 Probar OpenAPI JSON</button>
+            </div>
+            
+            <div id="docs-results" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>🏥 Endpoints de Salud</h2>
+            <p>Verificando endpoints básicos de la API:</p>
+            <button class="test-button" onclick="testHealthEndpoints()">🔍 Probar Endpoints de Salud</button>
+            <div id="health-results" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>🌐 Prueba de CORS</h2>
+            <p>Verificando configuración de CORS:</p>
+            <button class="test-button" onclick="testCORS()">🔍 Probar CORS</button>
+            <div id="cors-results" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>🔧 Diagnóstico Completo</h2>
+            <p>Ejecutar todas las pruebas de diagnóstico:</p>
+            <button class="test-button" onclick="runFullDiagnostic()">🚀 Ejecutar Diagnóstico Completo</button>
+            <div id="full-diagnostic" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        const BASE_URL = 'http://localhost:8000';
+        
+        function updateStatus(elementId, status) {
+            const element = document.getElementById(elementId);
+            element.className = `status-indicator status-${status}`;
+        }
+        
+        function logResult(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'success' ? 'success' : 'warning';
+            element.innerHTML += `<div class="${className}">[${timestamp}] ${message}</div>`;
+            element.scrollTop = element.scrollHeight;
+        }
+        
+        async function testServerStatus() {
+            const resultDiv = document.getElementById('server-status');
+            resultDiv.innerHTML = '';
+            
+            try {
+                logResult('server-status', '🔍 Verificando estado del servidor...', 'info');
+                
+                const response = await fetch(`${BASE_URL}/health`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    logResult('server-status', `✅ Servidor activo: ${JSON.stringify(data, null, 2)}`, 'success');
+                } else {
+                    logResult('server-status', `❌ Error del servidor: ${response.status} ${response.statusText}`, 'error');
+                }
+            } catch (error) {
+                logResult('server-status', `❌ Error de conexión: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testSwaggerUI() {
+            try {
+                logResult('docs-results', '🔍 Probando Swagger UI...', 'info');
+                
+                const response = await fetch(`${BASE_URL}/api/docs`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'text/html'
+                    }
+                });
+                
+                if (response.ok) {
+                    const html = await response.text();
+                    if (html.includes('swagger') || html.includes('Swagger')) {
+                        logResult('docs-results', '✅ Swagger UI responde correctamente', 'success');
+                        updateStatus('swagger-status', 'online');
+                    } else {
+                        logResult('docs-results', '⚠️ Swagger UI responde pero el contenido parece incorrecto', 'warning');
+                        updateStatus('swagger-status', 'unknown');
+                    }
+                } else {
+                    logResult('docs-results', `❌ Error en Swagger UI: ${response.status} ${response.statusText}`, 'error');
+                    updateStatus('swagger-status', 'offline');
+                }
+            } catch (error) {
+                logResult('docs-results', `❌ Error al probar Swagger UI: ${error.message}`, 'error');
+                updateStatus('swagger-status', 'offline');
+            }
+        }
+        
+        async function testReDoc() {
+            try {
+                logResult('docs-results', '🔍 Probando ReDoc...', 'info');
+                
+                const response = await fetch(`${BASE_URL}/api/redoc`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'text/html'
+                    }
+                });
+                
+                if (response.ok) {
+                    const html = await response.text();
+                    if (html.includes('redoc') || html.includes('ReDoc')) {
+                        logResult('docs-results', '✅ ReDoc responde correctamente', 'success');
+                        updateStatus('redoc-status', 'online');
+                    } else {
+                        logResult('docs-results', '⚠️ ReDoc responde pero el contenido parece incorrecto', 'warning');
+                        updateStatus('redoc-status', 'unknown');
+                    }
+                } else {
+                    logResult('docs-results', `❌ Error en ReDoc: ${response.status} ${response.statusText}`, 'error');
+                    updateStatus('redoc-status', 'offline');
+                }
+            } catch (error) {
+                logResult('docs-results', `❌ Error al probar ReDoc: ${error.message}`, 'error');
+                updateStatus('redoc-status', 'offline');
+            }
+        }
+        
+        async function testOpenAPIJSON() {
+            try {
+                logResult('docs-results', '🔍 Probando OpenAPI JSON...', 'info');
+                
+                const response = await fetch(`${BASE_URL}/openapi.json`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.openapi && data.info) {
+                        logResult('docs-results', `✅ OpenAPI JSON válido: ${data.info.title} v${data.info.version}`, 'success');
+                        updateStatus('openapi-status', 'online');
+                    } else {
+                        logResult('docs-results', '⚠️ OpenAPI JSON responde pero el formato parece incorrecto', 'warning');
+                        updateStatus('openapi-status', 'unknown');
+                    }
+                } else {
+                    logResult('docs-results', `❌ Error en OpenAPI JSON: ${response.status} ${response.statusText}`, 'error');
+                    updateStatus('openapi-status', 'offline');
+                }
+            } catch (error) {
+                logResult('docs-results', `❌ Error al probar OpenAPI JSON: ${error.message}`, 'error');
+                updateStatus('openapi-status', 'offline');
+            }
+        }
+        
+        async function testHealthEndpoints() {
+            const resultDiv = document.getElementById('health-results');
+            resultDiv.innerHTML = '';
+            
+            const endpoints = [
+                '/health',
+                '/api/health/',
+                '/'
+            ];
+            
+            for (const endpoint of endpoints) {
+                try {
+                    logResult('health-results', `🔍 Probando ${endpoint}...`, 'info');
+                    
+                    const response = await fetch(`${BASE_URL}${endpoint}`);
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        logResult('health-results', `✅ ${endpoint}: ${JSON.stringify(data)}`, 'success');
+                    } else {
+                        logResult('health-results', `❌ ${endpoint}: ${response.status} ${response.statusText}`, 'error');
+                    }
+                } catch (error) {
+                    logResult('health-results', `❌ ${endpoint}: ${error.message}`, 'error');
+                }
+            }
+        }
+        
+        async function testCORS() {
+            const resultDiv = document.getElementById('cors-results');
+            resultDiv.innerHTML = '';
+            
+            try {
+                logResult('cors-results', '🔍 Probando configuración CORS...', 'info');
+                
+                const response = await fetch(`${BASE_URL}/health`, {
+                    method: 'OPTIONS'
+                });
+                
+                const corsHeaders = {
+                    'Access-Control-Allow-Origin': response.headers.get('Access-Control-Allow-Origin'),
+                    'Access-Control-Allow-Methods': response.headers.get('Access-Control-Allow-Methods'),
+                    'Access-Control-Allow-Headers': response.headers.get('Access-Control-Allow-Headers')
+                };
+                
+                logResult('cors-results', `✅ Headers CORS: ${JSON.stringify(corsHeaders, null, 2)}`, 'success');
+            } catch (error) {
+                logResult('cors-results', `❌ Error al probar CORS: ${error.message}`, 'error');
+            }
+        }
+        
+        async function runFullDiagnostic() {
+            const resultDiv = document.getElementById('full-diagnostic');
+            resultDiv.innerHTML = '';
+            
+            logResult('full-diagnostic', '🚀 Iniciando diagnóstico completo...', 'info');
+            
+            await testServerStatus();
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            await testSwaggerUI();
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            await testReDoc();
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            await testOpenAPIJSON();
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            await testHealthEndpoints();
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            await testCORS();
+            
+            logResult('full-diagnostic', '✅ Diagnóstico completo finalizado', 'success');
+        }
+        
+        // Auto-ejecutar verificación inicial
+        window.onload = function() {
+            setTimeout(testServerStatus, 1000);
+        };
+    </script>
+</body>
+</html>

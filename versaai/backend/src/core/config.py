@@ -1,0 +1,97 @@
+from pydantic_settings import BaseSettings
+from typing import List, Optional
+import os
+from pathlib import Path
+
+class Settings(BaseSettings):
+    # App settings
+    APP_NAME: str = "VersaAI Platform"
+    APP_VERSION: str = "1.0.0"
+    DEBUG: bool = True
+    
+    # Security
+    SECRET_KEY: str = "your-secret-key-change-in-production"
+    ALGORITHM: str = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 7
+    PASSWORD_HASH_ROUNDS: int = 12
+    
+    # Database
+    DATABASE_URL: str = "sqlite:///./versaai.db"  # Default to SQLite for development
+    DATABASE_POOL_SIZE: int = 10
+    DATABASE_POOL_TIMEOUT: int = 30
+    DATABASE_MAX_OVERFLOW: int = 20
+    
+    # Redis (optional)
+    REDIS_URL: Optional[str] = None
+    REDIS_POOL_SIZE: int = 10
+    REDIS_POOL_TIMEOUT: int = 30
+    REDIS_CACHE_TTL: int = 3600
+    REDIS_MAX_CONNECTIONS: int = 10
+    
+    # Groq AI
+    GROQ_API_KEY: str = ""
+    GROQ_BASE_URL: str = "https://api.groq.com/openai/v1"
+    GROQ_MODEL: str = "mixtral-8x7b-32768"
+    GROQ_MAX_TOKENS: int = 2000
+    GROQ_TEMPERATURE: float = 0.7
+    GROQ_TIMEOUT: int = 30
+    
+    # OpenAI (optional)
+    OPENAI_API_KEY: str = ""
+    OPENAI_BASE_URL: str = "https://api.openai.com/v1"
+    OPENAI_MODEL: str = "gpt-3.5-turbo"
+    OPENAI_MAX_TOKENS: int = 2000
+    OPENAI_TEMPERATURE: float = 0.7
+    
+    # Embedding Model
+    EMBEDDING_MODEL: str = "all-MiniLM-L6-v2"
+    EMBEDDING_MODEL_NAME: str = "all-MiniLM-L6-v2"
+    EMBEDDING_MODEL_DIMENSION: int = 384
+    EMBEDDING_BATCH_SIZE: int = 32
+    
+    # CORS - CONFIGURACIÓN TEMPORAL MÁS PERMISIVA
+    ALLOWED_HOSTS: List[str] = ["*"]  # Permitir todos los hosts temporalmente
+    ALLOWED_ORIGINS: List[str] = ["*"]  # Permitir todos los orígenes temporalmente
+    CORS_ALLOW_CREDENTIALS: bool = True
+    CORS_ALLOW_METHODS: List[str] = ["*"]
+    CORS_ALLOW_HEADERS: List[str] = ["*"]
+    
+    # File uploads - Estandarizado en MB
+    MAX_FILE_SIZE_MB: int = 10
+    MAX_FILES_PER_UPLOAD: int = 10
+    ALLOWED_FILE_TYPES: List[str] = ["pdf", "txt", "docx", "md", "html", "csv"]
+    UPLOAD_DIR: str = "uploads"
+    DOCUMENTS_UPLOAD_DIR: str = "uploads/documents"
+    AVATARS_UPLOAD_DIR: str = "uploads/avatars"
+    
+    # Data directory
+    DATA_DIR: str = "./data"
+    
+    # AI Settings
+    MAX_CONTEXT_LENGTH: int = 4000
+    DEFAULT_TEMPERATURE: float = 0.7
+    MAX_TOKENS: int = 1000
+    
+    # Logging
+    LOG_LEVEL: str = "INFO"
+    LOG_FORMAT: str = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    
+    # Rate limiting - Estandarizado
+    RATE_LIMIT_ENABLED: bool = True
+    RATE_LIMIT_REQUESTS_PER_MINUTE: int = 60
+    RATE_LIMIT_BURST: int = 10
+    WIDGET_RATE_LIMIT_REQUESTS_PER_MINUTE: int = 180
+    WIDGET_RATE_LIMIT_BURST: int = 30
+    
+    class Config:
+        env_file = ".env"
+        case_sensitive = True
+        extra = "ignore"  # Ignore extra environment variables
+
+# Create settings instance
+settings = Settings()
+
+# Ensure upload directory exists
+upload_path = Path(settings.UPLOAD_DIR)
+upload_path.mkdir(exist_ok=True)

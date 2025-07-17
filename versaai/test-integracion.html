@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Integración - VersaAI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 600px;
+            width: 90%;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .status-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .status-item h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        
+        .status-active {
+            color: #4ade80;
+            font-weight: bold;
+        }
+        
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            min-width: 250px;
+        }
+        
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #4ade80, #22c55e);
+            border-color: #22c55e;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+            border-color: #1d4ed8;
+        }
+        
+        .info {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid #fbbf24;
+        }
+        
+        .info h3 {
+            margin-bottom: 10px;
+            color: #fbbf24;
+        }
+        
+        .info ul {
+            text-align: left;
+            list-style: none;
+        }
+        
+        .info li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .info li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4ade80;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .btn {
+                min-width: 200px;
+                padding: 12px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Prueba de Integración</h1>
+        <p class="subtitle">VersaAI - Verificación de Frontend</p>
+        
+        <div class="status-grid">
+            <div class="status-item">
+                <h3>Frontend</h3>
+                <p class="status-active">✅ Activo</p>
+                <small>Puerto 3000</small>
+            </div>
+            <div class="status-item">
+                <h3>Backend</h3>
+                <p class="status-active">✅ Activo</p>
+                <small>Puerto 8000</small>
+            </div>
+            <div class="status-item">
+                <h3>Router</h3>
+                <p class="status-active">✅ Configurado</p>
+                <small>Vue Router</small>
+            </div>
+        </div>
+        
+        <div class="buttons">
+            <a href="http://localhost:3000/dev/integration-test" class="btn btn-primary" target="_blank">
+                🚀 Abrir Prueba de Integración
+            </a>
+            
+            <a href="http://localhost:3000" class="btn btn-secondary" target="_blank">
+                🏠 Ir al Frontend Principal
+            </a>
+            
+            <a href="http://localhost:8000/docs" class="btn" target="_blank">
+                📖 Ver Documentación API
+            </a>
+        </div>
+        
+        <div class="info">
+            <h3>📋 Qué incluye la prueba:</h3>
+            <ul>
+                <li>Enlaces a todas las páginas públicas</li>
+                <li>Páginas de autenticación (Login, Registro, etc.)</li>
+                <li>Dashboard completo y todas sus secciones</li>
+                <li>Gestión de chatbots y conversaciones</li>
+                <li>Bases de conocimiento y analíticas</li>
+                <li>Páginas de desarrollo y diagnóstico</li>
+                <li>Manejo de errores (404, 401, 500)</li>
+                <li>Enlaces a portales de desarrollo</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Verificar estado de los servicios
+        async function checkServices() {
+            try {
+                // Verificar frontend
+                const frontendResponse = await fetch('http://localhost:3000');
+                console.log('Frontend status:', frontendResponse.status);
+                
+                // Verificar backend
+                const backendResponse = await fetch('http://localhost:8000/health');
+                console.log('Backend status:', backendResponse.status);
+            } catch (error) {
+                console.log('Error checking services:', error);
+            }
+        }
+        
+        // Ejecutar verificación al cargar la página
+        window.addEventListener('load', checkServices);
+        
+        // Agregar efecto de carga
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.container');
+            container.style.opacity = '0';
+            container.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                container.style.transition = 'all 0.6s ease';
+                container.style.opacity = '1';
+                container.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

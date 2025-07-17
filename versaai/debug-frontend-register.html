@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Frontend Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Debug Frontend Register</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Direct API Call</h2>
+        <button onclick="testDirectAPI()">Test Direct API</button>
+        <div id="directResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 2: Frontend API Service</h2>
+        <button onclick="testFrontendAPI()">Test Frontend API</button>
+        <div id="frontendResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 3: Check Network</h2>
+        <button onclick="checkNetwork()">Check Network</button>
+        <div id="networkResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Console Logs</h2>
+        <div id="consoleLogs"></div>
+    </div>
+
+    <script>
+        // Capture console logs
+        const originalLog = console.log;
+        const originalError = console.error;
+        const logContainer = document.getElementById('consoleLogs');
+        
+        function addLog(type, message) {
+            const logDiv = document.createElement('div');
+            logDiv.innerHTML = `<strong>[${type}]</strong> ${new Date().toLocaleTimeString()}: ${message}`;
+            logContainer.appendChild(logDiv);
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addLog('LOG', args.join(' '));
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addLog('ERROR', args.join(' '));
+        };
+        
+        // Test 1: Direct API call
+        async function testDirectAPI() {
+            const resultDiv = document.getElementById('directResult');
+            resultDiv.innerHTML = 'Testing...';
+            
+            try {
+                const userData = {
+                    email: `test_${Date.now()}@example.com`,
+                    password: 'testpass123',
+                    full_name: 'Test User Frontend'
+                };
+                
+                console.log('Sending direct API request:', userData);
+                
+                const response = await fetch('http://localhost:8000/api/v1/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                console.log('Response status:', response.status);
+                console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+                
+                const data = await response.json();
+                console.log('Response data:', data);
+                
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <strong>✅ Success!</strong><br>
+                        Status: ${response.status}<br>
+                        User: ${data.user?.email}<br>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `
+                        <strong>❌ Error!</strong><br>
+                        Status: ${response.status}<br>
+                        Message: ${data.detail || 'Unknown error'}<br>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                console.error('Direct API test error:', error);
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <strong>❌ Network Error!</strong><br>
+                    ${error.message}<br>
+                    <pre>${error.stack}</pre>
+                `;
+            }
+        }
+        
+        // Test 2: Frontend API service (simulated)
+        async function testFrontendAPI() {
+            const resultDiv = document.getElementById('frontendResult');
+            resultDiv.innerHTML = 'Testing frontend API service...';
+            
+            try {
+                // Simulate the frontend API call structure
+                const userData = {
+                    email: `frontend_${Date.now()}@example.com`,
+                    password: 'testpass123',
+                    full_name: 'Frontend Test User'
+                };
+                
+                console.log('Testing frontend API structure:', userData);
+                
+                // Check if we can access the frontend at localhost:3000
+                const frontendCheck = await fetch('http://localhost:3000/');
+                console.log('Frontend accessible:', frontendCheck.ok);
+                
+                // Try to make the same call that the frontend would make
+                const apiResponse = await fetch('http://localhost:8000/api/v1/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                const responseData = await apiResponse.json();
+                
+                if (apiResponse.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <strong>✅ Frontend API Test Success!</strong><br>
+                        Status: ${apiResponse.status}<br>
+                        <pre>${JSON.stringify(responseData, null, 2)}</pre>
+                    `;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `
+                        <strong>❌ Frontend API Test Failed!</strong><br>
+                        Status: ${apiResponse.status}<br>
+                        <pre>${JSON.stringify(responseData, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                console.error('Frontend API test error:', error);
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `
+                    <strong>❌ Frontend API Error!</strong><br>
+                    ${error.message}
+                `;
+            }
+        }
+        
+        // Test 3: Network connectivity
+        async function checkNetwork() {
+            const resultDiv = document.getElementById('networkResult');
+            resultDiv.innerHTML = 'Checking network...';
+            
+            const tests = [
+                { name: 'Backend Health', url: 'http://localhost:8000/health' },
+                { name: 'Backend API', url: 'http://localhost:8000/api/v1' },
+                { name: 'Frontend', url: 'http://localhost:3000' }
+            ];
+            
+            let results = [];
+            
+            for (const test of tests) {
+                try {
+                    console.log(`Testing ${test.name}...`);
+                    const response = await fetch(test.url);
+                    results.push(`✅ ${test.name}: ${response.status} ${response.statusText}`);
+                } catch (error) {
+                    console.error(`${test.name} failed:`, error);
+                    results.push(`❌ ${test.name}: ${error.message}`);
+                }
+            }
+            
+            resultDiv.className = 'result';
+            resultDiv.innerHTML = results.join('<br>');
+        }
+        
+        // Auto-run network check on load
+        window.addEventListener('load', () => {
+            console.log('Debug page loaded');
+            checkNetwork();
+        });
+    </script>
+</body>
+</html>

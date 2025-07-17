@@ -1,0 +1,39 @@
+=== REPORTE DE ANÁLISIS DE DISCO - 07/12/2025 02:57:33 ===
+Análisis de archivos modificados en los últimos 15 días
+Fecha de corte: 27/06/2025 02:57
+
+=== 1. ARCHIVOS GRANDES (>100MB) EN TODOS LOS DISCOS ===
+Analizando disco C:...
+  Encontrados 41 archivos grandes
+Total: 41 archivos - 11.64 GB
+
+TOP 10 ARCHIVOS MÁS GRANDES:
+[C:] android-studio-2024.3.2.15-windows.exe - 1.23 GB - 04/07/2025
+[C:] index.sqlite - 1.01 GB - 12/07/2025
+[C:] OllamaSetup.exe - 0.7 GB - 28/06/2025
+[C:] docker-desktop.iso - 0.63 GB - 03/07/2025
+[C:] docker-wsl-cli.iso - 0.6 GB - 03/07/2025
+[C:] 69fc06c19a44a01492bdf26a40fad7e32ecf5c34a2ef14a319f750c4e2709206 - 0.4 GB - 27/06/2025
+[C:] df2adb83032db6cba96cb244d44d9a3c3aa42491caa29b2a6e688ee61b25f293 - 0.4 GB - 10/07/2025
+[C:] CHROME.7Z - 0.4 GB - 27/06/2025
+[C:] b55bca56ae3832bb3364c09ad92b073129ca6ef6ff4436c3c7a7382f62557188 - 0.39 GB - 11/07/2025
+[C:] CHROME.7Z - 0.39 GB - 10/07/2025
+
+=== 2. ANÁLISIS DE CARPETAS CRÍTICAS ===
+C:\Users\Neizan\Downloads : 13.08 GB total, 2199 archivos recientes
+C:\Users\Neizan\AppData\Local\Temp : 1.04 GB total, 1344 archivos recientes
+C:\Windows\Temp : 0 GB total, 0 archivos recientes
+C:\Users\Neizan\.docker : 0.3 GB total, 67 archivos recientes
+C:\Users\Neizan\.cache : 0.1 GB total, 15 archivos recientes
+C:\ProgramData : 3.65 GB total, 428 archivos recientes
+
+=== 3. ANÁLISIS DE DOCKER ===
+Docker está instalado:
+  TYPE            TOTAL     SIZE      RECLAIMABLE
+  Images          3         1.398GB   115.6kB (0%)
+  Containers      3         32.77kB   0B (0%)
+  Local Volumes   2         48.54MB   0B (0%)
+  Build Cache     0         0B        0B
+
+=== REPORTE COMPLETADO ===
+Archivo guardado en: C:\Users\Neizan\Desktop\version max claude\versaai\disk_analysis_report.txt

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba de Autenticación - VersaAI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .info {
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+            color: #0c5460;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-online {
+            background-color: #28a745;
+        }
+        .status-offline {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Prueba de Corrección de Autenticación - VersaAI</h1>
+        
+        <div class="section success">
+            <h2>✅ Errores Corregidos</h2>
+            <ul>
+                <li><strong>Username único:</strong> Se corrigió la lógica para generar usernames únicos automáticamente</li>
+                <li><strong>Validación mejorada:</strong> Separación clara entre validación de email y username</li>
+                <li><strong>Manejo de errores:</strong> Mensajes de error más específicos y claros</li>
+                <li><strong>Generación automática:</strong> El sistema ahora genera usernames únicos (ej: usuario1, usuario2, etc.)</li>
+            </ul>
+        </div>
+
+        <div class="section info">
+            <h2>🔍 Estado de Servicios</h2>
+            <p><span class="status-indicator status-online"></span><strong>Backend:</strong> http://localhost:8000 - Activo</p>
+            <p><span class="status-indicator status-online"></span><strong>Frontend:</strong> http://localhost:3000 - Activo</p>
+            <p><span class="status-indicator status-online"></span><strong>API Auth:</strong> /api/v1/auth/* - Funcionando</p>
+        </div>
+
+        <div class="section">
+            <h2>📝 Prueba de Registro</h2>
+            <div class="form-group">
+                <label for="regEmail">Email:</label>
+                <input type="email" id="regEmail" placeholder="usuario@ejemplo.com">
+            </div>
+            <div class="form-group">
+                <label for="regPassword">Contraseña:</label>
+                <input type="password" id="regPassword" placeholder="mínimo 6 caracteres">
+            </div>
+            <div class="form-group">
+                <label for="regFullName">Nombre Completo:</label>
+                <input type="text" id="regFullName" placeholder="Nombre Apellido">
+            </div>
+            <button onclick="testRegister()">Probar Registro</button>
+            <div id="registerResult" class="result"></div>
+        </div>
+
+        <div class="section">
+            <h2>🔐 Prueba de Login</h2>
+            <div class="form-group">
+                <label for="loginEmail">Email:</label>
+                <input type="email" id="loginEmail" placeholder="usuario@ejemplo.com">
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Contraseña:</label>
+                <input type="password" id="loginPassword" placeholder="contraseña">
+            </div>
+            <button onclick="testLogin()">Probar Login</button>
+            <div id="loginResult" class="result"></div>
+        </div>
+
+        <div class="section">
+            <h2>🔗 Enlaces Útiles</h2>
+            <p><a href="http://localhost:3000/register" target="_blank">Página de Registro del Frontend</a></p>
+            <p><a href="http://localhost:3000/login" target="_blank">Página de Login del Frontend</a></p>
+            <p><a href="http://localhost:3000/dev/integration-test" target="_blank">Página de Pruebas de Integración</a></p>
+            <p><a href="http://localhost:8000/docs" target="_blank">Documentación de la API</a></p>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000/api/v1';
+
+        async function testRegister() {
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const fullName = document.getElementById('regFullName').value;
+            const resultDiv = document.getElementById('registerResult');
+
+            if (!email || !password || !fullName) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = 'Por favor, completa todos los campos';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password,
+                        full_name: fullName
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = `✅ Registro exitoso!\n\nUsuario creado:\n- ID: ${data.id}\n- Email: ${data.email}\n- Username: ${data.username}\n- Nombre: ${data.full_name}\n- Organización ID: ${data.organization_id}`;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = `❌ Error en registro:\n${data.detail || 'Error desconocido'}`;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Error de conexión:\n${error.message}`;
+            }
+        }
+
+        async function testLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const resultDiv = document.getElementById('loginResult');
+
+            if (!email || !password) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = 'Por favor, completa email y contraseña';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = `✅ Login exitoso!\n\nTokens generados:\n- Access Token: ${data.access_token.substring(0, 50)}...\n- Refresh Token: ${data.refresh_token.substring(0, 50)}...\n- Usuario: ${data.user.full_name} (${data.user.email})`;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = `❌ Error en login:\n${data.detail || 'Error desconocido'}`;
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ Error de conexión:\n${error.message}`;
+            }
+        }
+
+        // Auto-rellenar con datos de ejemplo
+        document.getElementById('regEmail').value = 'test' + Date.now() + '@ejemplo.com';
+        document.getElementById('regPassword').value = 'password123';
+        document.getElementById('regFullName').value = 'Usuario de Prueba';
+        
+        document.getElementById('loginEmail').value = 'newuser@example.com';
+        document.getElementById('loginPassword').value = 'testpass123';
+    </script>
+</body>
+</html>

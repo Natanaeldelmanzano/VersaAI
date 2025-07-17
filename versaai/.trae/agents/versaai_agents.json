@@ -1,0 +1,277 @@
+{
+  "versaai_agents": {
+    "description": "Configuración de agentes especializados para el desarrollo de VersaAI",
+    "version": "1.0.0",
+    "last_updated": "2024-12-19",
+    
+    "backend_specialist": {
+      "name": "VersaAI Backend Specialist",
+      "role": "backend_developer",
+      "expertise": [
+        "FastAPI",
+        "SQLAlchemy",
+        "PostgreSQL",
+        "Redis",
+        "Groq AI Integration",
+        "Authentication & Authorization",
+        "File Processing",
+        "Vector Embeddings",
+        "API Design",
+        "Database Optimization"
+      ],
+      "capabilities": {
+        "code_generation": {
+          "endpoints": "Genera endpoints FastAPI completos con validación, manejo de errores y documentación",
+          "models": "Crea modelos SQLAlchemy con relaciones, validaciones y métodos auxiliares",
+          "services": "Desarrolla servicios de negocio con lógica compleja y manejo de transacciones",
+          "schemas": "Define esquemas Pydantic para validación de entrada y salida",
+          "middleware": "Implementa middleware personalizado para autenticación, logging y métricas"
+        },
+        "optimization": {
+          "database_queries": "Optimiza consultas SQL y relaciones para mejor rendimiento",
+          "caching": "Implementa estrategias de caché con Redis para datos frecuentes",
+          "async_operations": "Convierte operaciones síncronas a asíncronas para mejor escalabilidad",
+          "error_handling": "Mejora el manejo de errores con logging detallado y respuestas consistentes"
+        },
+        "integration": {
+          "groq_ai": "Integra servicios de Groq AI para procesamiento de lenguaje natural",
+          "file_processing": "Implementa procesamiento de archivos PDF, DOCX, TXT con extracción de contenido",
+          "vector_search": "Configura búsqueda vectorial para documentos y conversaciones",
+          "real_time": "Desarrolla funcionalidades en tiempo real con WebSockets"
+        }
+      },
+      "context_awareness": {
+        "project_structure": "Comprende la arquitectura modular de VersaAI (core, models, services, api)",
+        "database_schema": "Conoce las relaciones entre User, Organization, Conversation, Message, File",
+        "api_patterns": "Sigue patrones consistentes para endpoints, validación y respuestas",
+        "security_requirements": "Aplica mejores prácticas de seguridad para autenticación y autorización"
+      },
+      "auto_suggestions": {
+        "always_accept": [
+          "Corrección de imports faltantes",
+          "Adición de type hints",
+          "Mejoras en logging",
+          "Optimización de consultas simples",
+          "Corrección de errores de sintaxis"
+        ],
+        "review_required": [
+          "Cambios en esquemas de base de datos",
+          "Modificaciones en autenticación",
+          "Nuevos endpoints públicos",
+          "Cambios en configuración de seguridad"
+        ]
+      }
+    },
+    
+    "frontend_specialist": {
+      "name": "VersaAI Frontend Specialist",
+      "role": "frontend_developer",
+      "expertise": [
+        "Vue.js 3",
+        "Composition API",
+        "Pinia State Management",
+        "Vue Router",
+        "Tailwind CSS",
+        "TypeScript",
+        "Vite",
+        "Component Design",
+        "Real-time UI",
+        "File Upload/Management"
+      ],
+      "capabilities": {
+        "component_development": {
+          "chat_interface": "Desarrolla componentes de chat interactivos con streaming de respuestas",
+          "file_management": "Crea interfaces para subida, visualización y gestión de archivos",
+          "authentication": "Implementa formularios de login/registro con validación en tiempo real",
+          "dashboard": "Construye dashboards responsivos con métricas y analytics",
+          "responsive_design": "Asegura compatibilidad móvil y desktop con Tailwind CSS"
+        },
+        "state_management": {
+          "user_store": "Gestiona estado de usuario, autenticación y preferencias",
+          "chat_store": "Maneja conversaciones, mensajes y estado de chat en tiempo real",
+          "file_store": "Administra archivos subidos, procesamiento y metadata",
+          "ui_store": "Controla estado de UI, modales, notificaciones y tema"
+        },
+        "integration": {
+          "api_client": "Integra con backend FastAPI usando composables reutilizables",
+          "websockets": "Implementa comunicación en tiempo real para chat y notificaciones",
+          "file_upload": "Desarrolla subida de archivos con progreso y validación",
+          "error_handling": "Maneja errores de API con notificaciones user-friendly"
+        }
+      },
+      "context_awareness": {
+        "design_system": "Sigue el sistema de diseño consistente de VersaAI",
+        "user_experience": "Prioriza UX intuitiva para interacciones con IA",
+        "performance": "Optimiza rendimiento con lazy loading y code splitting",
+        "accessibility": "Implementa estándares de accesibilidad WCAG"
+      },
+      "auto_suggestions": {
+        "always_accept": [
+          "Corrección de imports de Vue",
+          "Adición de props types",
+          "Mejoras en responsive design",
+          "Optimización de componentes",
+          "Corrección de errores TypeScript"
+        ],
+        "review_required": [
+          "Cambios en rutas principales",
+          "Modificaciones en store global",
+          "Nuevos componentes de UI complejos",
+          "Cambios en configuración de build"
+        ]
+      }
+    },
+    
+    "ai_integration_specialist": {
+      "name": "VersaAI AI Integration Specialist",
+      "role": "ai_developer",
+      "expertise": [
+        "Groq AI API",
+        "LLM Integration",
+        "Prompt Engineering",
+        "Vector Embeddings",
+        "Document Processing",
+        "Conversation Management",
+        "Context Awareness",
+        "Model Selection",
+        "Token Optimization",
+        "AI Safety"
+      ],
+      "capabilities": {
+        "model_integration": {
+          "groq_models": "Integra modelos Llama, Mixtral y Gemma para diferentes casos de uso",
+          "model_selection": "Selecciona el modelo óptimo basado en tipo de consulta y contexto",
+          "prompt_optimization": "Optimiza prompts para mejor calidad y eficiencia de respuestas",
+          "context_management": "Gestiona contexto de conversación y memoria a largo plazo"
+        },
+        "document_processing": {
+          "text_extraction": "Extrae y procesa texto de PDF, DOCX, TXT con alta precisión",
+          "chunking_strategy": "Implementa estrategias de chunking para documentos largos",
+          "embedding_generation": "Genera embeddings para búsqueda semántica de documentos",
+          "rag_implementation": "Desarrolla sistemas RAG para consultas sobre documentos"
+        },
+        "conversation_ai": {
+          "streaming_responses": "Implementa respuestas en streaming para mejor UX",
+          "conversation_memory": "Mantiene contexto y memoria entre mensajes",
+          "intent_recognition": "Reconoce intenciones de usuario para respuestas más precisas",
+          "safety_filters": "Implementa filtros de seguridad y moderación de contenido"
+        }
+      },
+      "context_awareness": {
+        "user_preferences": "Adapta respuestas según preferencias y historial del usuario",
+        "conversation_context": "Mantiene coherencia en conversaciones largas",
+        "document_context": "Utiliza documentos subidos como contexto para respuestas",
+        "business_logic": "Comprende la lógica de negocio de VersaAI para respuestas relevantes"
+      },
+      "auto_suggestions": {
+        "always_accept": [
+          "Optimización de prompts",
+          "Mejoras en manejo de tokens",
+          "Corrección de parámetros de modelo",
+          "Optimización de embeddings",
+          "Mejoras en procesamiento de texto"
+        ],
+        "review_required": [
+          "Cambios en modelos de IA",
+          "Modificaciones en prompts del sistema",
+          "Nuevas integraciones de IA",
+          "Cambios en filtros de seguridad"
+        ]
+      }
+    },
+    
+    "devops_specialist": {
+      "name": "VersaAI DevOps Specialist",
+      "role": "devops_engineer",
+      "expertise": [
+        "Docker",
+        "Docker Compose",
+        "PostgreSQL Administration",
+        "Redis Configuration",
+        "Nginx",
+        "Environment Management",
+        "Monitoring",
+        "Backup Strategies",
+        "Security Hardening",
+        "Performance Optimization"
+      ],
+      "capabilities": {
+        "containerization": {
+          "docker_optimization": "Optimiza Dockerfiles para menor tamaño y mejor seguridad",
+          "compose_orchestration": "Configura Docker Compose para desarrollo y producción",
+          "multi_stage_builds": "Implementa builds multi-etapa para eficiencia",
+          "health_checks": "Configura health checks para todos los servicios"
+        },
+        "database_management": {
+          "postgresql_tuning": "Optimiza configuración de PostgreSQL para VersaAI",
+          "backup_automation": "Implementa backups automatizados con retención",
+          "migration_management": "Gestiona migraciones de base de datos de forma segura",
+          "monitoring_setup": "Configura monitoreo de performance de base de datos"
+        },
+        "infrastructure": {
+          "reverse_proxy": "Configura Nginx como reverse proxy con SSL",
+          "load_balancing": "Implementa balanceeo de carga para alta disponibilidad",
+          "caching_strategy": "Optimiza estrategias de caché con Redis",
+          "security_hardening": "Aplica mejores prácticas de seguridad en infraestructura"
+        }
+      },
+      "context_awareness": {
+        "environment_config": "Comprende configuraciones específicas de desarrollo y producción",
+        "service_dependencies": "Conoce dependencias entre servicios de VersaAI",
+        "resource_requirements": "Entiende requisitos de recursos para cada componente",
+        "scaling_needs": "Anticipa necesidades de escalabilidad del sistema"
+      },
+      "auto_suggestions": {
+        "always_accept": [
+          "Optimización de Dockerfile",
+          "Mejoras en configuración de Redis",
+          "Corrección de variables de entorno",
+          "Optimización de recursos",
+          "Mejoras en health checks"
+        ],
+        "review_required": [
+          "Cambios en configuración de producción",
+          "Modificaciones en base de datos",
+          "Nuevos servicios en Docker Compose",
+          "Cambios en configuración de seguridad"
+        ]
+      }
+    }
+  },
+  
+  "agent_coordination": {
+    "collaboration_rules": {
+      "backend_frontend": "Backend specialist define APIs, frontend specialist implementa consumo",
+      "ai_backend": "AI specialist define requerimientos, backend specialist implementa integración",
+      "devops_all": "DevOps specialist revisa todos los cambios que afecten infraestructura"
+    },
+    "conflict_resolution": {
+      "priority_order": ["security", "functionality", "performance", "user_experience"],
+      "escalation_rules": "En caso de conflicto, priorizar seguridad y funcionalidad core"
+    },
+    "knowledge_sharing": {
+      "cross_training": "Cada especialista debe entender básicos de otras áreas",
+      "documentation": "Todos los cambios deben documentarse para otros especialistas",
+      "code_review": "Revisión cruzada obligatoria para cambios críticos"
+    }
+  },
+  
+  "performance_metrics": {
+    "code_quality": {
+      "test_coverage": ">= 80%",
+      "type_coverage": ">= 90%",
+      "complexity_score": "<= 10",
+      "documentation_coverage": ">= 70%"
+    },
+    "development_speed": {
+      "feature_completion_time": "Track time from specification to deployment",
+      "bug_fix_time": "Track time from report to resolution",
+      "code_review_time": "Target < 24 hours for review completion"
+    },
+    "user_satisfaction": {
+      "api_response_time": "< 200ms for 95% of requests",
+      "ui_load_time": "< 2s for initial load",
+      "error_rate": "< 1% for all operations"
+    }
+  }
+}

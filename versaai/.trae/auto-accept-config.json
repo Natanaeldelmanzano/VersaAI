@@ -1,0 +1,239 @@
+{
+  "auto_accept_configuration": {
+    "version": "1.0.0",
+    "project": "VersaAI",
+    "description": "Configuración optimizada para Auto Accept All en VersaAI",
+    "last_updated": "2024-12-07",
+    
+    "global_settings": {
+      "auto_accept_all": true,
+      "intelligent_acceptance": true,
+      "context_aware_decisions": true,
+      "safety_checks_enabled": true,
+      "backup_before_changes": true,
+      "rollback_capability": true
+    },
+    
+    "acceptance_rules": {
+      "code_generation": {
+        "auto_accept": true,
+        "conditions": [
+          "follows_project_patterns",
+          "passes_syntax_validation",
+          "includes_proper_imports",
+          "follows_naming_conventions",
+          "includes_error_handling"
+        ]
+      },
+      
+      "file_creation": {
+        "auto_accept": true,
+        "conditions": [
+          "follows_project_structure",
+          "uses_correct_file_extensions",
+          "includes_proper_headers",
+          "follows_directory_conventions"
+        ]
+      },
+      
+      "service_layer_changes": {
+        "auto_accept": true,
+        "conditions": [
+          "implements_proper_interfaces",
+          "includes_error_handling",
+          "follows_dependency_injection",
+          "includes_logging",
+          "follows_async_patterns"
+        ]
+      },
+      
+      "api_endpoints": {
+        "auto_accept": true,
+        "conditions": [
+          "includes_proper_documentation",
+          "implements_authentication",
+          "includes_validation",
+          "follows_rest_conventions",
+          "includes_error_responses"
+        ]
+      },
+      
+      "vue_components": {
+        "auto_accept": true,
+        "conditions": [
+          "uses_composition_api",
+          "includes_typescript",
+          "follows_naming_conventions",
+          "includes_proper_props",
+          "uses_tailwind_classes"
+        ]
+      },
+      
+      "database_changes": {
+        "auto_accept": false,
+        "requires_manual_review": true,
+        "reason": "Database changes require careful review for data integrity"
+      },
+      
+      "security_related": {
+        "auto_accept": false,
+        "requires_manual_review": true,
+        "reason": "Security changes require manual verification"
+      }
+    },
+    
+    "project_specific_rules": {
+      "versaai_backend": {
+        "service_patterns": {
+          "auto_accept": true,
+          "required_elements": [
+            "async_methods",
+            "error_handling",
+            "logging",
+            "type_hints",
+            "docstrings"
+          ]
+        },
+        
+        "fastapi_endpoints": {
+          "auto_accept": true,
+          "required_elements": [
+            "router_decorator",
+            "response_model",
+            "status_codes",
+            "error_handling",
+            "authentication_check"
+          ]
+        },
+        
+        "sqlalchemy_models": {
+          "auto_accept": true,
+          "required_elements": [
+            "table_name",
+            "primary_key",
+            "relationships",
+            "timestamps",
+            "proper_types"
+          ]
+        }
+      },
+      
+      "versaai_frontend": {
+        "vue_components": {
+          "auto_accept": true,
+          "required_elements": [
+            "script_setup",
+            "typescript",
+            "props_interface",
+            "emits_definition",
+            "tailwind_styling"
+          ]
+        },
+        
+        "pinia_stores": {
+          "auto_accept": true,
+          "required_elements": [
+            "composition_api",
+            "typescript",
+            "error_handling",
+            "loading_states",
+            "api_integration"
+          ]
+        },
+        
+        "composables": {
+          "auto_accept": true,
+          "required_elements": [
+            "composition_api",
+            "typescript",
+            "return_object",
+            "proper_naming",
+            "documentation"
+          ]
+        }
+      }
+    },
+    
+    "quality_gates": {
+      "code_quality": {
+        "min_test_coverage": 80,
+        "max_complexity": 10,
+        "max_function_length": 50,
+        "require_type_hints": true,
+        "require_docstrings": true
+      },
+      
+      "performance": {
+        "max_response_time": 200,
+        "max_memory_usage": "512MB",
+        "require_async_patterns": true,
+        "optimize_database_queries": true
+      },
+      
+      "security": {
+        "require_authentication": true,
+        "validate_inputs": true,
+        "sanitize_outputs": true,
+        "use_https_only": true,
+        "implement_rate_limiting": true
+      }
+    },
+    
+    "monitoring_and_feedback": {
+      "track_acceptance_rate": true,
+      "log_rejected_changes": true,
+      "provide_improvement_suggestions": true,
+      "generate_quality_reports": true,
+      "alert_on_quality_degradation": true
+    },
+    
+    "integration_settings": {
+      "groq_ai": {
+        "auto_optimize_prompts": true,
+        "cache_responses": true,
+        "monitor_token_usage": true,
+        "implement_fallbacks": true
+      },
+      
+      "database": {
+        "auto_generate_migrations": false,
+        "validate_schema_changes": true,
+        "backup_before_changes": true,
+        "test_migrations": true
+      },
+      
+      "cache_service": {
+        "auto_configure_redis": true,
+        "implement_cache_strategies": true,
+        "monitor_cache_performance": true,
+        "auto_invalidate_stale_data": true
+      }
+    },
+    
+    "development_workflow": {
+      "auto_run_tests": true,
+      "auto_format_code": true,
+      "auto_fix_linting_errors": true,
+      "auto_update_documentation": true,
+      "auto_generate_api_docs": true,
+      "auto_optimize_imports": true
+    },
+    
+    "emergency_controls": {
+      "disable_auto_accept": {
+        "command": "trae config set ai_assistance.auto_accept_all false",
+        "description": "Deshabilita Auto Accept All inmediatamente"
+      },
+      
+      "rollback_last_changes": {
+        "command": "trae rollback --last",
+        "description": "Revierte los últimos cambios automáticos"
+      },
+      
+      "enable_manual_review": {
+        "command": "trae config set acceptance_rules.*.auto_accept false",
+        "description": "Requiere revisión manual para todos los cambios"
+      }
+    }
+  }
+}

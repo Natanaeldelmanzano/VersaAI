@@ -1,0 +1,544 @@
+{
+  "project": {
+    "name": "VersaAI",
+    "type": "fullstack",
+    "description": "Plataforma empresarial de chatbots con IA - FastAPI + Vue.js 3",
+    "version": "1.0.0",
+    "framework": {
+      "backend": "FastAPI",
+      "frontend": "Vue.js 3",
+      "database": "PostgreSQL",
+      "cache": "Redis"
+    }
+  },
+  
+  "development": {
+    "auto_reload": true,
+    "hot_reload": true,
+    "debug_mode": true,
+    "log_level": "DEBUG",
+    "smart_error_detection": true,
+    "auto_fix_suggestions": true,
+    "performance_monitoring": true,
+    "memory_leak_detection": true,
+    "intelligent_error_recovery": true,
+    "context_preservation": true,
+    "watch_files": [
+      "src/**/*.py",
+      "frontend/src/**/*.vue",
+      "frontend/src/**/*.js",
+      "frontend/src/**/*.ts",
+      "*.env",
+      "requirements.txt",
+      "package.json",
+      "alembic/versions/*.py",
+      "src/models/*.py",
+      "src/schemas/*.py",
+      "src/routers/*.py",
+      "frontend/src/stores/*.ts",
+      "frontend/src/composables/*.ts"
+    ],
+    "ignore_patterns": [
+      "__pycache__",
+      "node_modules",
+      ".git",
+      "dist",
+      "build",
+      "*.pyc",
+      ".pytest_cache",
+      "uploads/**/*",
+      "logs/**/*",
+      "*.db",
+      "*.sqlite"
+    ],
+    "auto_suggestions": {
+      "import_optimization": true,
+      "unused_code_detection": true,
+      "security_vulnerability_scan": true,
+      "performance_bottleneck_detection": true,
+      "api_documentation_sync": true
+    }
+  },
+  
+  "ai_assistance": {
+    "enabled": true,
+    "auto_accept_all": true,
+    "auto_complete": true,
+    "code_suggestions": true,
+    "intelligent_suggestions": true,
+    "error_analysis": true,
+    "performance_hints": true,
+    "security_checks": true,
+    "best_practices": true,
+    "documentation_generation": true,
+    "test_generation": true,
+    "refactoring_suggestions": true,
+    "smart_debugging": true,
+    "api_endpoint_generation": true,
+    "database_query_optimization": true,
+    "vue_component_suggestions": true,
+    "pydantic_schema_validation": true,
+    "auto_implementation": true,
+    "intelligent_file_creation": true,
+    "project_state_awareness": true,
+    "real_time_optimization": true,
+    "conversation_memory": true,
+    "adaptive_learning": true,
+    "context_awareness": {
+      "project_structure": true,
+      "dependencies": true,
+      "database_schema": true,
+      "api_endpoints": true,
+      "component_relationships": true,
+      "user_authentication_flow": true,
+      "chatbot_conversation_context": true,
+      "file_upload_patterns": true,
+      "error_handling_patterns": true,
+      "conversation_history_tracking": true,
+      "implementation_state_monitoring": true,
+      "service_layer_awareness": true,
+      "recent_file_changes": true,
+      "backend_services_status": true,
+      "frontend_components_status": true,
+      "database_migrations_status": true,
+      "ai_service_integration_status": true,
+      "cache_service_status": true,
+      "vector_service_status": true,
+      "file_upload_context": true,
+      "user_management_context": true,
+      "api_endpoint_context": true,
+      "database_schema_awareness": true,
+      "groq_ai_integration_context": true,
+      "versaai_business_logic": true,
+      "security_context_awareness": true,
+      "performance_optimization_context": true,
+      "user_experience_context": true
+    },
+    "specialized_assistance": {
+      "fastapi_crud_generation": true,
+      "vue_composables_suggestions": true,
+      "pinia_store_patterns": true,
+      "sqlalchemy_relationship_hints": true,
+      "jwt_auth_implementation": true,
+      "websocket_integration": true,
+      "file_processing_optimization": true,
+      "ai_model_integration": true
+    },
+    "specialized_agents": {
+      "enabled": true,
+      "config_file": ".trae/agents/versaai_agents.json",
+      "auto_agent_selection": true,
+      "cross_agent_collaboration": true
+    },
+    "advanced_context": {
+      "enabled": true,
+      "config_file": ".trae/context/versaai_context.json",
+      "deep_project_understanding": true,
+      "business_logic_awareness": true,
+      "architecture_patterns_awareness": true
+    }
+  },
+  
+  "backend": {
+    "framework": "FastAPI",
+    "python_version": "3.11+",
+    "entry_point": "src/main.py",
+    "dev_server": {
+      "command": "uvicorn src.main:app --reload --host 0.0.0.0 --port 8000",
+      "port": 8000,
+      "host": "0.0.0.0",
+      "auto_reload": true
+    },
+    "testing": {
+      "framework": "pytest",
+      "command": "pytest tests/ -v --cov=src",
+      "coverage_threshold": 80,
+      "auto_test": true
+    },
+    "linting": {
+      "tools": ["flake8", "black", "isort"],
+      "auto_format": true,
+      "format_on_save": true
+    },
+    "database": {
+      "orm": "SQLAlchemy",
+      "migrations": "Alembic",
+      "auto_migrate": false,
+      "seed_data": true
+    },
+    "api_docs": {
+      "swagger_ui": "/api/docs",
+      "redoc": "/api/redoc",
+      "openapi_json": "/api/openapi.json"
+    }
+  },
+  
+  "frontend": {
+    "framework": "Vue.js 3",
+    "build_tool": "Vite",
+    "entry_point": "frontend/src/main.js",
+    "dev_server": {
+      "command": "npm run dev",
+      "port": 3000,
+      "host": "localhost",
+      "auto_reload": true
+    },
+    "testing": {
+      "framework": "Vitest",
+      "command": "npm run test",
+      "coverage_threshold": 80,
+      "auto_test": true
+    },
+    "linting": {
+      "tools": ["ESLint", "Prettier"],
+      "auto_format": true,
+      "format_on_save": true
+    },
+    "styling": {
+      "framework": "Tailwind CSS",
+      "auto_complete": true,
+      "purge_unused": true
+    },
+    "state_management": "Pinia",
+    "routing": "Vue Router"
+  },
+  
+  "database": {
+    "type": "PostgreSQL",
+    "development": {
+      "host": "localhost",
+      "port": 5432,
+      "database": "versaai_dev",
+      "auto_backup": true,
+      "backup_interval": "daily"
+    },
+    "testing": {
+      "database": "versaai_test",
+      "auto_reset": true
+    }
+  },
+  
+  "cache": {
+    "type": "Redis",
+    "host": "localhost",
+    "port": 6379,
+    "auto_clear": false
+  },
+  
+  "docker": {
+    "enabled": true,
+    "compose_file": "docker-compose.yml",
+    "auto_build": false,
+    "services": [
+      "postgres",
+      "redis",
+      "backend",
+      "frontend",
+      "nginx"
+    ]
+  },
+  
+  "monitoring": {
+    "enabled": true,
+    "metrics": {
+      "performance": true,
+      "errors": true,
+      "usage": true,
+      "api_calls": true
+    },
+    "alerts": {
+      "error_threshold": 5,
+      "performance_threshold": 2000,
+      "disk_usage_threshold": 90
+    }
+  },
+  
+  "security": {
+    "dependency_scanning": true,
+    "vulnerability_alerts": true,
+    "secret_detection": true,
+    "code_analysis": true,
+    "auto_updates": false
+  },
+  
+  "productivity": {
+    "auto_imports": true,
+    "smart_completion": true,
+    "code_navigation": true,
+    "quick_fixes": true,
+    "refactoring_tools": true,
+    "snippet_suggestions": true,
+    "documentation_lookup": true,
+    "smart_code_generation": {
+      "enabled": true,
+      "auto_imports": true,
+      "type_inference": true,
+      "pattern_recognition": true,
+      "boilerplate_reduction": true,
+      "service_layer_generation": true,
+      "api_endpoint_scaffolding": true,
+      "vue_component_scaffolding": true,
+      "database_model_generation": true,
+      "test_case_generation": true
+    },
+    "intelligent_code_generation": {
+      "fastapi_endpoints": true,
+      "vue_components": true,
+      "pydantic_schemas": true,
+      "sqlalchemy_models": true,
+      "test_cases": true,
+      "error_handlers": true
+    },
+    "context_aware_suggestions": {
+      "database_queries": true,
+      "api_responses": true,
+      "frontend_state_management": true,
+      "authentication_flows": true,
+      "file_upload_handling": true
+    },
+    "workflow_automation": {
+      "enabled": true,
+      "auto_testing": true,
+      "auto_documentation": true,
+      "dependency_management": true,
+      "code_formatting": true,
+      "auto_file_organization": true,
+      "intelligent_refactoring": true,
+      "service_integration_automation": true,
+      "migration_generation": true,
+      "error_resolution_suggestions": true,
+      "auto_migration_generation": true,
+      "component_dependency_tracking": true,
+      "api_client_generation": true,
+      "type_definition_sync": true
+    }
+  },
+  
+  "collaboration": {
+    "git_integration": true,
+    "branch_protection": true,
+    "code_review_hints": true,
+    "commit_message_templates": true,
+    "auto_pr_creation": false
+  },
+  
+  "deployment": {
+    "staging": {
+      "auto_deploy": false,
+      "branch": "develop",
+      "tests_required": true
+    },
+    "production": {
+      "auto_deploy": false,
+      "branch": "main",
+      "approval_required": true,
+      "backup_required": true
+    }
+  },
+  
+  "integrations": {
+    "groq_ai": {
+      "enabled": true,
+      "api_key_env": "GROQ_API_KEY",
+      "models": [
+        "llama3-8b-8192",
+        "llama3-70b-8192",
+        "mixtral-8x7b-32768",
+        "gemma-7b-it"
+      ],
+      "auto_code_review": true,
+      "intelligent_suggestions": true,
+      "context_aware_completions": true
+    },
+    "github": {
+      "enabled": true,
+      "auto_sync": true,
+      "issue_tracking": true,
+      "auto_pr_templates": true,
+      "commit_message_suggestions": true
+    },
+    "database": {
+      "query_optimization_hints": true,
+      "migration_suggestions": true,
+      "relationship_validation": true
+    },
+    "testing": {
+      "auto_test_generation": true,
+      "coverage_tracking": true,
+      "mock_suggestions": true
+    },
+    "documentation": {
+      "auto_api_docs": true,
+      "component_documentation": true,
+      "inline_help": true
+    }
+  },
+  
+  "custom_commands": {
+    "start_dev": {
+      "description": "Iniciar entorno de desarrollo completo",
+      "command": "docker-compose up -d postgres redis && npm run dev --prefix frontend & uvicorn src.main:app --reload",
+      "parallel": true
+    },
+    "run_tests": {
+      "description": "Ejecutar todos los tests",
+      "command": "pytest tests/ -v --cov=src && npm run test --prefix frontend",
+      "parallel": false
+    },
+    "format_code": {
+      "description": "Formatear todo el código",
+      "command": "black src/ && isort src/ && npm run lint:fix --prefix frontend",
+      "parallel": false
+    },
+    "build_prod": {
+      "description": "Build para producción",
+      "command": "npm run build --prefix frontend && docker-compose -f docker-compose.prod.yml build",
+      "parallel": false
+    },
+    "debug_auth": {
+      "description": "Depurar problemas de autenticación",
+      "command": "python debug_user_creation.py && python test_auth_endpoints.py",
+      "parallel": false
+    },
+    "reset_db": {
+      "description": "Resetear base de datos de desarrollo",
+      "command": "alembic downgrade base && alembic upgrade head",
+      "parallel": false
+    },
+    "generate_migration": {
+      "description": "Generar nueva migración",
+      "command": "alembic revision --autogenerate -m",
+      "parallel": false,
+      "requires_input": true
+    },
+    "check_health": {
+      "description": "Verificar salud del sistema",
+      "command": "python check_db.py && curl -f http://localhost:8000/api/health",
+      "parallel": false
+    },
+    "optimize_imports": {
+      "description": "Optimizar imports en todo el proyecto",
+      "command": "isort src/ tests/ && autoflake --remove-all-unused-imports --recursive src/ tests/",
+      "parallel": false
+    }
+  },
+  
+  "file_templates": {
+    "fastapi_router": {
+      "path": "src/routers/{name}.py",
+      "template": "fastapi-crud",
+      "auto_imports": ["FastAPI", "HTTPException", "Depends", "status"]
+    },
+    "vue_component": {
+      "path": "frontend/src/components/{name}.vue",
+      "template": "vue-component",
+      "auto_imports": ["ref", "computed", "onMounted"]
+    },
+    "pydantic_schema": {
+      "path": "src/schemas/{name}.py",
+      "template": "pydantic-schema",
+      "auto_imports": ["BaseModel", "Field", "validator"]
+    },
+    "sqlalchemy_model": {
+      "path": "src/models/{name}.py",
+      "template": "sqlmodel",
+      "auto_imports": ["SQLModel", "Field", "Relationship"]
+    },
+    "service_layer": {
+      "path": "src/services/{name}_service.py",
+      "template": "service-layer",
+      "auto_imports": ["Depends", "get_db", "HTTPException"]
+    },
+    "pytest_test": {
+      "path": "tests/test_{name}.py",
+      "template": "pytest-test",
+      "auto_imports": ["pytest", "TestClient", "override_get_db"]
+    },
+    "vue_composable": {
+      "path": "frontend/src/composables/use{name}.ts",
+      "template": "vue-composable",
+      "auto_imports": ["ref", "computed", "reactive"]
+    },
+    "pinia_store": {
+      "path": "frontend/src/stores/{name}.ts",
+      "template": "pinia-store",
+      "auto_imports": ["defineStore", "ref", "computed"]
+    },
+    "api_client": {
+      "path": "frontend/src/services/{name}Api.ts",
+      "template": "api-client",
+      "auto_imports": ["apiClient", "ApiResponse"]
+    },
+    "middleware": {
+      "path": "src/middleware/{name}.py",
+      "template": "fastapi-middleware",
+      "auto_imports": ["Request", "Response", "BaseHTTPMiddleware"]
+    },
+    "alembic_migration": {
+      "path": "alembic/versions/{timestamp}_{name}.py",
+      "template": "alembic-migration",
+      "auto_imports": ["alembic", "sqlalchemy"]
+    }
+  },
+  
+  "code_quality": {
+    "complexity_threshold": 10,
+    "line_length": 88,
+    "docstring_coverage": 80,
+    "type_coverage": 90,
+    "auto_documentation": true
+  },
+  
+  "performance": {
+    "profiling": true,
+    "memory_monitoring": true,
+    "query_optimization": true,
+    "bundle_analysis": true,
+    "lazy_loading": true,
+    "real_time_monitoring": {
+      "api_response_times": true,
+      "database_query_performance": true,
+      "frontend_render_times": true,
+      "memory_usage_tracking": true
+    },
+    "optimization_suggestions": {
+      "sql_query_improvements": true,
+      "vue_component_optimization": true,
+      "api_caching_strategies": true,
+      "bundle_size_reduction": true
+    },
+    "automated_optimizations": {
+      "image_compression": true,
+      "code_splitting": true,
+      "tree_shaking": true,
+      "lazy_route_loading": true
+    }
+  },
+  
+  "versaai_specific": {
+    "chatbot_development": {
+      "conversation_flow_templates": true,
+      "ai_response_optimization": true,
+      "context_management": true,
+      "multi_language_support": true
+    },
+    "file_processing": {
+      "upload_optimization": true,
+      "format_validation": true,
+      "security_scanning": true,
+      "automatic_thumbnails": true
+    },
+    "user_management": {
+      "auth_flow_templates": true,
+      "role_based_access": true,
+      "session_management": true,
+      "security_best_practices": true
+    },
+    "api_development": {
+      "crud_generation": true,
+      "validation_schemas": true,
+      "error_handling": true,
+      "rate_limiting": true
+    }
+  }
+}

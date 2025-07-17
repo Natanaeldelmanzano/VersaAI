@@ -1,0 +1,635 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    // ===== TAREAS PARA FRONTEND (VUE.JS 3) =====
+    {
+      "label": "🚀 Frontend: Start Dev Server",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "dev"],
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "frontend"
+      },
+      "problemMatcher": [],
+      "runOptions": {
+        "instanceLimit": 1
+      }
+    },
+    {
+      "label": "📦 Frontend: Install Dependencies",
+      "type": "shell",
+      "command": "npm",
+      "args": ["install"],
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "frontend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🏗️ Frontend: Build Production",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "build"],
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "frontend"
+      },
+      "problemMatcher": ["$tsc"]
+    },
+    {
+      "label": "🧪 Frontend: Run Tests",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "test"],
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      },
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "frontend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "📊 Frontend: Test Coverage",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "test:coverage"],
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      },
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "frontend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🔍 Frontend: Lint Code",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "lint"],
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "frontend"
+      },
+      "problemMatcher": ["$eslint-stylish"]
+    },
+    {
+      "label": "✨ Frontend: Format Code",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "format"],
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "group": "frontend"
+      },
+      "problemMatcher": []
+    },
+
+    // ===== TAREAS PARA BACKEND (FASTAPI/PYTHON) =====
+    {
+      "label": "🐍 Backend: Start Dev Server",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "uvicorn", "src.main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"],
+      "options": {
+        "cwd": "${workspaceFolder}/backend",
+        "env": {
+          "PYTHONPATH": "${workspaceFolder}/backend/src",
+          "DEBUG": "true"
+        }
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "showReuseMessage": true,
+        "clear": false,
+        "group": "backend"
+      },
+      "problemMatcher": [],
+      "runOptions": {
+        "instanceLimit": 1
+      }
+    },
+    {
+      "label": "📦 Backend: Install Dependencies",
+      "type": "shell",
+      "command": "pip",
+      "args": ["install", "-r", "requirements.txt"],
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "backend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🧪 Backend: Run Tests",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "pytest", "tests/", "-v"],
+      "options": {
+        "cwd": "${workspaceFolder}/backend",
+        "env": {
+          "PYTHONPATH": "${workspaceFolder}/backend/src"
+        }
+      },
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "backend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "📊 Backend: Test Coverage",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "pytest", "tests/", "--cov=src", "--cov-report=html", "--cov-report=term-missing"],
+      "options": {
+        "cwd": "${workspaceFolder}/backend",
+        "env": {
+          "PYTHONPATH": "${workspaceFolder}/backend/src"
+        }
+      },
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "backend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🔍 Backend: Lint Code (Flake8)",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "flake8", "src/"],
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "backend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "✨ Backend: Format Code (Black)",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "black", "src/"],
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "group": "backend"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "📋 Backend: Sort Imports (isort)",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "isort", "src/"],
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "group": "backend"
+      },
+      "problemMatcher": []
+    },
+
+    // ===== TAREAS PARA BASE DE DATOS =====
+    {
+      "label": "🗄️ Database: Run Migrations",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "alembic", "upgrade", "head"],
+      "options": {
+        "cwd": "${workspaceFolder}/backend",
+        "env": {
+          "PYTHONPATH": "${workspaceFolder}/backend/src"
+        }
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "database"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "📝 Database: Create Migration",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "alembic", "revision", "--autogenerate", "-m", "${input:migrationMessage}"],
+      "options": {
+        "cwd": "${workspaceFolder}/backend",
+        "env": {
+          "PYTHONPATH": "${workspaceFolder}/backend/src"
+        }
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "database"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🔄 Database: Reset and Seed",
+      "type": "shell",
+      "command": "python",
+      "args": ["scripts/reset_database.py"],
+      "options": {
+        "cwd": "${workspaceFolder}/backend",
+        "env": {
+          "PYTHONPATH": "${workspaceFolder}/backend/src"
+        }
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "database"
+      },
+      "problemMatcher": []
+    },
+
+    // ===== TAREAS PARA DOCKER =====
+    {
+      "label": "🐳 Docker: Start All Services",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": ["up", "--build", "-d"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "docker"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🔧 Docker: Start Services Only (DB + Redis)",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": ["up", "db", "redis", "-d"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "docker"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🛑 Docker: Stop All Services",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": ["down"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "docker"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🧹 Docker: Clean Up",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": ["down", "--volumes", "--remove-orphans"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "docker"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "📊 Docker: Show Logs",
+      "type": "shell",
+      "command": "docker-compose",
+      "args": ["logs", "-f"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new",
+        "group": "docker"
+      },
+      "problemMatcher": []
+    },
+
+    // ===== TAREAS COMPUESTAS =====
+    {
+      "label": "🚀 Full Stack: Start Development",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "🔧 Docker: Start Services Only (DB + Redis)",
+        "🐍 Backend: Start Dev Server",
+        "🚀 Frontend: Start Dev Server"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "fullstack"
+      }
+    },
+    {
+      "label": "🧪 Full Stack: Run All Tests",
+      "dependsOrder": "parallel",
+      "dependsOn": [
+        "🧪 Backend: Run Tests",
+        "🧪 Frontend: Run Tests"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "testing"
+      }
+    },
+    {
+      "label": "✨ Full Stack: Format All Code",
+      "dependsOrder": "parallel",
+      "dependsOn": [
+        "✨ Backend: Format Code (Black)",
+        "📋 Backend: Sort Imports (isort)",
+        "✨ Frontend: Format Code"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "group": "formatting"
+      }
+    },
+    {
+      "label": "🔍 Full Stack: Lint All Code",
+      "dependsOrder": "parallel",
+      "dependsOn": [
+        "🔍 Backend: Lint Code (Flake8)",
+        "🔍 Frontend: Lint Code"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "linting"
+      }
+    },
+    {
+      "label": "🏗️ Full Stack: Build Production",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "✨ Full Stack: Format All Code",
+        "🔍 Full Stack: Lint All Code",
+        "🧪 Full Stack: Run All Tests",
+        "🏗️ Frontend: Build Production"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "production"
+      }
+    },
+
+    // ===== TAREAS UTILITARIAS =====
+    {
+      "label": "🛠️ Setup: Initialize Project",
+      "type": "shell",
+      "command": "python",
+      "args": ["scripts/setup_project.py"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "setup"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🧹 Cleanup: Development Environment",
+      "type": "shell",
+      "command": "python",
+      "args": ["scripts/cleanup_dev.py"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "cleanup"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "📊 Analysis: Generate Project Report",
+      "type": "shell",
+      "command": "python",
+      "args": ["scripts/generate_report.py"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "analysis"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "🔐 Security: Scan Dependencies",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "safety", "check"],
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      },
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "group": "security"
+      },
+      "problemMatcher": []
+    }
+  ],
+  
+  // ===== INPUTS PARA TAREAS DINÁMICAS =====
+  "inputs": [
+    {
+      "id": "migrationMessage",
+      "description": "Mensaje para la migración de base de datos",
+      "default": "Add new feature",
+      "type": "promptString"
+    },
+    {
+      "id": "testFile",
+      "description": "Archivo de test específico a ejecutar",
+      "default": "tests/",
+      "type": "promptString"
+    },
+    {
+      "id": "dockerService",
+      "description": "Servicio Docker específico",
+      "default": "backend",
+      "type": "pickString",
+      "options": [
+        "backend",
+        "frontend",
+        "db",
+        "redis",
+        "nginx"
+      ]
+    }
+  ]
+}

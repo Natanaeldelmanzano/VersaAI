@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VersaAI Platform - Entorno de Desarrollo Simulado</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            overflow: hidden;
+        }
+
+        .ide-container {
+            display: grid;
+            grid-template-columns: 250px 1fr 400px;
+            grid-template-rows: 40px 1fr 200px;
+            height: 100vh;
+            gap: 1px;
+            background: #2d2d30;
+        }
+
+        .title-bar {
+            grid-column: 1 / -1;
+            background: #3c3c3c;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            border-bottom: 1px solid #464647;
+        }
+
+        .title-bar h1 {
+            font-size: 14px;
+            color: #cccccc;
+        }
+
+        .sidebar {
+            background: #252526;
+            border-right: 1px solid #464647;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 10px;
+            background: #2d2d30;
+            border-bottom: 1px solid #464647;
+            font-size: 12px;
+            font-weight: bold;
+            color: #cccccc;
+        }
+
+        .file-tree {
+            padding: 10px;
+        }
+
+        .file-item {
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 13px;
+            border-radius: 3px;
+            margin: 1px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .file-item:hover {
+            background: #2a2d2e;
+        }
+
+        .file-item.active {
+            background: #094771;
+            color: #ffffff;
+        }
+
+        .file-icon {
+            margin-right: 6px;
+            width: 16px;
+            text-align: center;
+        }
+
+        .editor-area {
+            background: #1e1e1e;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tabs {
+            background: #2d2d30;
+            display: flex;
+            border-bottom: 1px solid #464647;
+        }
+
+        .tab {
+            padding: 8px 15px;
+            background: #2d2d30;
+            border-right: 1px solid #464647;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+        }
+
+        .tab.active {
+            background: #1e1e1e;
+            color: #ffffff;
+        }
+
+        .tab-close {
+            margin-left: 8px;
+            opacity: 0.6;
+        }
+
+        .tab-close:hover {
+            opacity: 1;
+        }
+
+        .editor {
+            flex: 1;
+            padding: 20px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            overflow-y: auto;
+        }
+
+        .preview-panel {
+            background: #252526;
+            border-left: 1px solid #464647;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-header {
+            padding: 10px;
+            background: #2d2d30;
+            border-bottom: 1px solid #464647;
+            font-size: 12px;
+            font-weight: bold;
+            color: #cccccc;
+        }
+
+        .preview-content {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+
+        .terminal {
+            grid-column: 1 / -1;
+            background: #0c0c0c;
+            border-top: 1px solid #464647;
+            padding: 15px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            overflow-y: auto;
+        }
+
+        .terminal-line {
+            margin: 2px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .terminal-prompt {
+            color: #00ff00;
+            margin-right: 8px;
+        }
+
+        .terminal-command {
+            color: #ffffff;
+        }
+
+        .terminal-output {
+            color: #cccccc;
+            margin-left: 20px;
+        }
+
+        .terminal-error {
+            color: #ff6b6b;
+        }
+
+        .terminal-success {
+            color: #51cf66;
+        }
+
+        .code-line {
+            margin: 2px 0;
+        }
+
+        .line-number {
+            color: #858585;
+            margin-right: 15px;
+            user-select: none;
+            width: 30px;
+            display: inline-block;
+            text-align: right;
+        }
+
+        .keyword {
+            color: #569cd6;
+        }
+
+        .string {
+            color: #ce9178;
+        }
+
+        .comment {
+            color: #6a9955;
+            font-style: italic;
+        }
+
+        .function {
+            color: #dcdcaa;
+        }
+
+        .variable {
+            color: #9cdcfe;
+        }
+
+        .component-preview {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .dashboard-preview {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 20px;
+            min-height: 300px;
+        }
+
+        .sidebar-preview {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 15px;
+        }
+
+        .main-content-preview {
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 20px;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        .status-running {
+            background: #51cf66;
+            animation: pulse 2s infinite;
+        }
+
+        .status-stopped {
+            background: #ff6b6b;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .floating-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4c6ef5;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .floating-notification.show {
+            transform: translateX(0);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #464647;
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4c6ef5, #7c3aed);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .action-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .action-btn {
+            background: #4c6ef5;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: #364fc7;
+            transform: translateY(-2px);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="ide-container">
+        <!-- Title Bar -->
+        <div class="title-bar">
+            <h1>🚀 VersaAI Platform - Entorno de Desarrollo</h1>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">📁 EXPLORADOR</div>
+            <div class="file-tree">
+                <div class="file-item" onclick="openFile('docker-compose')">
+                    <span class="file-icon">🐳</span>
+                    docker-compose.yml
+                </div>
+                <div class="file-item" onclick="openFile('backend-settings')">
+                    <span class="file-icon">🐍</span>
+                    backend/settings.py
+                </div>
+                <div class="file-item active" onclick="openFile('frontend-app')">
+                    <span class="file-icon">⚛️</span>
+                    frontend/src/App.tsx
+                </div>
+                <div class="file-item" onclick="openFile('widget-main')">
+                    <span class="file-icon">🔧</span>
+                    widget/src/main.js
+                </div>
+                <div class="file-item" onclick="openFile('env-config')">
+                    <span class="file-icon">⚙️</span>
+                    .env
+                </div>
+            </div>
+        </div>
+
+        <!-- Editor Area -->
+        <div class="editor-area">
+            <div class="tabs">
+                <div class="tab active">
+                    ⚛️ App.tsx
+                    <span class="tab-close">×</span>
+                </div>
+                <div class="tab">
+                    🐍 settings.py
+                    <span class="tab-close">×</span>
+                </div>
+            </div>
+            <div class="editor" id="editor">
+                <!-- Contenido del editor se carga aquí -->
+            </div>
+        </div>
+
+        <!-- Preview Panel -->
+        <div class="preview-panel">
+            <div class="preview-header">👁️ VISTA PREVIA</div>
+            <div class="preview-content" id="preview">
+                <!-- Vista previa se carga aquí -->
+            </div>
+        </div>
+
+        <!-- Terminal -->
+        <div class="terminal" id="terminal">
+            <div class="terminal-line">
+                <span class="terminal-prompt">versaai@dev:~$</span>
+                <span class="terminal-command">docker-compose up -d</span>
+            </div>
+            <div class="terminal-line">
+                <span class="terminal-output terminal-success">✅ PostgreSQL iniciado correctamente</span>
+            </div>
+            <div class="terminal-line">
+                <span class="terminal-output terminal-success">✅ Redis iniciado correctamente</span>
+            </div>
+            <div class="terminal-line">
+                <span class="terminal-output terminal-success">✅ ChromaDB iniciado correctamente</span>
+            </div>
+            <div class="terminal-line">
+                <span class="terminal-prompt">versaai@dev:~$</span>
+                <span class="terminal-command">python manage.py runserver</span>
+            </div>
+            <div class="terminal-line">
+                <span class="terminal-output">🚀 Servidor Django iniciado en http://localhost:8001</span>
+            </div>
+            <div class="terminal-line">
+                <span class="terminal-prompt">versaai@dev:~$</span>
+                <span class="terminal-command">npm run dev</span>
+            </div>
+            <div class="terminal-line">
+                <span class="terminal-output">⚛️ React dev server iniciado en http://localhost:3000</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Notification -->
+    <div class="floating-notification" id="notification">
+        <div class="loading-spinner"></div>
+        Compilando proyecto...
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <button class="action-btn" onclick="runProject()">▶️ Ejecutar</button>
+        <button class="action-btn" onclick="buildProject()">🔨 Build</button>
+        <button class="action-btn" onclick="deployProject()">🚀 Deploy</button>
+    </div>
+
+    <script>
+        // Archivos de código
+        const files = {
+            'frontend-app': {
+                name: 'App.tsx',
+                content: `<span class="line-number">1</span><span class="keyword">import</span> <span class="variable">React</span> <span class="keyword">from</span> <span class="string">'react'</span>;
+<span class="line-number">2</span><span class="keyword">import</span> { <span class="variable">BrowserRouter</span>, <span class="variable">Routes</span>, <span class="variable">Route</span> } <span class="keyword">from</span> <span class="string">'react-router-dom'</span>;
+<span class="line-number">3</span><span class="keyword">import</span> { <span class="variable">ThemeProvider</span> } <span class="keyword">from</span> <span class="string">'@mui/material/styles'</span>;
+<span class="line-number">4</span><span class="keyword">import</span> { <span class="variable">Provider</span> } <span class="keyword">from</span> <span class="string">'react-redux'</span>;
+<span class="line-number">5</span>
+<span class="line-number">6</span><span class="comment">// Importar componentes</span>
+<span class="line-number">7</span><span class="keyword">import</span> <span class="variable">Dashboard</span> <span class="keyword">from</span> <span class="string">'@pages/Dashboard'</span>;
+<span class="line-number">8</span><span class="keyword">import</span> <span class="variable">ChatbotManager</span> <span class="keyword">from</span> <span class="string">'@pages/ChatbotManager'</span>;
+<span class="line-number">9</span><span class="keyword">import</span> <span class="variable">KnowledgeBase</span> <span class="keyword">from</span> <span class="string">'@pages/KnowledgeBase'</span>;
+<span class="line-number">10</span><span class="keyword">import</span> <span class="variable">Analytics</span> <span class="keyword">from</span> <span class="string">'@pages/Analytics'</span>;
+<span class="line-number">11</span>
+<span class="line-number">12</span><span class="keyword">function</span> <span class="function">App</span>() {
+<span class="line-number">13</span>  <span class="keyword">return</span> (
+<span class="line-number">14</span>    &lt;<span class="keyword">Provider</span> <span class="variable">store</span>={<span class="variable">store</span>}&gt;
+<span class="line-number">15</span>      &lt;<span class="keyword">ThemeProvider</span> <span class="variable">theme</span>={<span class="variable">theme</span>}&gt;
+<span class="line-number">16</span>        &lt;<span class="keyword">BrowserRouter</span>&gt;
+<span class="line-number">17</span>          &lt;<span class="keyword">Routes</span>&gt;
+<span class="line-number">18</span>            &lt;<span class="keyword">Route</span> <span class="variable">path</span>=<span class="string">"/"</span> <span class="variable">element</span>={&lt;<span class="variable">Dashboard</span> /&gt;} /&gt;
+<span class="line-number">19</span>            &lt;<span class="keyword">Route</span> <span class="variable">path</span>=<span class="string">"/chatbots"</span> <span class="variable">element</span>={&lt;<span class="variable">ChatbotManager</span> /&gt;} /&gt;
+<span class="line-number">20</span>            &lt;<span class="keyword">Route</span> <span class="variable">path</span>=<span class="string">"/knowledge"</span> <span class="variable">element</span>={&lt;<span class="variable">KnowledgeBase</span> /&gt;} /&gt;
+<span class="line-number">21</span>            &lt;<span class="keyword">Route</span> <span class="variable">path</span>=<span class="string">"/analytics"</span> <span class="variable">element</span>={&lt;<span class="variable">Analytics</span> /&gt;} /&gt;
+<span class="line-number">22</span>          &lt;/<span class="keyword">Routes</span>&gt;
+<span class="line-number">23</span>        &lt;/<span class="keyword">BrowserRouter</span>&gt;
+<span class="line-number">24</span>      &lt;/<span class="keyword">ThemeProvider</span>&gt;
+<span class="line-number">25</span>    &lt;/<span class="keyword">Provider</span>&gt;
+<span class="line-number">26</span>  );
+<span class="line-number">27</span>}
+<span class="line-number">28</span>
+<span class="line-number">29</span><span class="keyword">export</span> <span class="keyword">default</span> <span class="variable">App</span>;`,
+                preview: `
+                    <div class="component-preview">
+                        <h3>🎯 Dashboard VersaAI</h3>
+                        <div class="dashboard-preview">
+                            <div class="sidebar-preview">
+                                <h4>📊 Navegación</h4>
+                                <div style="margin: 10px 0; padding: 8px; background: #e3f2fd; border-radius: 4px;">Dashboard</div>
+                                <div style="margin: 10px 0; padding: 8px; border-radius: 4px;">🤖 Chatbots</div>
+                                <div style="margin: 10px 0; padding: 8px; border-radius: 4px;">📚 Knowledge Base</div>
+                                <div style="margin: 10px 0; padding: 8px; border-radius: 4px;">📈 Analytics</div>
+                            </div>
+                            <div class="main-content-preview">
+                                <h4>📊 Métricas Principales</h4>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                                    <div class="metric-card">
+                                        <div class="metric-value">1,234</div>
+                                        <div class="metric-label">Conversaciones Totales</div>
+                                    </div>
+                                    <div class="metric-card">
+                                        <div class="metric-value">5</div>
+                                        <div class="metric-label">Chatbots Activos</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            'docker-compose': {
+                name: 'docker-compose.yml',
+                content: `<span class="line-number">1</span><span class="keyword">version:</span> <span class="string">'3.8'</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span><span class="keyword">services:</span>
+<span class="line-number">4</span>  <span class="comment"># PostgreSQL Database</span>
+<span class="line-number">5</span>  <span class="variable">postgres:</span>
+<span class="line-number">6</span>    <span class="keyword">image:</span> <span class="string">postgres:15-alpine</span>
+<span class="line-number">7</span>    <span class="keyword">container_name:</span> <span class="string">versaai_postgres</span>
+<span class="line-number">8</span>    <span class="keyword">environment:</span>
+<span class="line-number">9</span>      <span class="variable">POSTGRES_DB:</span> <span class="string">versaai</span>
+<span class="line-number">10</span>      <span class="variable">POSTGRES_USER:</span> <span class="string">versaai_user</span>
+<span class="line-number">11</span>      <span class="variable">POSTGRES_PASSWORD:</span> <span class="string">versaai_password</span>
+<span class="line-number">12</span>    <span class="keyword">ports:</span>
+<span class="line-number">13</span>      - <span class="string">"5432:5432"</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>  <span class="comment"># Redis Cache</span>
+<span class="line-number">16</span>  <span class="variable">redis:</span>
+<span class="line-number">17</span>    <span class="keyword">image:</span> <span class="string">redis:7-alpine</span>
+<span class="line-number">18</span>    <span class="keyword">container_name:</span> <span class="string">versaai_redis</span>
+<span class="line-number">19</span>    <span class="keyword">ports:</span>
+<span class="line-number">20</span>      - <span class="string">"6379:6379"</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>  <span class="comment"># ChromaDB Vector Database</span>
+<span class="line-number">23</span>  <span class="variable">chromadb:</span>
+<span class="line-number">24</span>    <span class="keyword">image:</span> <span class="string">chromadb/chroma:latest</span>
+<span class="line-number">25</span>    <span class="keyword">container_name:</span> <span class="string">versaai_chromadb</span>
+<span class="line-number">26</span>    <span class="keyword">ports:</span>
+<span class="line-number">27</span>      - <span class="string">"8000:8000"</span>`,
+                preview: `
+                    <div class="component-preview">
+                        <h3>🐳 Estado de Servicios Docker</h3>
+                        <div style="margin: 15px 0;">
+                            <div style="display: flex; align-items: center; margin: 8px 0;">
+                                <span class="status-indicator status-running"></span>
+                                <strong>PostgreSQL</strong> - Puerto 5432
+                            </div>
+                            <div style="display: flex; align-items: center; margin: 8px 0;">
+                                <span class="status-indicator status-running"></span>
+                                <strong>Redis</strong> - Puerto 6379
+                            </div>
+                            <div style="display: flex; align-items: center; margin: 8px 0;">
+                                <span class="status-indicator status-running"></span>
+                                <strong>ChromaDB</strong> - Puerto 8000
+                            </div>
+                            <div style="display: flex; align-items: center; margin: 8px 0;">
+                                <span class="status-indicator status-running"></span>
+                                <strong>Django Backend</strong> - Puerto 8001
+                            </div>
+                            <div style="display: flex; align-items: center; margin: 8px 0;">
+                                <span class="status-indicator status-running"></span>
+                                <strong>React Frontend</strong> - Puerto 3000
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 100%;"></div>
+                        </div>
+                        <p style="text-align: center; margin-top: 10px; color: #51cf66;">✅ Todos los servicios funcionando correctamente</p>
+                    </div>
+                `
+            },
+            'backend-settings': {
+                name: 'settings.py',
+                content: `<span class="line-number">1</span><span class="keyword">import</span> <span class="variable">os</span>
+<span class="line-number">2</span><span class="keyword">from</span> <span class="variable">pathlib</span> <span class="keyword">import</span> <span class="variable">Path</span>
+<span class="line-number">3</span><span class="keyword">import</span> <span class="variable">environ</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span><span class="comment"># Build paths inside the project</span>
+<span class="line-number">6</span><span class="variable">BASE_DIR</span> = <span class="function">Path</span>(<span class="variable">__file__</span>).<span class="function">resolve</span>().<span class="variable">parent</span>.<span class="variable">parent</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span><span class="comment"># Environment variables</span>
+<span class="line-number">9</span><span class="variable">env</span> = <span class="function">environ.Env</span>(
+<span class="line-number">10</span>    <span class="variable">DEBUG</span>=(<span class="keyword">bool</span>, <span class="keyword">False</span>)
+<span class="line-number">11</span>)
+<span class="line-number">12</span>
+<span class="line-number">13</span><span class="comment"># SECURITY WARNING: keep the secret key used in production secret!</span>
+<span class="line-number">14</span><span class="variable">SECRET_KEY</span> = <span class="function">env</span>(<span class="string">'SECRET_KEY'</span>)
+<span class="line-number">15</span>
+<span class="line-number">16</span><span class="comment"># Database configuration</span>
+<span class="line-number">17</span><span class="variable">DATABASES</span> = {
+<span class="line-number">18</span>    <span class="string">'default'</span>: {
+<span class="line-number">19</span>        <span class="string">'ENGINE'</span>: <span class="string">'django.db.backends.postgresql'</span>,
+<span class="line-number">20</span>        <span class="string">'NAME'</span>: <span class="function">env</span>(<span class="string">'POSTGRES_DB'</span>, <span class="keyword">default</span>=<span class="string">'versaai'</span>),
+<span class="line-number">21</span>        <span class="string">'USER'</span>: <span class="function">env</span>(<span class="string">'POSTGRES_USER'</span>, <span class="keyword">default</span>=<span class="string">'versaai_user'</span>),
+<span class="line-number">22</span>        <span class="string">'PASSWORD'</span>: <span class="function">env</span>(<span class="string">'POSTGRES_PASSWORD'</span>),
+<span class="line-number">23</span>        <span class="string">'HOST'</span>: <span class="function">env</span>(<span class="string">'POSTGRES_HOST'</span>, <span class="keyword">default</span>=<span class="string">'localhost'</span>),
+<span class="line-number">24</span>        <span class="string">'PORT'</span>: <span class="function">env</span>(<span class="string">'POSTGRES_PORT'</span>, <span class="keyword">default</span>=<span class="string">'5432'</span>),
+<span class="line-number">25</span>    }
+<span class="line-number">26</span>}
+<span class="line-number">27</span>
+<span class="line-number">28</span><span class="comment"># AI Configuration</span>
+<span class="line-number">29</span><span class="variable">GROQ_API_KEY</span> = <span class="function">env</span>(<span class="string">'GROQ_API_KEY'</span>, <span class="keyword">default</span>=<span class="string">''</span>)`,
+                preview: `
+                    <div class="component-preview">
+                        <h3>🐍 Configuración Django Backend</h3>
+                        <div style="margin: 15px 0;">
+                            <h4>🔧 Configuraciones Principales:</h4>
+                            <ul style="margin: 10px 0; padding-left: 20px;">
+                                <li><strong>Base de Datos:</strong> PostgreSQL</li>
+                                <li><strong>Cache:</strong> Redis</li>
+                                <li><strong>Autenticación:</strong> JWT + Session</li>
+                                <li><strong>CORS:</strong> Configurado para React</li>
+                                <li><strong>API:</strong> Django REST Framework</li>
+                                <li><strong>IA:</strong> Groq API + ChromaDB</li>
+                            </ul>
+                            
+                            <h4>🔒 Seguridad:</h4>
+                            <ul style="margin: 10px 0; padding-left: 20px;">
+                                <li>✅ Secret Key configurada</li>
+                                <li>✅ CORS habilitado</li>
+                                <li>✅ Rate limiting activo</li>
+                                <li>✅ Validación de contraseñas</li>
+                            </ul>
+                            
+                            <h4>🚀 APIs Disponibles:</h4>
+                            <div style="background: #f8f9fa; padding: 10px; border-radius: 4px; margin: 10px 0;">
+                                <code>/api/v1/auth/</code> - Autenticación<br>
+                                <code>/api/v1/chatbots/</code> - Gestión de chatbots<br>
+                                <code>/api/v1/knowledge-base/</code> - Base de conocimiento<br>
+                                <code>/api/v1/analytics/</code> - Métricas y reportes
+                            </div>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        // Función para abrir archivos
+        function openFile(fileKey) {
+            const file = files[fileKey];
+            if (file) {
+                document.getElementById('editor').innerHTML = `<div class="code-line">${file.content}</div>`;
+                document.getElementById('preview').innerHTML = file.preview;
+                
+                // Actualizar tabs activos
+                document.querySelectorAll('.file-item').forEach(item => item.classList.remove('active'));
+                event.target.classList.add('active');
+            }
+        }
+
+        // Función para ejecutar proyecto
+        function runProject() {
+            showNotification('🚀 Iniciando servicios...', 'info');
+            
+            setTimeout(() => {
+                addTerminalLine('versaai@dev:~$', 'docker-compose up -d');
+                setTimeout(() => {
+                    addTerminalLine('', '✅ Todos los servicios iniciados correctamente', 'success');
+                    showNotification('✅ Proyecto ejecutándose en http://localhost:3000', 'success');
+                }, 1000);
+            }, 1000);
+        }
+
+        // Función para build del proyecto
+        function buildProject() {
+            showNotification('🔨 Construyendo proyecto...', 'info');
+            
+            setTimeout(() => {
+                addTerminalLine('versaai@dev:~$', 'npm run build');
+                setTimeout(() => {
+                    addTerminalLine('', '✅ Build completado exitosamente', 'success');
+                    showNotification('✅ Build completado', 'success');
+                }, 2000);
+            }, 1000);
+        }
+
+        // Función para deploy
+        function deployProject() {
+            showNotification('🚀 Desplegando a producción...', 'info');
+            
+            setTimeout(() => {
+                addTerminalLine('versaai@dev:~$', 'docker-compose -f docker-compose.prod.yml up -d');
+                setTimeout(() => {
+                    addTerminalLine('', '✅ Desplegado exitosamente', 'success');
+                    showNotification('✅ Desplegado en producción', 'success');
+                }, 3000);
+            }, 1000);
+        }
+
+        // Función para mostrar notificaciones
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.innerHTML = `
+                ${type === 'info' ? '<div class="loading-spinner"></div>' : ''}
+                ${message}
+            `;
+            notification.className = `floating-notification show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Función para agregar líneas al terminal
+        function addTerminalLine(prompt, command, type = 'command') {
+            const terminal = document.getElementById('terminal');
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            
+            if (type === 'command') {
+                line.innerHTML = `
+                    <span class="terminal-prompt">${prompt}</span>
+                    <span class="terminal-command">${command}</span>
+                `;
+            } else {
+                line.innerHTML = `
+                    <span class="terminal-output terminal-${type}">${command}</span>
+                `;
+            }
+            
+            terminal.appendChild(line);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+        // Inicializar con el archivo por defecto
+        document.addEventListener('DOMContentLoaded', function() {
+            openFile('frontend-app');
+            
+            // Simular actividad en el terminal
+            setTimeout(() => {
+                showNotification('🎯 Entorno de desarrollo listo', 'success');
+            }, 1000);
+        });
+
+        // Simular hot reload
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                const messages = [
+                    '🔄 Hot reload detectado',
+                    '📝 Archivo guardado automáticamente',
+                    '⚡ Compilación rápida completada',
+                    '🔍 Linting ejecutado'
+                ];
+                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                showNotification(randomMessage, 'info');
+            }
+        }, 10000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,310 @@
+# 🚀 Workflow de Desarrollo - VersaAI
+# Configuración automatizada para Trae AI
+
+name: "VersaAI Development Workflow"
+description: "Flujo de trabajo optimizado para desarrollo diario de VersaAI"
+version: "1.0.0"
+
+# Configuración del entorno de desarrollo
+environment:
+  name: "development"
+  auto_start: true
+  hot_reload: true
+  debug_mode: true
+
+# Servicios requeridos
+services:
+  - name: "postgresql"
+    type: "database"
+    port: 5432
+    auto_start: true
+    health_check: "pg_isready -h localhost -p 5432"
+    
+  - name: "redis"
+    type: "cache"
+    port: 6379
+    auto_start: true
+    health_check: "redis-cli ping"
+    
+  - name: "backend"
+    type: "api"
+    port: 8000
+    command: "uvicorn src.main:app --reload --host 0.0.0.0 --port 8000"
+    working_directory: "./"
+    environment_file: ".env"
+    dependencies: ["postgresql", "redis"]
+    health_check: "curl -f http://localhost:8000/health || exit 1"
+    
+  - name: "frontend"
+    type: "web"
+    port: 3000
+    command: "npm run dev"
+    working_directory: "./frontend"
+    dependencies: ["backend"]
+    health_check: "curl -f http://localhost:3000 || exit 1"
+
+# Tareas automatizadas
+tasks:
+  # Inicialización del proyecto
+  - name: "setup_environment"
+    description: "Configurar entorno de desarrollo inicial"
+    trigger: "manual"
+    steps:
+      - name: "install_backend_deps"
+        command: "pip install -r requirements.txt"
+        working_directory: "./"
+        
+      - name: "install_frontend_deps"
+        command: "npm install"
+        working_directory: "./frontend"
+        
+      - name: "setup_database"
+        command: "alembic upgrade head"
+        working_directory: "./"
+        
+      - name: "seed_database"
+        command: "python scripts/seed_data.py"
+        working_directory: "./"
+        optional: true
+
+  # Desarrollo activo
+  - name: "start_development"
+    description: "Iniciar todos los servicios de desarrollo"
+    trigger: "manual"
+    parallel: true
+    steps:
+      - name: "start_database"
+        command: "docker-compose up -d postgres redis"
+        
+      - name: "start_backend"
+        command: "uvicorn src.main:app --reload --host 0.0.0.0 --port 8000"
+        background: true
+        
+      - name: "start_frontend"
+        command: "npm run dev"
+        working_directory: "./frontend"
+        background: true
+        
+      - name: "open_browser"
+        command: "start http://localhost:3000"
+        delay: 5000
+        optional: true
+
+  # Monitoreo continuo
+  - name: "watch_changes"
+    description: "Monitorear cambios en archivos y ejecutar acciones"
+    trigger: "auto"
+    watch:
+      - pattern: "src/**/*.py"
+        actions:
+          - "lint_python"
+          - "run_backend_tests"
+          
+      - pattern: "frontend/src/**/*.{vue,js,ts}"
+        actions:
+          - "lint_frontend"
+          - "run_frontend_tests"
+          
+      - pattern: "requirements.txt"
+        actions:
+          - "install_backend_deps"
+          - "restart_backend"
+          
+      - pattern: "frontend/package.json"
+        actions:
+          - "install_frontend_deps"
+          - "restart_frontend"
+
+  # Linting y formateo
+  - name: "lint_python"
+    description: "Linting y formateo de código Python"
+    trigger: "file_change"
+    steps:
+      - name: "black_format"
+        command: "black src/"
+        
+      - name: "isort_imports"
+        command: "isort src/"
+        
+      - name: "flake8_lint"
+        command: "flake8 src/"
+        
+  - name: "lint_frontend"
+    description: "Linting y formateo de código frontend"
+    trigger: "file_change"
+    steps:
+      - name: "eslint_check"
+        command: "npm run lint"
+        working_directory: "./frontend"
+        
+      - name: "prettier_format"
+        command: "npm run format"
+        working_directory: "./frontend"
+
+  # Testing automático
+  - name: "run_backend_tests"
+    description: "Ejecutar tests del backend"
+    trigger: "file_change"
+    steps:
+      - name: "pytest_run"
+        command: "pytest tests/ -v --tb=short"
+        
+      - name: "coverage_report"
+        command: "pytest --cov=src tests/ --cov-report=term-missing"
+        optional: true
+        
+  - name: "run_frontend_tests"
+    description: "Ejecutar tests del frontend"
+    trigger: "file_change"
+    steps:
+      - name: "vitest_run"
+        command: "npm run test:unit"
+        working_directory: "./frontend"
+        
+      - name: "coverage_report"
+        command: "npm run test:coverage"
+        working_directory: "./frontend"
+        optional: true
+
+  # Análisis de código
+  - name: "code_analysis"
+    description: "Análisis automático de calidad de código"
+    trigger: "scheduled"
+    schedule: "0 */2 * * *"  # Cada 2 horas
+    steps:
+      - name: "complexity_analysis"
+        command: "radon cc src/ -a"
+        
+      - name: "security_scan"
+        command: "safety check"
+        
+      - name: "dependency_check"
+        command: "pip-audit"
+        
+      - name: "frontend_audit"
+        command: "npm audit"
+        working_directory: "./frontend"
+
+  # Base de datos
+  - name: "database_operations"
+    description: "Operaciones de base de datos"
+    trigger: "manual"
+    steps:
+      - name: "create_migration"
+        command: "alembic revision --autogenerate -m '{migration_name}'"
+        prompt: "migration_name"
+        
+      - name: "apply_migrations"
+        command: "alembic upgrade head"
+        
+      - name: "rollback_migration"
+        command: "alembic downgrade -1"
+        confirmation_required: true
+        
+      - name: "reset_database"
+        command: "alembic downgrade base && alembic upgrade head"
+        confirmation_required: true
+
+# Configuración de notificaciones
+notifications:
+  - type: "desktop"
+    events: ["error", "test_failure", "build_complete"]
+    
+  - type: "sound"
+    events: ["error", "test_failure"]
+    
+  - type: "status_bar"
+    events: ["all"]
+
+# Configuración de logs
+logging:
+  level: "DEBUG"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  files:
+    - "logs/development.log"
+    - "logs/trae_ai.log"
+  rotation:
+    max_size: "10MB"
+    backup_count: 5
+
+# Configuración de performance
+performance:
+  file_watching:
+    debounce_delay: 500  # ms
+    batch_changes: true
+    
+  task_execution:
+    max_parallel: 4
+    timeout: 300  # seconds
+    
+  memory_management:
+    max_memory_usage: "2GB"
+    cleanup_interval: 3600  # seconds
+
+# Configuración de debugging
+debugging:
+  auto_attach: true
+  break_on_error: false
+  log_api_calls: true
+  profile_performance: true
+  
+# Configuración de AI assistance
+ai_assistance:
+  auto_suggestions: true
+  error_analysis: true
+  code_completion: true
+  refactoring_hints: true
+  documentation_generation: true
+  
+  context_awareness:
+    project_structure: true
+    recent_changes: true
+    error_history: true
+    performance_metrics: true
+
+# Hooks personalizados
+hooks:
+  pre_commit:
+    - "lint_python"
+    - "lint_frontend"
+    - "run_backend_tests"
+    - "run_frontend_tests"
+    
+  post_commit:
+    - "code_analysis"
+    
+  pre_push:
+    - "run_all_tests"
+    - "security_scan"
+    
+  startup:
+    - "check_dependencies"
+    - "verify_environment"
+    
+  shutdown:
+    - "cleanup_temp_files"
+    - "save_session_state"
+
+# Configuración de integración
+integrations:
+  git:
+    auto_stage: false
+    commit_templates: true
+    branch_protection: true
+    
+  docker:
+    auto_build: false
+    health_checks: true
+    
+  groq_ai:
+    model: "llama3-8b-8192"
+    temperature: 0.7
+    max_tokens: 1000
+
+# Variables de entorno
+environment_variables:
+  PYTHONPATH: "./src"
+  NODE_ENV: "development"
+  TRAE_AI_DEBUG: "true"
+  TRAE_AI_LOG_LEVEL: "DEBUG"
+  VERSAAI_ENV: "development"

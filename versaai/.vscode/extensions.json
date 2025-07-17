@@ -1,0 +1,169 @@
+{
+  "recommendations": [
+    // ===== EXTENSIONES ESENCIALES PARA VUE.JS 3 =====
+    "Vue.volar",                           // Vue Language Features (Volar) - Soporte completo para Vue 3
+    "Vue.vscode-typescript-vue-plugin",    // TypeScript Vue Plugin - Mejor integración TS con Vue
+    "bradlc.vscode-tailwindcss",          // Tailwind CSS IntelliSense - Autocompletado para Tailwind
+    "formulahendry.auto-rename-tag",       // Auto Rename Tag - Renombrado automático de etiquetas HTML
+    "christian-kohler.path-intellisense",  // Path Intellisense - Autocompletado de rutas de archivos
+    
+    // ===== EXTENSIONES ESENCIALES PARA PYTHON/FASTAPI =====
+    "ms-python.python",                   // Python - Soporte completo para Python
+    "ms-python.black-formatter",          // Black Formatter - Formateador de código Python
+    "ms-python.flake8",                   // Flake8 - Linter para Python
+    "ms-python.pylint",                   // Pylint - Análisis estático de código Python
+    "ms-python.isort",                    // isort - Organizador de imports Python
+    "ms-toolsai.jupyter",                 // Jupyter - Soporte para notebooks Jupyter
+    "kevinrose.vsc-python-indent",        // Python Indent - Indentación inteligente para Python
+    
+    // ===== EXTENSIONES PARA DESARROLLO WEB GENERAL =====
+    "esbenp.prettier-vscode",             // Prettier - Formateador de código para JS/TS/CSS/HTML
+    "dbaeumer.vscode-eslint",             // ESLint - Linter para JavaScript/TypeScript
+    "ms-vscode.vscode-typescript-next",   // TypeScript Importer - Auto-importación para TypeScript
+    "bradlc.vscode-tailwindcss",          // Tailwind CSS IntelliSense
+    "zignd.html-css-class-completion",    // HTML CSS Class Completion
+    "formulahendry.auto-close-tag",       // Auto Close Tag
+    
+    // ===== EXTENSIONES PARA BASE DE DATOS =====
+    "ms-ossdata.vscode-postgresql",       // PostgreSQL - Cliente PostgreSQL integrado
+    "cweijan.vscode-redis-client",        // Redis Client - Cliente Redis integrado
+    "ms-mssql.sql-database-projects-vscode", // SQL Database Projects
+    
+    // ===== EXTENSIONES PARA DOCKER Y DEVOPS =====
+    "ms-azuretools.vscode-docker",        // Docker - Soporte completo para Docker
+    "ms-vscode-remote.remote-containers", // Dev Containers - Desarrollo en contenedores
+    "ms-kubernetes-tools.vscode-kubernetes-tools", // Kubernetes Tools
+    
+    // ===== EXTENSIONES PARA GIT Y CONTROL DE VERSIONES =====
+    "eamodio.gitlens",                    // GitLens - Superpoderes para Git
+    "mhutchie.git-graph",                 // Git Graph - Visualizador de historial Git
+    "donjayamanne.githistory",            // Git History - Historial de archivos Git
+    "github.vscode-pull-request-github",  // GitHub Pull Requests
+    
+    // ===== EXTENSIONES PARA TESTING =====
+    "ms-python.pytest",                   // Pytest - Framework de testing para Python
+    "hbenl.vscode-test-explorer",         // Test Explorer UI
+    "kavod-io.vscode-jest-test-adapter",  // Jest Test Explorer
+    "ms-playwright.playwright",           // Playwright Test - E2E testing
+    
+    // ===== EXTENSIONES PARA API Y DOCUMENTACIÓN =====
+    "humao.rest-client",                  // REST Client - Cliente HTTP integrado
+    "42crunch.vscode-openapi",            // OpenAPI (Swagger) Editor
+    "arjun.swagger-viewer",               // Swagger Viewer
+    "yzhang.markdown-all-in-one",         // Markdown All in One
+    
+    // ===== EXTENSIONES PARA PRODUCTIVIDAD =====
+    "ms-vscode.vscode-json",              // JSON Language Features
+    "redhat.vscode-yaml",                 // YAML Language Support
+    "ms-vscode.vscode-json5",             // JSON5 syntax
+    "streetsidesoftware.code-spell-checker", // Code Spell Checker
+    "usernamehw.errorlens",               // Error Lens - Muestra errores inline
+    "oderwat.indent-rainbow",             // Indent Rainbow - Colorea la indentación
+    "pkief.material-icon-theme",          // Material Icon Theme
+    
+    // ===== EXTENSIONES PARA DEBUGGING Y MONITOREO =====
+    "ms-vscode.vscode-js-debug",          // JavaScript Debugger
+    "ms-python.debugpy",                  // Python Debugger
+    "firefox-devtools.vscode-firefox-debug", // Firefox Debugger
+    "msjsdiag.vscode-react-native",       // React Native Tools (para debugging móvil)
+    
+    // ===== EXTENSIONES PARA INTELIGENCIA ARTIFICIAL =====
+    "github.copilot",                     // GitHub Copilot - Asistente de código IA
+    "github.copilot-chat",                // GitHub Copilot Chat
+    "continue.continue",                  // Continue - Asistente de código IA local
+    
+    // ===== EXTENSIONES PARA CONFIGURACIÓN Y ENTORNO =====
+    "mikestead.dotenv",                   // DotENV - Soporte para archivos .env
+    "ms-vscode.vscode-dotnet-runtime",    // .NET Runtime
+    "ms-vscode.powershell",               // PowerShell
+    "ms-vscode.vscode-json",              // JSON Language Features
+    
+    // ===== EXTENSIONES ESPECÍFICAS PARA VERSAAI =====
+    "ms-vscode.live-server",              // Live Server - Servidor de desarrollo
+    "ritwickdey.liveserver",              // Live Server alternativo
+    "ms-vscode.vscode-thunder-client",    // Thunder Client - Cliente HTTP
+    "rangav.vscode-thunder-client",       // Thunder Client alternativo
+    
+    // ===== EXTENSIONES PARA ANÁLISIS DE CÓDIGO =====
+    "sonarsource.sonarlint-vscode",       // SonarLint - Análisis de calidad de código
+    "ms-vscode.vscode-typescript-next",   // TypeScript Hero
+    "bradlc.vscode-tailwindcss",          // Tailwind CSS IntelliSense
+    
+    // ===== EXTENSIONES PARA COLABORACIÓN =====
+    "ms-vsliveshare.vsliveshare",         // Live Share - Colaboración en tiempo real
+    "ms-vsliveshare.vsliveshare-audio",   // Live Share Audio
+    "ms-vsliveshare.vsliveshare-pack",    // Live Share Extension Pack
+    
+    // ===== EXTENSIONES PARA PERFORMANCE =====
+    "ms-vscode.vscode-js-profile-flame",  // JavaScript Profiler
+    "ms-python.python-environment-manager", // Python Environment Manager
+    "ms-vscode.vscode-js-profile-table",  // JavaScript Profile Visualizer
+    
+    // ===== EXTENSIONES PARA SEGURIDAD =====
+    "snyk-security.snyk-vulnerability-scanner", // Snyk Security Scanner
+    "ms-vscode.vscode-security-scan",     // Security Scan
+    "42crunch.vscode-openapi-security",   // OpenAPI Security Audit
+    
+    // ===== EXTENSIONES PARA DEPLOYMENT =====
+    "ms-azuretools.vscode-azureappservice", // Azure App Service
+    "amazonwebservices.aws-toolkit-vscode", // AWS Toolkit
+    "googlecloudtools.cloudcode",         // Google Cloud Code
+    
+    // ===== EXTENSIONES PARA MONITOREO Y LOGS =====
+    "ms-vscode.vscode-json",              // JSON Viewer
+    "emilast.logfilehighlighter",         // Log File Highlighter
+    "ibm.output-colorizer",               // Output Colorizer
+    
+    // ===== EXTENSIONES PARA SNIPPETS Y TEMPLATES =====
+    "ms-vscode.vscode-snippet",           // Snippet Creator
+    "formulahendry.code-runner",          // Code Runner
+    "ms-vscode.vscode-json",              // JSON Tools
+    
+    // ===== EXTENSIONES PARA FRONTEND AVANZADO =====
+    "ms-vscode.vscode-css-peek",          // CSS Peek
+    "ms-vscode.vscode-html-language-features", // HTML Language Features
+    "ms-vscode.vscode-emmet",             // Emmet
+    "pranaygp.vscode-css-peek",           // CSS Peek alternativo
+    
+    // ===== EXTENSIONES PARA BACKEND AVANZADO =====
+    "ms-python.python-docstring-generator", // Python Docstring Generator
+    "njpwerner.autodocstring",            // autoDocstring
+    "ms-python.python-environment-manager", // Python Environment Manager
+    "ms-toolsai.vscode-ai",               // AI Tools
+    
+    // ===== EXTENSIONES PARA INTEGRACIÓN CONTINUA =====
+    "github.vscode-github-actions",       // GitHub Actions
+    "ms-azure-devops.azure-pipelines",    // Azure Pipelines
+    "gitlab.gitlab-workflow",             // GitLab Workflow
+    
+    // ===== EXTENSIONES PARA DOCUMENTACIÓN =====
+    "shd101wyy.markdown-preview-enhanced", // Markdown Preview Enhanced
+    "bierner.markdown-mermaid",           // Markdown Mermaid
+    "yzane.markdown-pdf",                 // Markdown PDF
+    
+    // ===== EXTENSIONES PARA THEMES Y UI =====
+    "zhuangtongfa.material-theme",        // One Dark Pro
+    "pkief.material-icon-theme",          // Material Icon Theme
+    "ms-vscode.theme-tomorrowkit",        // Tomorrow Theme Kit
+    "dracula-theme.theme-dracula",        // Dracula Official
+    
+    // ===== EXTENSIONES PARA UTILIDADES =====
+    "alefragnani.bookmarks",              // Bookmarks
+    "ms-vscode.vscode-json",              // JSON Tools
+    "ms-vscode.hexeditor",                // Hex Editor
+    "ms-vscode.vscode-json",              // JSON Language Features
+    "redhat.vscode-xml",                  // XML Language Support
+    
+    // ===== EXTENSIONES EXPERIMENTALES =====
+    "ms-vscode.vscode-speech",            // Speech
+    "ms-vscode.remote-repositories",      // Remote Repositories
+    "ms-vscode.vscode-github-issue-notebooks" // GitHub Issue Notebooks
+  ],
+  
+  "unwantedRecommendations": [
+    "ms-vscode.vscode-typescript",        // Reemplazado por TypeScript Next
+    "octref.vetur",                       // Reemplazado por Volar para Vue 3
+    "ms-python.python-legacy",           // Versión legacy de Python
+    "ms-vscode.vscode-json-languageservice" // Incluido en JSON Language Features
+  ]
+}

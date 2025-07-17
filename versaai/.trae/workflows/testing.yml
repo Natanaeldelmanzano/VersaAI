@@ -1,0 +1,447 @@
+# 🧪 Workflow de Testing - VersaAI
+# Configuración automatizada de testing para Trae AI
+
+name: "VersaAI Testing Workflow"
+description: "Suite completa de testing automatizado para VersaAI"
+version: "1.0.0"
+
+# Configuración del entorno de testing
+environment:
+  name: "testing"
+  isolation: true
+  cleanup_after: true
+  parallel_execution: true
+
+# Configuración de base de datos de testing
+test_database:
+  type: "postgresql"
+  name: "versaai_test"
+  auto_create: true
+  auto_cleanup: true
+  fixtures: "tests/fixtures/"
+  migrations: true
+
+# Suites de testing
+test_suites:
+  # Testing del Backend
+  backend:
+    name: "Backend API Tests"
+    framework: "pytest"
+    working_directory: "./"
+    coverage_threshold: 80
+    
+    setup:
+      - name: "install_dependencies"
+        command: "pip install -r requirements.txt"
+        
+      - name: "setup_test_db"
+        command: "alembic upgrade head"
+        environment:
+          DATABASE_URL: "postgresql://test_user:test_pass@localhost/versaai_test"
+          
+      - name: "load_fixtures"
+        command: "python tests/load_fixtures.py"
+        optional: true
+    
+    tests:
+      # Tests unitarios
+      - name: "unit_tests"
+        description: "Tests unitarios del backend"
+        command: "pytest tests/unit/ -v --tb=short"
+        parallel: true
+        timeout: 300
+        
+      # Tests de integración
+      - name: "integration_tests"
+        description: "Tests de integración de la API"
+        command: "pytest tests/integration/ -v --tb=short"
+        dependencies: ["unit_tests"]
+        timeout: 600
+        
+      # Tests de endpoints
+      - name: "api_tests"
+        description: "Tests de endpoints de la API"
+        command: "pytest tests/api/ -v --tb=short"
+        dependencies: ["integration_tests"]
+        timeout: 900
+        
+      # Tests de autenticación
+      - name: "auth_tests"
+        description: "Tests del sistema de autenticación"
+        command: "pytest tests/auth/ -v --tb=short"
+        timeout: 300
+        
+      # Tests de base de datos
+      - name: "database_tests"
+        description: "Tests de modelos y base de datos"
+        command: "pytest tests/database/ -v --tb=short"
+        timeout: 400
+        
+      # Tests de servicios de IA
+      - name: "ai_service_tests"
+        description: "Tests de servicios de IA y Groq"
+        command: "pytest tests/ai/ -v --tb=short"
+        timeout: 600
+        environment:
+          GROQ_API_KEY: "test_key"
+          
+      # Tests de performance
+      - name: "performance_tests"
+        description: "Tests de rendimiento de la API"
+        command: "pytest tests/performance/ -v --tb=short"
+        timeout: 1200
+        optional: true
+    
+    coverage:
+      command: "pytest --cov=src tests/ --cov-report=html --cov-report=xml --cov-report=term-missing"
+      threshold: 80
+      fail_under: 75
+      exclude:
+        - "src/migrations/*"
+        - "src/scripts/*"
+        - "tests/*"
+    
+    cleanup:
+      - name: "cleanup_test_data"
+        command: "python tests/cleanup.py"
+        
+      - name: "reset_test_db"
+        command: "alembic downgrade base"
+
+  # Testing del Frontend
+  frontend:
+    name: "Frontend Tests"
+    framework: "vitest"
+    working_directory: "./frontend"
+    coverage_threshold: 80
+    
+    setup:
+      - name: "install_dependencies"
+        command: "npm ci"
+        
+      - name: "build_test_env"
+        command: "npm run build:test"
+        optional: true
+    
+    tests:
+      # Tests unitarios de componentes
+      - name: "component_tests"
+        description: "Tests unitarios de componentes Vue"
+        command: "npm run test:unit"
+        parallel: true
+        timeout: 300
+        
+      # Tests de composables
+      - name: "composables_tests"
+        description: "Tests de composables y utilidades"
+        command: "npm run test:composables"
+        timeout: 200
+        
+      # Tests de stores (Pinia)
+      - name: "store_tests"
+        description: "Tests de stores de Pinia"
+        command: "npm run test:stores"
+        timeout: 200
+        
+      # Tests de servicios
+      - name: "service_tests"
+        description: "Tests de servicios de API"
+        command: "npm run test:services"
+        timeout: 300
+        
+      # Tests de integración
+      - name: "integration_tests"
+        description: "Tests de integración del frontend"
+        command: "npm run test:integration"
+        dependencies: ["component_tests", "service_tests"]
+        timeout: 600
+        
+      # Tests E2E
+      - name: "e2e_tests"
+        description: "Tests end-to-end con Cypress"
+        command: "npm run test:e2e"
+        dependencies: ["integration_tests"]
+        timeout: 1800
+        environment:
+          CYPRESS_baseUrl: "http://localhost:3000"
+        optional: true
+    
+    coverage:
+      command: "npm run test:coverage"
+      threshold: 80
+      fail_under: 75
+      exclude:
+        - "node_modules/*"
+        - "dist/*"
+        - "tests/*"
+        - "*.config.js"
+    
+    cleanup:
+      - name: "cleanup_test_artifacts"
+        command: "rm -rf coverage/ .nyc_output/"
+
+  # Testing de Seguridad
+  security:
+    name: "Security Tests"
+    framework: "custom"
+    working_directory: "./"
+    
+    tests:
+      # Análisis de dependencias
+      - name: "dependency_scan"
+        description: "Escaneo de vulnerabilidades en dependencias"
+        command: "safety check"
+        timeout: 300
+        
+      - name: "npm_audit"
+        description: "Auditoría de dependencias npm"
+        command: "npm audit --audit-level=moderate"
+        working_directory: "./frontend"
+        timeout: 200
+        
+      # Análisis de código
+      - name: "bandit_scan"
+        description: "Análisis de seguridad del código Python"
+        command: "bandit -r src/ -f json -o security_report.json"
+        timeout: 300
+        
+      - name: "semgrep_scan"
+        description: "Análisis estático de seguridad"
+        command: "semgrep --config=auto src/"
+        timeout: 600
+        optional: true
+        
+      # Tests de autenticación
+      - name: "auth_security_tests"
+        description: "Tests de seguridad de autenticación"
+        command: "pytest tests/security/auth/ -v"
+        timeout: 400
+        
+      # Tests de API security
+      - name: "api_security_tests"
+        description: "Tests de seguridad de la API"
+        command: "pytest tests/security/api/ -v"
+        timeout: 500
+
+  # Testing de Performance
+  performance:
+    name: "Performance Tests"
+    framework: "custom"
+    working_directory: "./"
+    
+    tests:
+      # Load testing
+      - name: "load_tests"
+        description: "Tests de carga de la API"
+        command: "locust -f tests/performance/locustfile.py --headless -u 100 -r 10 -t 60s"
+        timeout: 120
+        optional: true
+        
+      # Stress testing
+      - name: "stress_tests"
+        description: "Tests de estrés del sistema"
+        command: "pytest tests/performance/stress/ -v"
+        timeout: 600
+        optional: true
+        
+      # Memory profiling
+      - name: "memory_profiling"
+        description: "Profiling de memoria"
+        command: "python -m memory_profiler tests/performance/memory_test.py"
+        timeout: 300
+        optional: true
+        
+      # Frontend performance
+      - name: "frontend_performance"
+        description: "Tests de performance del frontend"
+        command: "npm run test:performance"
+        working_directory: "./frontend"
+        timeout: 600
+        optional: true
+
+# Configuración de reportes
+reporting:
+  formats:
+    - "html"
+    - "xml"
+    - "json"
+    - "junit"
+  
+  output_directory: "test_reports/"
+  
+  coverage_reports:
+    - "coverage/html/"
+    - "coverage/coverage.xml"
+    - "coverage/coverage.json"
+  
+  artifacts:
+    - "test_reports/**/*"
+    - "coverage/**/*"
+    - "screenshots/**/*"
+    - "videos/**/*"
+  
+  notifications:
+    on_failure:
+      - type: "desktop"
+        message: "Tests fallaron en VersaAI"
+      - type: "sound"
+        sound: "error"
+    
+    on_success:
+      - type: "desktop"
+        message: "Todos los tests pasaron en VersaAI"
+    
+    on_coverage_below_threshold:
+      - type: "desktop"
+        message: "Cobertura de tests por debajo del umbral"
+
+# Configuración de CI/CD
+ci_cd:
+  triggers:
+    - "push"
+    - "pull_request"
+    - "schedule"
+  
+  branches:
+    - "main"
+    - "develop"
+    - "feature/*"
+  
+  schedule: "0 2 * * *"  # Diariamente a las 2 AM
+  
+  matrix:
+    python_versions: ["3.11", "3.12"]
+    node_versions: ["18", "20"]
+    os: ["ubuntu-latest", "windows-latest"]
+
+# Configuración de paralelización
+parallelization:
+  max_workers: 4
+  strategy: "by_suite"
+  
+  backend_parallel:
+    max_workers: 2
+    strategy: "by_test_file"
+  
+  frontend_parallel:
+    max_workers: 2
+    strategy: "by_component"
+
+# Configuración de timeouts
+timeouts:
+  default: 300  # 5 minutos
+  unit_tests: 60  # 1 minuto
+  integration_tests: 300  # 5 minutos
+  e2e_tests: 1800  # 30 minutos
+  performance_tests: 1200  # 20 minutos
+
+# Configuración de retry
+retry:
+  max_attempts: 3
+  delay: 5  # segundos
+  exponential_backoff: true
+  
+  flaky_tests:
+    max_attempts: 5
+    delay: 10
+
+# Configuración de mocking
+mocking:
+  external_apis:
+    groq_api:
+      enabled: true
+      responses_file: "tests/mocks/groq_responses.json"
+    
+    database:
+      enabled: false  # Usar base de datos real de testing
+    
+    redis:
+      enabled: true
+      mock_type: "fakeredis"
+
+# Configuración de fixtures
+fixtures:
+  auto_load: true
+  directory: "tests/fixtures/"
+  
+  files:
+    - "users.json"
+    - "organizations.json"
+    - "chatbots.json"
+    - "conversations.json"
+  
+  cleanup_after_suite: true
+
+# Configuración de debugging para tests
+debugging:
+  on_failure:
+    capture_screenshots: true
+    save_html: true
+    save_logs: true
+    open_debugger: false
+  
+  verbose_output: true
+  show_locals: true
+  traceback_limit: 10
+
+# Métricas y análisis
+metrics:
+  collect:
+    - "test_duration"
+    - "test_success_rate"
+    - "coverage_percentage"
+    - "flaky_test_count"
+    - "performance_metrics"
+  
+  thresholds:
+    success_rate: 95  # %
+    average_duration: 300  # segundos
+    flaky_test_threshold: 5  # %
+  
+  trending:
+    enabled: true
+    history_days: 30
+    alerts_on_degradation: true
+
+# Configuración de limpieza
+cleanup:
+  after_each_test: false
+  after_each_suite: true
+  after_all_tests: true
+  
+  actions:
+    - "remove_temp_files"
+    - "cleanup_test_database"
+    - "clear_cache"
+    - "reset_mocks"
+
+# Hooks de testing
+hooks:
+  before_all:
+    - "setup_test_environment"
+    - "start_test_services"
+  
+  before_each_suite:
+    - "reset_test_data"
+    - "clear_logs"
+  
+  after_each_suite:
+    - "collect_artifacts"
+    - "generate_reports"
+  
+  after_all:
+    - "cleanup_environment"
+    - "send_notifications"
+    - "archive_results"
+
+# Variables de entorno para testing
+environment_variables:
+  TESTING: "true"
+  DATABASE_URL: "postgresql://test_user:test_pass@localhost/versaai_test"
+  REDIS_URL: "redis://localhost:6379/1"
+  SECRET_KEY: "test_secret_key_not_for_production"
+  GROQ_API_KEY: "test_groq_key"
+  JWT_SECRET_KEY: "test_jwt_secret"
+  ENVIRONMENT: "testing"
+  LOG_LEVEL: "DEBUG"
+  TRAE_AI_TESTING: "true"

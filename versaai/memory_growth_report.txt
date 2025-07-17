@@ -1,0 +1,43 @@
+=== ANALISIS DE INCREMENTO DE MEMORIA - 12/07/2025 03:10:12 ===
+Analisis de crecimiento en directorios del sistema
+
+=== 1. MEDICIONES ACTUALES ===
+C:\Windows\System32\config : 0 B
+C:\Windows\CSC : 0 B
+C:\Windows\LiveKernelReports : 0 B
+C:\Windows\ModemLogs : 0 B
+C:\Windows\Prefetch : 0 B
+C:\Windows\ServiceState : 0 B
+C:\Windows\SystemTemp : 0 B
+C:\Windows\Temp : 0 B
+C:\System Volume Information : 0 B
+C:\PerfLogs : 0 B
+C:\ProgramData\Microsoft\Diagnosis : 0 B
+C:\Program Files\WindowsApps : 0 B
+C:\ProgramData\Packages : 0 B
+C:\ProgramData\WindowsHolographicDevices : 0 B
+C:\Windows\Logs : 66 MB
+C:\Windows\SoftwareDistribution : 65.72 MB
+C:\Windows\WinSxS : 8.86 GB
+C:\ProgramData\Microsoft\Windows\WER : 158.86 KB
+C:\Users\Neizan\AppData\Local\Temp : 1.05 GB
+C:\Users\Neizan\AppData\Local\Microsoft\Windows\INetCache : 25.62 MB
+C:\Users\Neizan\AppData\Local\CrashDumps : 0 B
+C:\Users\Neizan\Downloads : 13.08 GB
+C:\ProgramData : 3.65 GB
+
+=== PRIMERA MEDICION ===
+Esta es la primera vez que se ejecuta el analisis.
+Las mediciones actuales se guardaran como linea base para futuras comparaciones.
+
+Mediciones guardadas en: C:\Users\Neizan\Desktop\version max claude\versaai\memory_baseline.json
+
+=== 4. RECOMENDACIONES ===
+• Ejecute este script regularmente para monitorear el crecimiento
+• Los directorios con acceso denegado no pueden ser analizados en detalle
+• Considere limpiar directorios temporales si muestran crecimiento excesivo
+• Use herramientas del sistema como Liberador de espacio en disco para limpieza
+
+=== ANALISIS COMPLETADO ===
+Reporte guardado en: C:\Users\Neizan\Desktop\version max claude\versaai\memory_growth_report.txt
+Linea base actualizada en: C:\Users\Neizan\Desktop\version max claude\versaai\memory_baseline.json

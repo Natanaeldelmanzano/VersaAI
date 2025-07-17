@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 VersaAI Platform - Visión Interactiva 3D</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header con animación */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="grad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.1"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="3" fill="%23ffffff" opacity="0.6"><animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/></circle><circle cx="800" cy="300" r="2" fill="%23ffffff" opacity="0.4"><animate attributeName="opacity" values="0.4;0.8;0.4" dur="3s" repeatCount="indefinite"/></circle><circle cx="300" cy="700" r="2" fill="%23ffffff" opacity="0.5"><animate attributeName="opacity" values="0.5;1;0.5" dur="2.5s" repeatCount="indefinite"/></circle><circle cx="700" cy="800" r="3" fill="%23ffffff" opacity="0.3"><animate attributeName="opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite"/></circle></svg>') center/cover;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .hero-content {
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #f0f8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(255,255,255,0.5); }
+            to { text-shadow: 0 0 30px rgba(255,255,255,0.8), 0 0 40px rgba(255,255,255,0.3); }
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Sección de arquitectura 3D */
+        .architecture-section {
+            padding: 100px 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.1) 100%);
+        }
+
+        .architecture-3d {
+            perspective: 1000px;
+            height: 600px;
+            position: relative;
+            margin: 50px 0;
+        }
+
+        .layer {
+            position: absolute;
+            width: 100%;
+            height: 120px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.5s ease;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .layer:hover {
+            transform: translateZ(30px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .frontend-layer {
+            background: linear-gradient(135deg, rgba(97, 218, 251, 0.8), rgba(61, 175, 255, 0.8));
+            top: 0;
+            transform: rotateX(10deg) translateZ(50px);
+        }
+
+        .api-layer {
+            background: linear-gradient(135deg, rgba(255, 154, 158, 0.8), rgba(250, 208, 196, 0.8));
+            top: 150px;
+            transform: rotateX(5deg) translateZ(25px);
+        }
+
+        .backend-layer {
+            background: linear-gradient(135deg, rgba(168, 237, 234, 0.8), rgba(254, 214, 227, 0.8));
+            top: 300px;
+            transform: rotateX(0deg) translateZ(0px);
+        }
+
+        .database-layer {
+            background: linear-gradient(135deg, rgba(180, 180, 180, 0.8), rgba(120, 120, 120, 0.8));
+            top: 450px;
+            transform: rotateX(-5deg) translateZ(-25px);
+        }
+
+        /* Stack tecnológico interactivo */
+        .tech-stack {
+            padding: 100px 0;
+            background: rgba(0,0,0,0.1);
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .tech-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .tech-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .tech-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .tech-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .tech-card p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* Flujo de trabajo animado */
+        .workflow {
+            padding: 100px 0;
+        }
+
+        .workflow-timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 50px auto;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 50px;
+            opacity: 0;
+            transform: translateX(-50px);
+            animation: slideIn 0.6s ease forwards;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+            transform: translateX(50px);
+        }
+
+        .timeline-item:nth-child(1) { animation-delay: 0.2s; }
+        .timeline-item:nth-child(2) { animation-delay: 0.4s; }
+        .timeline-item:nth-child(3) { animation-delay: 0.6s; }
+        .timeline-item:nth-child(4) { animation-delay: 0.8s; }
+        .timeline-item:nth-child(5) { animation-delay: 1.0s; }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .timeline-content {
+            background: rgba(255,255,255,0.1);
+            padding: 25px;
+            border-radius: 15px;
+            flex: 1;
+            margin: 0 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .timeline-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Widget demo interactivo */
+        .widget-demo {
+            padding: 100px 0;
+            background: rgba(0,0,0,0.1);
+        }
+
+        .demo-container {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .widget-preview {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 30px;
+            color: #333;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .widget-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .chat-bubble {
+            background: #667eea;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 20px;
+            margin: 10px 0;
+            max-width: 70%;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .chat-bubble.user {
+            background: #e2e8f0;
+            color: #333;
+            margin-left: auto;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Sección de recursos */
+        .resources {
+            padding: 100px 0;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 50px;
+        }
+
+        .resource-link {
+            display: block;
+            background: rgba(255,255,255,0.1);
+            padding: 25px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .resource-link:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .resource-link h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .resource-link p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 50px 0;
+            text-align: center;
+            background: rgba(0,0,0,0.2);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .architecture-3d {
+                height: 400px;
+            }
+            
+            .layer {
+                height: 80px;
+                font-size: 0.9rem;
+            }
+            
+            .frontend-layer { top: 0; }
+            .api-layer { top: 100px; }
+            .backend-layer { top: 200px; }
+            .database-layer { top: 300px; }
+        }
+
+        /* Animaciones adicionales */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Partículas de fondo */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            animation: float-particle 15s infinite linear;
+        }
+
+        @keyframes float-particle {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Partículas de fondo -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>🚀 VersaAI Platform</h1>
+            <p>Plataforma Completa de Chatbots con IA</p>
+            <p style="font-size: 1.2rem; opacity: 0.8; margin-bottom: 2rem;">
+                React + TypeScript • Django REST • PostgreSQL • Sistema RAG • Widget Embebible
+            </p>
+            <a href="#architecture" class="cta-button">🔍 Explorar Arquitectura</a>
+        </div>
+    </section>
+
+    <!-- Arquitectura 3D -->
+    <section id="architecture" class="architecture-section">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 3rem; margin-bottom: 2rem; font-weight: 700;">🏗️ Arquitectura del Sistema</h2>
+            <p style="text-align: center; font-size: 1.3rem; opacity: 0.9; margin-bottom: 3rem;">
+                Arquitectura moderna en capas con tecnologías de vanguardia
+            </p>
+            
+            <div class="architecture-3d">
+                <div class="layer frontend-layer">
+                    <div>
+                        <strong>⚛️ Frontend Layer</strong><br>
+                        React 18 + TypeScript + Material-UI + Redux Toolkit
+                    </div>
+                </div>
+                <div class="layer api-layer">
+                    <div>
+                        <strong>🔗 API Gateway</strong><br>
+                        Django REST Framework + JWT + CORS + Rate Limiting
+                    </div>
+                </div>
+                <div class="layer backend-layer">
+                    <div>
+                        <strong>🐍 Backend Services</strong><br>
+                        Django + Celery + RAG Engine + Groq API + WebSockets
+                    </div>
+                </div>
+                <div class="layer database-layer">
+                    <div>
+                        <strong>🗄️ Data Layer</strong><br>
+                        PostgreSQL + Redis + ChromaDB + Vector Embeddings
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stack Tecnológico -->
+    <section class="tech-stack">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 3rem; margin-bottom: 2rem; font-weight: 700;">🛠️ Stack Tecnológico</h2>
+            
+            <div class="tech-grid">
+                <div class="tech-card fade-in">
+                    <span class="tech-icon">⚛️</span>
+                    <h3>Frontend Moderno</h3>
+                    <p>React 18 con TypeScript, Material-UI para componentes elegantes, Redux Toolkit para gestión de estado y Vite para desarrollo rápido.</p>
+                </div>
+                
+                <div class="tech-card fade-in">
+                    <span class="tech-icon">🐍</span>
+                    <h3>Backend Robusto</h3>
+                    <p>Django REST Framework con autenticación JWT, Celery para tareas asíncronas y WebSockets para comunicación en tiempo real.</p>
+                </div>
+                
+                <div class="tech-card fade-in">
+                    <span class="tech-icon">🗄️</span>
+                    <h3>Base de Datos</h3>
+                    <p>PostgreSQL para datos relacionales, Redis para caché y sesiones, ChromaDB para vectores y búsqueda semántica.</p>
+                </div>
+                
+                <div class="tech-card fade-in">
+                    <span class="tech-icon">🤖</span>
+                    <h3>IA Avanzada</h3>
+                    <p>Sistema RAG con embeddings, integración Groq API, modelos LLM múltiples y procesamiento de lenguaje natural.</p>
+                </div>
+                
+                <div class="tech-card fade-in">
+                    <span class="tech-icon">🐳</span>
+                    <h3>DevOps</h3>
+                    <p>Docker Compose para desarrollo, CI/CD automatizado, monitoreo con Prometheus y deployment escalable.</p>
+                </div>
+                
+                <div class="tech-card fade-in">
+                    <span class="tech-icon">🔒</span>
+                    <h3>Seguridad</h3>
+                    <p>JWT tokens, hashing PBKDF2, CORS configurado, rate limiting, encriptación de datos sensibles y 2FA.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Flujo de Trabajo -->
+    <section class="workflow">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 3rem; margin-bottom: 2rem; font-weight: 700;">📋 Flujo de Desarrollo</h2>
+            
+            <div class="workflow-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-number">1</div>
+                    <div class="timeline-content">
+                        <h3>🏗️ Configuración Base</h3>
+                        <p>Setup Docker, estructura de proyecto, variables de entorno y servicios básicos (PostgreSQL, Redis, ChromaDB).</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-number">2</div>
+                    <div class="timeline-content">
+                        <h3>🐍 Backend Django</h3>
+                        <p>API REST completa, autenticación JWT, modelos de datos, sistema RAG y integración con Groq API.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-number">3</div>
+                    <div class="timeline-content">
+                        <h3>⚛️ Frontend React</h3>
+                        <p>Dashboard interactivo, componentes TypeScript, Redux store, Material-UI theming y comunicación API.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-number">4</div>
+                    <div class="timeline-content">
+                        <h3>🔧 Widget Embebible</h3>
+                        <p>JavaScript vanilla, diseño responsive, API integration, customización de temas y deployment CDN.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-number">5</div>
+                    <div class="timeline-content">
+                        <h3>🚀 Producción</h3>
+                        <p>Testing automatizado, optimización de rendimiento, seguridad avanzada y deployment escalable.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo del Widget -->
+    <section class="widget-demo">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 3rem; margin-bottom: 2rem; font-weight: 700;">🔧 Widget Embebible</h2>
+            
+            <div class="demo-container">
+                <h3 style="margin-bottom: 20px; text-align: center;">💬 Simulación de Chat en Vivo</h3>
+                
+                <div class="widget-preview">
+                    <div class="chat-bubble">¡Hola! 👋 Soy tu asistente de IA. ¿En qué puedo ayudarte hoy?</div>
+                    <div class="chat-bubble user">¿Cómo puedo integrar este widget en mi sitio web?</div>
+                    <div class="chat-bubble">Es muy sencillo! Solo necesitas agregar una línea de código JavaScript a tu sitio:</div>
+                    <div style="background: #2d3748; color: #e2e8f0; padding: 15px; border-radius: 8px; margin: 15px 0; font-family: 'Courier New', monospace; font-size: 0.9rem;">
+                        &lt;script src="https://cdn.versaai.com/widget.js" data-chatbot-id="tu-id"&gt;&lt;/script&gt;
+                    </div>
+                    <div class="chat-bubble">¡Y listo! El widget aparecerá automáticamente en tu sitio con todas las funcionalidades de IA. 🚀</div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <p style="opacity: 0.9; font-size: 1.1rem;">✨ Personalizable • 📱 Responsive • ⚡ Rápido • 🔒 Seguro</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recursos y Documentación -->
+    <section class="resources">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 3rem; margin-bottom: 2rem; font-weight: 700;">📚 Recursos y Documentación</h2>
+            
+            <div class="resources-grid">
+                <a href="https://www.django-rest-framework.org/" class="resource-link" target="_blank">
+                    <h4>🐍 Django REST Framework</h4>
+                    <p>Documentación oficial para crear APIs robustas con Django</p>
+                </a>
+                
+                <a href="https://react.dev/learn/typescript" class="resource-link" target="_blank">
+                    <h4>⚛️ React + TypeScript</h4>
+                    <p>Guía oficial para desarrollar con React y TypeScript</p>
+                </a>
+                
+                <a href="https://mui.com/material-ui/getting-started/" class="resource-link" target="_blank">
+                    <h4>🎨 Material-UI</h4>
+                    <p>Componentes React elegantes y personalizables</p>
+                </a>
+                
+                <a href="https://redux-toolkit.js.org/" class="resource-link" target="_blank">
+                    <h4>🔄 Redux Toolkit</h4>
+                    <p>Gestión de estado moderna y eficiente para React</p>
+                </a>
+                
+                <a href="https://docs.docker.com/compose/" class="resource-link" target="_blank">
+                    <h4>🐳 Docker Compose</h4>
+                    <p>Orquestación de contenedores para desarrollo</p>
+                </a>
+                
+                <a href="https://console.groq.com/docs/quickstart" class="resource-link" target="_blank">
+                    <h4>🤖 Groq API</h4>
+                    <p>Integración con modelos de IA de alta velocidad</p>
+                </a>
+                
+                <a href="https://docs.trychroma.com/" class="resource-link" target="_blank">
+                    <h4>🔍 ChromaDB</h4>
+                    <p>Base de datos vectorial para búsqueda semántica</p>
+                </a>
+                
+                <a href="https://docs.celeryproject.org/" class="resource-link" target="_blank">
+                    <h4>⚡ Celery</h4>
+                    <p>Procesamiento asíncrono de tareas en Python</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <h3 style="margin-bottom: 20px;">🚀 ¡VersaAI Platform está listo para ser desarrollado!</h3>
+            <p style="opacity: 0.9; font-size: 1.1rem;">Una plataforma completa, moderna y escalable para chatbots con IA</p>
+            <p style="margin-top: 20px; opacity: 0.7;">Desarrollado con ❤️ para el futuro de la IA conversacional</p>
+        </div>
+    </footer>
+
+    <script>
+        // Crear partículas de fondo
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Animación de scroll para elementos fade-in
+        function handleScrollAnimations() {
+            const elements = document.querySelectorAll('.fade-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            elements.forEach(element => {
+                observer.observe(element);
+            });
+        }
+
+        // Animación de chat en tiempo real
+        function animateChat() {
+            const chatBubbles = document.querySelectorAll('.chat-bubble');
+            
+            chatBubbles.forEach((bubble, index) => {
+                bubble.style.opacity = '0';
+                bubble.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    bubble.style.transition = 'all 0.5s ease';
+                    bubble.style.opacity = '1';
+                    bubble.style.transform = 'translateY(0)';
+                }, index * 1000);
+            });
+        }
+
+        // Smooth scroll para enlaces internos
+        function setupSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Efecto de hover en las capas de arquitectura
+        function setupArchitectureInteraction() {
+            const layers = document.querySelectorAll('.layer');
+            
+            layers.forEach(layer => {
+                layer.addEventListener('mouseenter', function() {
+                    this.style.transform += ' scale(1.05)';
+                    this.style.zIndex = '10';
+                });
+                
+                layer.addEventListener('mouseleave', function() {
+                    this.style.transform = this.style.transform.replace(' scale(1.05)', '');
+                    this.style.zIndex = '1';
+                });
+            });
+        }
+
+        // Inicializar todas las funciones
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            handleScrollAnimations();
+            setupSmoothScroll();
+            setupArchitectureInteraction();
+            
+            // Animar chat después de un delay
+            setTimeout(animateChat, 2000);
+        });
+
+        // Efecto de parallax suave
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.hero::before');
+            if (parallax) {
+                const speed = scrolled * 0.5;
+                parallax.style.transform = `translateY(${speed}px)`;
+            }
+        });
+    </script>
+</body>
+</html>

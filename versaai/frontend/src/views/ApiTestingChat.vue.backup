@@ -1,0 +1,1321 @@
+<template>
+  <div class="min-h-screen bg-gray-50 p-6">
+    <div class="max-w-7xl mx-auto">
+      <!-- Header -->
+      <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">API Testing Chat</h1>
+        <p class="text-gray-600">Prueba y monitorea la API de VersaAI en tiempo real</p>
+        
+        <!-- API Status -->
+        <div class="mt-4 flex items-center space-x-4">
+          <div class="flex items-center space-x-2">
+            <div :class="[
+              'w-3 h-3 rounded-full',
+              apiStatus === 'online' ? 'bg-green-500' : 'bg-red-500'
+            ]"></div>
+            <span class="text-sm font-medium">
+              API Status: {{ apiStatus === 'online' ? 'Online' : 'Offline' }}
+            </span>
+          </div>
+          <button 
+            @click="checkApiStatus" 
+            class="px-3 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Refresh
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Tests -->
+      <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">🚀 Quick Tests</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <button 
+            @click="testEndpoint('/health')"
+            class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left"
+          >
+            <div class="font-medium text-gray-900">Health Check</div>
+            <div class="text-sm text-gray-500">GET /health</div>
+          </button>
+          <button 
+            @click="testEndpoint('/api/docs')"
+            class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left"
+          >
+            <div class="font-medium text-gray-900">API Docs</div>
+            <div class="text-sm text-gray-500">GET /api/docs</div>
+          </button>
+          <button 
+            @click="testEndpoint('/api/v1/chat/test')"
+            class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 text-left"
+          >
+            <div class="font-medium text-gray-900">Chat Test</div>
+            <div class="text-sm text-gray-500">GET /api/v1/chat/test</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Generative AI Tests -->
+      <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-semibold text-gray-900">🤖 Generative AI Tests</h2>
+          <button 
+            @click="togglePlayground"
+            class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
+          >
+            🎮 Abrir Playground
+          </button>
+        </div>
+        
+        <!-- Test Category Selection -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Categoría de Tests:</label>
+          <select 
+            v-model="selectedTestCategory" 
+            class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="">Seleccionar categoría...</option>
+            <option value="code_generation">Generación de Código</option>
+            <option value="image_analysis">Análisis de Imágenes</option>
+            <option value="logical_reasoning">Razonamiento Lógico</option>
+          </select>
+        </div>
+
+        <!-- Available Tests -->
+        <div v-if="selectedTestCategory" class="mb-4">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-lg font-medium text-gray-900">Tests Disponibles</h3>
+            <button 
+              @click="runAllTestsInCategory(selectedTestCategory)"
+              class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-sm"
+            >
+              Ejecutar Todos
+            </button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div 
+              v-for="test in getTestsByCategory(selectedTestCategory)" 
+              :key="test.id"
+              class="p-3 border border-gray-200 rounded-lg hover:bg-gray-50"
+            >
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="font-medium text-gray-900">{{ test.name }}</div>
+                  <div class="text-sm text-gray-500">Dificultad: {{ test.difficulty }}</div>
+                </div>
+                <button 
+                  @click="runGenerativeTest(test)"
+                  class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+                >
+                  Ejecutar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Test Results -->
+        <div v-if="generativeTestResults.length > 0" class="mt-6">
+          <h3 class="text-lg font-medium text-gray-900 mb-3">Resultados de Tests</h3>
+          <div class="space-y-4">
+            <div 
+              v-for="result in generativeTestResults" 
+              :key="result.id"
+              class="border border-gray-200 rounded-lg p-4"
+            >
+              <div class="flex items-center justify-between mb-2">
+                <div>
+                  <span class="font-medium">{{ result.category }} - {{ result.name }}</span>
+                  <span class="ml-2 text-sm text-gray-500">({{ result.difficulty }})</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <span :class="[
+                    'px-2 py-1 rounded text-xs font-medium',
+                    result.status === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                  ]">
+                    {{ result.status === 'success' ? 'Éxito' : 'Error' }}
+                  </span>
+                  <span class="text-sm text-gray-500">{{ result.responseTime }}ms</span>
+                </div>
+              </div>
+              
+              <div v-if="result.status === 'success'" class="mb-3">
+                <div class="text-sm font-medium text-gray-700 mb-1">Puntuación: {{ result.score }}/100</div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                  <div>Elementos: {{ result.evaluation.elements }}/{{ result.evaluation.maxElements }}</div>
+                  <div>Detalle: {{ result.evaluation.detail }}/25</div>
+                  <div>Estructura: {{ result.evaluation.structure }}/25</div>
+                  <div>Tiempo: {{ result.evaluation.responseTime }}/25</div>
+                </div>
+                <div v-if="result.evaluation.feedback" class="mt-2 text-sm text-gray-600">
+                  <strong>Feedback:</strong> {{ result.evaluation.feedback }}
+                </div>
+              </div>
+              
+              <div class="text-sm">
+                <div class="mb-2">
+                  <strong class="text-gray-700">Prompt:</strong>
+                  <div class="bg-gray-50 p-2 rounded mt-1">{{ result.prompt }}</div>
+                </div>
+                <div>
+                  <strong class="text-gray-700">{{ result.status === 'success' ? 'Respuesta' : 'Error' }}:</strong>
+                  <div class="bg-gray-50 p-2 rounded mt-1 max-h-32 overflow-y-auto">
+                    {{ result.status === 'success' ? result.response : result.error }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Code Playground -->
+      <div v-if="showPlayground" class="bg-white rounded-lg shadow-sm p-6 mb-6 playground-container">
+        <div class="playground-header flex items-center justify-between mb-4">
+          <h2 class="text-xl font-semibold text-gray-900">🎮 Code Playground</h2>
+          <div class="playground-controls flex items-center space-x-2">
+            <select 
+              v-model="playgroundLanguage" 
+              class="px-3 py-1 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="html">HTML</option>
+              <option value="javascript">JavaScript</option>
+              <option value="css">CSS</option>
+              <option value="vue">Vue.js</option>
+              <option value="react">React</option>
+              <option value="python">Python</option>
+            </select>
+            <button 
+              @click="runPlaygroundCode"
+              class="px-3 py-1 bg-green-500 text-white rounded text-sm hover:bg-green-600"
+            >
+              Ejecutar
+            </button>
+            <button 
+              @click="clearPlayground"
+              class="px-3 py-1 bg-gray-500 text-white rounded text-sm hover:bg-gray-600"
+            >
+              Limpiar
+            </button>
+            <button 
+              @click="togglePlayground"
+              class="px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+        
+        <div class="playground-content flex" :style="{ height: playgroundHeight + 'px' }">
+          <!-- Code Editor -->
+          <div class="playground-editor flex-1 border-r border-gray-300">
+            <textarea 
+              v-model="playgroundCode"
+              class="code-editor w-full h-full p-4 font-mono text-sm bg-gray-900 text-green-400 border-none resize-none focus:outline-none"
+              :placeholder="getCodePlaceholder()"
+            ></textarea>
+          </div>
+          
+          <!-- Preview -->
+          <div class="playground-preview flex-1 flex flex-col">
+            <div class="flex items-center justify-between p-2 bg-gray-100 border-b">
+              <span class="text-sm font-medium text-gray-700">Preview</span>
+              <button 
+                @click="refreshPreview"
+                class="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
+              >
+                Refresh
+              </button>
+            </div>
+            <div class="flex-1">
+              <iframe 
+                ref="playgroundIframe"
+                :srcdoc="iframeContent"
+                class="playground-iframe"
+                sandbox="allow-scripts allow-same-origin"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Resize Handle -->
+        <div 
+          class="resize-handle w-full h-2 bg-gray-200 cursor-ns-resize hover:bg-gray-300 transition-colors"
+          @mousedown="startResize"
+        ></div>
+        
+        <!-- Error Display -->
+        <div v-if="playgroundError" class="error-container mt-4">
+          <h4 class="text-red-800 font-medium mb-2">Error:</h4>
+          <pre class="text-red-700">{{ playgroundError }}</pre>
+        </div>
+      </div>
+
+      <!-- Custom Endpoint Testing -->
+      <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">🔧 Custom Endpoint Testing</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+          <select 
+            v-model="customMethod" 
+            class="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+            <option value="DELETE">DELETE</option>
+            <option value="PATCH">PATCH</option>
+          </select>
+          
+          <input 
+            v-model="customEndpoint" 
+            type="text" 
+            placeholder="/api/v1/endpoint" 
+            class="md:col-span-2 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+          
+          <button 
+            @click="testCustomEndpoint" 
+            class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-500"
+          >
+            Test
+          </button>
+        </div>
+
+        <!-- Request Body -->
+        <div class="mb-4">
+          <div class="flex items-center justify-between mb-2">
+            <label class="block text-sm font-medium text-gray-700">Request Body (JSON):</label>
+            <button 
+              @click="clearRequestBody" 
+              class="text-xs text-gray-500 hover:text-gray-700"
+            >
+              Clear
+            </button>
+          </div>
+          <textarea 
+            v-model="requestBody" 
+            rows="6" 
+            class="w-full p-3 border border-gray-300 rounded-md font-mono text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder='{\n  "message": "Hello API"\n}'
+          ></textarea>
+        </div>
+
+        <!-- Custom Headers -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Custom Headers:</label>
+          <div class="space-y-2">
+            <div 
+              v-for="(header, index) in customHeaders" 
+              :key="index" 
+              class="flex space-x-2"
+            >
+              <input 
+                v-model="header.key" 
+                type="text" 
+                placeholder="Header name" 
+                class="flex-1 p-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500"
+              >
+              <input 
+                v-model="header.value" 
+                type="text" 
+                placeholder="Header value" 
+                class="flex-1 p-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500"
+              >
+              <button 
+                @click="removeHeader(index)" 
+                class="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 text-sm"
+              >
+                ✕
+              </button>
+            </div>
+            <button 
+              @click="addHeader" 
+              class="px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 text-sm"
+            >
+              + Add Header
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Test History -->
+      <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-semibold text-gray-900">📊 Test History</h2>
+          <div class="space-x-2">
+            <button 
+              @click="exportLogs" 
+              class="px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 text-sm"
+            >
+              Export
+            </button>
+            <button 
+              @click="clearAll" 
+              class="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 text-sm"
+            >
+              Clear All
+            </button>
+          </div>
+        </div>
+        
+        <div class="space-y-3 max-h-96 overflow-y-auto">
+          <div 
+            v-for="(log, index) in logs" 
+            :key="index" 
+            :class="[
+              'p-4 rounded-lg border',
+              log.type === 'success' ? 'bg-green-50 border-green-200' :
+              log.type === 'error' ? 'bg-red-50 border-red-200' :
+              log.type === 'request' ? 'bg-blue-50 border-blue-200' :
+              'bg-gray-50 border-gray-200'
+            ]"
+          >
+            <div class="flex items-center justify-between mb-2">
+              <span :class="[
+                'text-xs font-medium px-2 py-1 rounded',
+                log.type === 'success' ? 'bg-green-100 text-green-800' :
+                log.type === 'error' ? 'bg-red-100 text-red-800' :
+                log.type === 'request' ? 'bg-blue-100 text-blue-800' :
+                'bg-gray-100 text-gray-800'
+              ]">
+                {{ log.type.toUpperCase() }}
+              </span>
+              <span class="text-xs text-gray-500">{{ formatTime(log.timestamp) }}</span>
+            </div>
+            
+            <div v-if="log.method && log.url" class="mb-2">
+              <span class="font-medium text-sm">{{ log.method }}</span>
+              <span class="text-sm text-gray-600 ml-2">{{ log.url }}</span>
+            </div>
+            
+            <div v-if="log.headers" class="mb-2">
+              <div class="text-xs text-gray-600 mb-1">Headers:</div>
+              <pre class="text-xs bg-white p-2 rounded border overflow-x-auto">{{ formatJson(log.headers) }}</pre>
+            </div>
+            
+            <div v-if="log.body" class="mb-2">
+              <div class="text-xs text-gray-600 mb-1">Body:</div>
+              <pre class="text-xs bg-white p-2 rounded border overflow-x-auto">{{ formatJson(log.body) }}</pre>
+            </div>
+            
+            <div class="text-sm">
+              {{ log.message }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Input -->
+      <div class="bg-white rounded-lg shadow-sm p-6">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">💬 AI Chat Testing</h2>
+        
+        <div class="flex space-x-4">
+          <textarea 
+            v-model="chatMessage" 
+            rows="3" 
+            class="flex-1 p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Escribe tu mensaje para probar la IA..."
+            @keydown.ctrl.enter="sendChatMessage"
+          ></textarea>
+          
+          <div class="flex flex-col space-y-2">
+            <button 
+              @click="sendChatMessage" 
+              :disabled="!chatMessage.trim()"
+              class="px-6 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+            >
+              Send
+            </button>
+            <div class="text-xs text-gray-500 text-center">
+              {{ chatMessage.length }}/1000
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-2 text-xs text-gray-500">
+          💡 Comandos: /clear, /status, /test-all, /help
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, reactive, computed, onMounted } from 'vue'
+import generativeTests from '@/data/generative-tests.json'
+
+// Reactive data
+const chatMessage = ref('')
+const apiStatus = ref('checking')
+const customEndpoint = ref('/api/v1/chat')
+const customMethod = ref('POST')
+const requestBody = ref('{\n  "message": "Hello API"\n}')
+const customHeaders = ref([{ key: 'Content-Type', value: 'application/json' }])
+const showChatInput = ref(true)
+const logs = ref([])
+const testHistory = ref([])
+
+// Generative tests
+const selectedTestCategory = ref('')
+const selectedTest = ref(null)
+const generativeTestResults = ref([])
+
+// Playground
+const showPlayground = ref(false)
+const playgroundCode = ref('')
+const playgroundLanguage = ref('html')
+const playgroundHeight = ref(400)
+const playgroundError = ref('')
+const playgroundIframe = ref(null)
+
+// API base URL
+const API_BASE_URL = 'http://localhost:8000'
+
+// Utility functions
+const addLog = (type, data) => {
+  logs.value.unshift({
+    type,
+    timestamp: new Date(),
+    ...data
+  })
+}
+
+const addToHistory = (test) => {
+  testHistory.value.unshift({
+    ...test,
+    timestamp: new Date()
+  })
+}
+
+const formatTime = (timestamp) => {
+  return new Date(timestamp).toLocaleTimeString()
+}
+
+const formatJson = (obj) => {
+  try {
+    return JSON.stringify(obj, null, 2)
+  } catch {
+    return obj
+  }
+}
+
+// API functions
+const checkApiStatus = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/health`)
+    if (response.ok) {
+      apiStatus.value = 'online'
+      addLog('success', { message: 'API is online and responding' })
+    } else {
+      apiStatus.value = 'offline'
+      addLog('error', { message: `API returned status: ${response.status}` })
+    }
+  } catch (error) {
+    apiStatus.value = 'offline'
+    addLog('error', { message: `Failed to connect to API: ${error.message}` })
+  }
+}
+
+const testEndpoint = async (endpoint) => {
+  const startTime = Date.now()
+  
+  try {
+    addLog('request', {
+      method: 'GET',
+      url: `${API_BASE_URL}${endpoint}`,
+      message: `Testing endpoint: ${endpoint}`
+    })
+    
+    const response = await fetch(`${API_BASE_URL}${endpoint}`)
+    const responseTime = Date.now() - startTime
+    
+    if (response.ok) {
+      const data = await response.text()
+      addLog('success', {
+        message: `✅ ${endpoint} responded in ${responseTime}ms`,
+        responseTime,
+        data
+      })
+      
+      addToHistory({
+        endpoint,
+        method: 'GET',
+        status: 'success',
+        responseTime
+      })
+    } else {
+      addLog('error', {
+        message: `❌ ${endpoint} failed with status: ${response.status}`,
+        status: response.status
+      })
+    }
+  } catch (error) {
+    const responseTime = Date.now() - startTime
+    addLog('error', {
+      message: `❌ ${endpoint} failed: ${error.message}`,
+      error: error.message,
+      responseTime
+    })
+  }
+}
+
+const testCustomEndpoint = async () => {
+  const startTime = Date.now()
+  
+  try {
+    const headers = {
+      'Content-Type': 'application/json'
+    }
+    
+    // Add custom headers
+    customHeaders.value.forEach(header => {
+      if (header.key && header.value) {
+        headers[header.key] = header.value
+      }
+    })
+    
+    const options = {
+      method: customMethod.value,
+      headers
+    }
+    
+    if (['POST', 'PUT', 'PATCH'].includes(customMethod.value) && requestBody.value.trim()) {
+      try {
+        JSON.parse(requestBody.value) // Validate JSON
+        options.body = requestBody.value
+      } catch {
+        addLog('error', { message: 'Invalid JSON in request body' })
+        return
+      }
+    }
+    
+    addLog('request', {
+      method: customMethod.value,
+      url: `${API_BASE_URL}${customEndpoint.value}`,
+      headers,
+      body: options.body,
+      message: `Testing custom endpoint: ${customMethod.value} ${customEndpoint.value}`
+    })
+    
+    const response = await fetch(`${API_BASE_URL}${customEndpoint.value}`, options)
+    const responseTime = Date.now() - startTime
+    
+    const responseText = await response.text()
+    let responseData
+    
+    try {
+      responseData = JSON.parse(responseText)
+    } catch {
+      responseData = responseText
+    }
+    
+    if (response.ok) {
+      addLog('success', {
+        message: `✅ ${customMethod.value} ${customEndpoint.value} responded in ${responseTime}ms`,
+        responseTime,
+        data: responseData
+      })
+    } else {
+      addLog('error', {
+        message: `❌ ${customMethod.value} ${customEndpoint.value} failed with status: ${response.status}`,
+        status: response.status,
+        data: responseData
+      })
+    }
+    
+    addToHistory({
+      endpoint: customEndpoint.value,
+      method: customMethod.value,
+      status: response.ok ? 'success' : 'error',
+      responseTime,
+      statusCode: response.status
+    })
+    
+  } catch (error) {
+    const responseTime = Date.now() - startTime
+    addLog('error', {
+      message: `❌ ${customMethod.value} ${customEndpoint.value} failed: ${error.message}`,
+      error: error.message,
+      responseTime
+    })
+  }
+}
+
+const sendChatMessage = async () => {
+  if (!chatMessage.value.trim()) return
+  
+  // Handle commands
+  if (chatMessage.value.startsWith('/')) {
+    handleCommand(chatMessage.value)
+    chatMessage.value = ''
+    return
+  }
+  
+  const message = chatMessage.value
+  chatMessage.value = ''
+  
+  const startTime = Date.now()
+  
+  try {
+    addLog('request', {
+      method: 'POST',
+      url: `${API_BASE_URL}/api/v1/chat`,
+      body: { message },
+      message: `Sending chat message: ${message.substring(0, 50)}...`
+    })
+    
+    const response = await fetch(`${API_BASE_URL}/api/v1/chat`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ message })
+    })
+    
+    const responseTime = Date.now() - startTime
+    
+    if (response.ok) {
+      const data = await response.json()
+      addLog('success', {
+        message: `🤖 AI Response (${responseTime}ms): ${data.response || data.message || 'No response'}`,
+        responseTime,
+        data
+      })
+    } else {
+      const errorData = await response.text()
+      addLog('error', {
+        message: `❌ Chat failed with status: ${response.status}`,
+        status: response.status,
+        error: errorData
+      })
+    }
+  } catch (error) {
+    const responseTime = Date.now() - startTime
+    addLog('error', {
+      message: `❌ Chat failed: ${error.message}`,
+      error: error.message,
+      responseTime
+    })
+  }
+}
+
+const handleCommand = (command) => {
+  const cmd = command.toLowerCase().trim()
+  
+  switch (cmd) {
+    case '/clear':
+      logs.value = []
+      addLog('chat', { message: '🧹 Logs cleared' })
+      break
+      
+    case '/status':
+      checkApiStatus()
+      break
+      
+    case '/test-all':
+      testEndpoint('/health')
+      testEndpoint('/api/docs')
+      testEndpoint('/api/v1/chat/test')
+      break
+      
+    case '/help':
+      addLog('chat', {
+        message: `📚 Available commands:
+/clear - Clear all logs
+/status - Check API status
+/test-all - Run all quick tests
+/help - Show this help`
+      })
+      break
+      
+    default:
+      addLog('error', { message: `❌ Unknown command: ${command}. Type /help for available commands.` })
+  }
+}
+
+// Utility functions for UI
+const clearRequestBody = () => {
+  requestBody.value = '{\n  "message": "Hello API"\n}'
+}
+
+const addHeader = () => {
+  customHeaders.value.push({ key: '', value: '' })
+}
+
+const removeHeader = (index) => {
+  customHeaders.value.splice(index, 1)
+}
+
+const clearAll = () => {
+  logs.value = []
+  testHistory.value = []
+  generativeTestResults.value = []
+  addLog('chat', { message: '🧹 All data cleared' })
+}
+
+const exportLogs = () => {
+  const exportData = {
+    logs: logs.value,
+    testHistory: testHistory.value,
+    generativeResults: generativeTestResults.value,
+    exportedAt: new Date().toISOString()
+  }
+  
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `api-test-logs-${new Date().toISOString().split('T')[0]}.json`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+  
+  addLog('success', { message: '📁 Logs exported successfully' })
+}
+
+// Generative test functions
+const getTestsByCategory = (category) => {
+  return generativeTests.filter(test => test.category === category)
+}
+
+const runGenerativeTest = async (test) => {
+  const startTime = Date.now()
+  
+  try {
+    addLog('request', {
+      method: 'POST',
+      url: `${API_BASE_URL}/api/v1/chat`,
+      body: { message: test.prompt },
+      message: `Running generative test: ${test.name}`
+    })
+    
+    const response = await fetch(`${API_BASE_URL}/api/v1/chat`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ message: test.prompt })
+    })
+    
+    const responseTime = Date.now() - startTime
+    
+    if (response.ok) {
+      const data = await response.json()
+      const aiResponse = data.response || data.message || ''
+      
+      // Evaluate the response
+      const evaluation = evaluateResponse(aiResponse, test, responseTime)
+      
+      const result = {
+        id: test.id,
+        name: test.name,
+        category: test.category,
+        difficulty: test.difficulty,
+        prompt: test.prompt,
+        response: aiResponse,
+        responseTime,
+        status: 'success',
+        evaluation,
+        score: evaluation.elements + evaluation.detail + evaluation.structure + evaluation.responseTime,
+        timestamp: new Date()
+      }
+      
+      generativeTestResults.value.unshift(result)
+      
+      addLog('success', {
+        message: `✅ Generative test "${test.name}" completed with score: ${result.score}/100`,
+        responseTime,
+        score: result.score
+      })
+    } else {
+      const errorData = await response.text()
+      
+      const result = {
+        id: test.id,
+        name: test.name,
+        category: test.category,
+        difficulty: test.difficulty,
+        prompt: test.prompt,
+        error: errorData,
+        responseTime,
+        status: 'error',
+        timestamp: new Date()
+      }
+      
+      generativeTestResults.value.unshift(result)
+      
+      addLog('error', {
+        message: `❌ Generative test "${test.name}" failed with status: ${response.status}`,
+        status: response.status,
+        error: errorData
+      })
+    }
+  } catch (error) {
+    const responseTime = Date.now() - startTime
+    
+    const result = {
+      id: test.id,
+      name: test.name,
+      category: test.category,
+      difficulty: test.difficulty,
+      prompt: test.prompt,
+      error: error.message,
+      responseTime,
+      status: 'error',
+      timestamp: new Date()
+    }
+    
+    generativeTestResults.value.unshift(result)
+    
+    addLog('error', {
+      message: `❌ Generative test "${test.name}" failed: ${error.message}`,
+      error: error.message,
+      responseTime
+    })
+  }
+}
+
+const evaluateResponse = (response, test, responseTime) => {
+  const evaluation = {
+    elements: 0,
+    detail: 0,
+    structure: 0,
+    responseTime: 0,
+    feedback: '',
+    maxElements: test.evaluation.expected_elements.length
+  }
+  
+  // Check for expected elements (max 25 points)
+  const elementsFound = test.evaluation.expected_elements.filter(element => 
+    response.toLowerCase().includes(element.toLowerCase())
+  ).length
+  
+  evaluation.elements = Math.round((elementsFound / test.evaluation.expected_elements.length) * 25)
+  
+  // Check response length and detail (max 25 points)
+  const minLength = test.evaluation.min_length || 50
+  const maxLength = test.evaluation.max_length || 1000
+  
+  if (response.length >= minLength && response.length <= maxLength) {
+    evaluation.detail = 25
+  } else if (response.length < minLength) {
+    evaluation.detail = Math.round((response.length / minLength) * 25)
+  } else {
+    evaluation.detail = Math.max(0, 25 - Math.round(((response.length - maxLength) / maxLength) * 10))
+  }
+  
+  // Check structure (max 25 points)
+  let structureScore = 0
+  if (test.evaluation.structure_requirements) {
+    test.evaluation.structure_requirements.forEach(req => {
+      if (response.includes(req)) {
+        structureScore += 25 / test.evaluation.structure_requirements.length
+      }
+    })
+  } else {
+    structureScore = 20 // Default score if no specific requirements
+  }
+  evaluation.structure = Math.round(structureScore)
+  
+  // Check response time (max 25 points)
+  if (responseTime <= 2000) {
+    evaluation.responseTime = 25
+  } else if (responseTime <= 5000) {
+    evaluation.responseTime = 20
+  } else if (responseTime <= 10000) {
+    evaluation.responseTime = 15
+  } else {
+    evaluation.responseTime = 10
+  }
+  
+  // Generate feedback
+  const totalScore = evaluation.elements + evaluation.detail + evaluation.structure + evaluation.responseTime
+  
+  if (totalScore >= 90) {
+    evaluation.feedback = 'Excelente respuesta, cumple con todos los criterios'
+  } else if (totalScore >= 75) {
+    evaluation.feedback = 'Buena respuesta, algunos elementos podrían mejorarse'
+  } else if (totalScore >= 60) {
+    evaluation.feedback = 'Respuesta aceptable, necesita mejoras significativas'
+  } else {
+    evaluation.feedback = 'Respuesta deficiente, no cumple con los criterios mínimos'
+  }
+  
+  return evaluation
+}
+
+const runAllTestsInCategory = async (category) => {
+  const tests = getTestsByCategory(category)
+  
+  addLog('chat', {
+    message: `🚀 Ejecutando ${tests.length} tests de la categoría: ${category}`
+  })
+  
+  for (const test of tests) {
+    await runGenerativeTest(test)
+    // Small delay between tests
+    await new Promise(resolve => setTimeout(resolve, 1000))
+  }
+  
+  addLog('success', {
+    message: `✅ Completados todos los tests de la categoría: ${category}`
+  })
+}
+
+// Playground functions
+const togglePlayground = () => {
+  showPlayground.value = !showPlayground.value
+  if (showPlayground.value && !playgroundCode.value) {
+    playgroundCode.value = getCodePlaceholder()
+  }
+}
+
+const getCodePlaceholder = () => {
+  const placeholders = {
+    html: `<!DOCTYPE html>
+<html>
+<head>
+    <title>Mi Página</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>¡Hola Mundo!</h1>
+        <p>Esta es una página HTML de ejemplo.</p>
+        <button onclick="alert('¡Hola!')">Hacer clic</button>
+    </div>
+</body>
+</html>`,
+    javascript: `// JavaScript Code
+console.log('¡Hola Mundo!');
+
+function saludar(nombre) {
+    return \`Hola, \${nombre}!\`;
+}
+
+// Ejemplo de uso
+const nombre = 'Usuario';
+console.log(saludar(nombre));
+
+// Array de números
+const numeros = [1, 2, 3, 4, 5];
+numeros.forEach(num => {
+    console.log(\`Número: \${num}\`);
+});`,
+    css: `/* CSS Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}`,
+    vue: `<template>
+  <div class="app">
+    <h1>{{ mensaje }}</h1>
+    <button @click="cambiarMensaje">Cambiar Mensaje</button>
+    <p>Contador: {{ contador }}</p>
+    <button @click="contador++">Incrementar</button>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      mensaje: '¡Hola Vue!',
+      contador: 0
+    }
+  },
+  methods: {
+    cambiarMensaje() {
+      this.mensaje = '¡Mensaje cambiado!'
+    }
+  }
+}
+</script>
+
+<style scoped>
+.app {
+  text-align: center;
+  padding: 20px;
+}
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+</style>`,
+    react: `import React, { useState } from 'react';
+
+function App() {
+  const [mensaje, setMensaje] = useState('¡Hola React!');
+  const [contador, setContador] = useState(0);
+
+  return (
+    <div style={{textAlign: 'center', padding: '20px'}}>
+      <h1>{mensaje}</h1>
+      <button onClick={() => setMensaje('¡Mensaje cambiado!')}>
+        Cambiar Mensaje
+      </button>
+      <p>Contador: {contador}</p>
+      <button onClick={() => setContador(contador + 1)}>
+        Incrementar
+      </button>
+    </div>
+  );
+}
+
+export default App;`,
+    python: `# Python Code
+print("¡Hola Mundo!")
+
+def saludar(nombre):
+    return f"Hola, {nombre}!"
+
+nombre = "Usuario"
+print(saludar(nombre))
+
+# Lista de números
+numeros = [1, 2, 3, 4, 5]
+for num in numeros:
+    print(f"Número: {num}")`
+  }
+  return placeholders[playgroundLanguage.value] || placeholders.html
+}
+
+const runPlaygroundCode = () => {
+  playgroundError.value = ''
+  if (playgroundLanguage.value === 'html') {
+    // Para HTML, mostrar directamente
+    refreshPreview()
+  } else {
+    // Para otros lenguajes, mostrar el código
+    addLog('chat', {
+      message: `Código ${playgroundLanguage.value} ejecutado en playground`
+    })
+  }
+}
+
+const clearPlayground = () => {
+  playgroundCode.value = getCodePlaceholder()
+  playgroundError.value = ''
+  refreshPreview()
+}
+
+const refreshPreview = () => {
+  // Actualizar el iframe con el código HTML
+  if (playgroundIframe.value) {
+    playgroundIframe.value.srcdoc = iframeContent.value
+  }
+}
+
+const startResize = (event) => {
+  const startY = event.clientY
+  const startHeight = playgroundHeight.value
+  
+  const handleMouseMove = (e) => {
+    const deltaY = e.clientY - startY
+    playgroundHeight.value = Math.max(200, Math.min(800, startHeight + deltaY))
+  }
+  
+  const handleMouseUp = () => {
+    document.removeEventListener('mousemove', handleMouseMove)
+    document.removeEventListener('mouseup', handleMouseUp)
+  }
+  
+  document.addEventListener('mousemove', handleMouseMove)
+  document.addEventListener('mouseup', handleMouseUp)
+}
+
+// Computed property for iframe content
+const iframeContent = computed(() => {
+  if (playgroundLanguage.value === 'html') {
+    return playgroundCode.value
+  } else {
+    return `
+      <html>
+        <head>
+          <style>
+            body { font-family: monospace; padding: 20px; background: #f5f5f5; }
+            pre { background: white; padding: 15px; border-radius: 5px; overflow: auto; }
+          </style>
+        </head>
+        <body>
+          <h3>Código ${playgroundLanguage.value.toUpperCase()}:</h3>
+          <pre><code>${playgroundCode.value.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>
+        </body>
+      </html>
+    `
+  }
+})
+
+// Lifecycle
+onMounted(() => {
+  checkApiStatus()
+  
+  addLog('chat', {
+    message: '🚀 API Testing Chat iniciado. Usa /help para ver comandos disponibles.'
+  })
+})
+</script>
+
+<style scoped>
+/* Estilos específicos para el playground */
+.playground-container {
+  min-height: 200px;
+  max-height: 80vh;
+}
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 1024px) {
+  .playground-content {
+    flex-direction: column !important;
+  }
+  
+  .playground-editor,
+  .playground-preview {
+    min-height: 200px;
+  }
+  
+  .playground-editor {
+    border-right: none !important;
+    border-bottom: 1px solid #374151;
+  }
+}
+
+@media (max-width: 768px) {
+  .playground-header {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .playground-controls {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .playground-controls button {
+    flex: 1;
+    min-width: 80px;
+  }
+}
+
+@media (max-width: 640px) {
+  .playground-editor textarea {
+    font-size: 12px;
+    padding: 0.75rem;
+  }
+  
+  .playground-header h2 {
+    font-size: 1rem;
+  }
+  
+  .playground-header select {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+}
+
+/* Mejoras para el editor de código */
+.code-editor {
+  font-family: 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  line-height: 1.5;
+  tab-size: 2;
+}
+
+/* Animaciones suaves */
+.playground-transition {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Scroll personalizado para el editor */
+.code-editor::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.code-editor::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+.code-editor::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
+
+.code-editor::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Indicador de redimensionamiento */
+.resize-handle {
+  position: relative;
+  user-select: none;
+}
+
+.resize-handle:hover::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 4px;
+  background: #9ca3af;
+  border-radius: 2px;
+}
+
+/* Mejoras para el iframe */
+.playground-iframe {
+  background: white;
+  border: none;
+  width: 100%;
+  height: 100%;
+}
+
+/* Estados de carga */
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f9fafb;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+/* Contenedor de errores */
+.error-container {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.375rem;
+  padding: 1rem;
+  margin: 0.5rem;
+}
+
+.error-container pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+  font-size: 0.75rem;
+}
+</style>

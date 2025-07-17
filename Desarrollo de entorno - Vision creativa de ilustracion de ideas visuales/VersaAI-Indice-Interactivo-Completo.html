@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 VersaAI Platform - Índice Interactivo Completo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .card h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 2px solid #dee2e6;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .tech-stack {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .tech-item {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .tech-item:hover {
+            background: #e9ecef;
+            transform: scale(1.05);
+        }
+
+        .tech-item .icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .progress-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 20px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 10px;
+            transition: width 2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .floating-nav {
+            position: fixed;
+            top: 50%;
+            right: 30px;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            padding: 20px 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .floating-nav a {
+            display: block;
+            padding: 10px;
+            margin: 5px 0;
+            text-decoration: none;
+            color: #333;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .floating-nav a:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .floating-nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="floating-nav">
+        <a href="#overview" title="Resumen">📊</a>
+        <a href="#docs" title="Documentación">📚</a>
+        <a href="#tech" title="Tecnologías">⚙️</a>
+        <a href="#progress" title="Progreso">📈</a>
+        <a href="#resources" title="Recursos">🔗</a>
+    </div>
+
+    <div class="container">
+        <div class="header" id="overview">
+            <h1>🚀 VersaAI Platform</h1>
+            <p>Índice Interactivo Completo - Configuración y Desarrollo</p>
+        </div>
+
+        <div class="tech-stack" id="tech">
+            <h2 style="text-align: center; margin-bottom: 20px; color: #333;">🛠️ Stack Tecnológico</h2>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <span class="icon">⚛️</span>
+                    <h4>React 18</h4>
+                    <p>Frontend Framework</p>
+                </div>
+                <div class="tech-item">
+                    <span class="icon">📘</span>
+                    <h4>TypeScript</h4>
+                    <p>Type Safety</p>
+                </div>
+                <div class="tech-item">
+                    <span class="icon">🐍</span>
+                    <h4>Django</h4>
+                    <p>Backend Framework</p>
+                </div>
+                <div class="tech-item">
+                    <span class="icon">🐘</span>
+                    <h4>PostgreSQL</h4>
+                    <p>Base de Datos</p>
+                </div>
+                <div class="tech-item">
+                    <span class="icon">🔴</span>
+                    <h4>Redis</h4>
+                    <p>Cache & Queue</p>
+                </div>
+                <div class="tech-item">
+                    <span class="icon">🧠</span>
+                    <h4>Groq API</h4>
+                    <p>IA Integration</p>
+                </div>
+                <div class="tech-item">
+                    <span class="icon">🔍</span>
+                    <h4>ChromaDB</h4>
+                    <p>Vector Database</p>
+                </div>
+                <div class="tech-item">
+                    <span class="icon">🐳</span>
+                    <h4>Docker</h4>
+                    <p>Containerización</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-section" id="progress">
+            <h2 style="text-align: center; margin-bottom: 20px; color: #333;">📈 Progreso del Proyecto</h2>
+            <div style="margin-bottom: 15px;">
+                <strong>📋 Documentación Técnica</strong>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 100%;">100% Completado</div>
+                </div>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <strong>🎨 Visualizaciones Interactivas</strong>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 100%;">100% Completado</div>
+                </div>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <strong>⚙️ Configuración de Entorno</strong>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 95%;">95% Completado</div>
+                </div>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <strong>🚀 Scripts de Automatización</strong>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 90%;">90% Completado</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid" id="docs">
+            <div class="card">
+                <span class="card-icon">📋</span>
+                <h3>Documentación Técnica Completa</h3>
+                <p>Guía completa con estructura del proyecto, configuraciones de Docker Compose, dependencias del backend y frontend, sistema RAG, seguridad y scripts de automatización.</p>
+                <div class="card-actions">
+                    <button class="btn btn-primary" onclick="openFile('VersaAI-Documentacion-Tecnica-Completa.md')">📖 Ver Documentación</button>
+                    <button class="btn btn-secondary" onclick="showPreview('tech-doc')">👁️ Vista Previa</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="card-icon">🎨</span>
+                <h3>Visión Interactiva 3D</h3>
+                <p>Experiencia visual inmersiva con animaciones, diagramas interactivos y visualización completa de la arquitectura del sistema VersaAI Platform.</p>
+                <div class="card-actions">
+                    <button class="btn btn-primary" onclick="openFile('VersaAI-Vision-Interactiva-3D.html')">🌟 Abrir Experiencia</button>
+                    <button class="btn btn-secondary" onclick="showPreview('3d-vision')">👁️ Vista Previa</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="card-icon">🏗️</span>
+                <h3>Arquitectura Interactiva</h3>
+                <p>Diagrama SVG interactivo que visualiza la arquitectura completa del sistema, incluyendo frontend, backend, servicios de IA y bases de datos.</p>
+                <div class="card-actions">
+                    <button class="btn btn-primary" onclick="openFile('VersaAI-Arquitectura-Interactiva.svg')">🔍 Ver Arquitectura</button>
+                    <button class="btn btn-secondary" onclick="showPreview('architecture')">👁️ Vista Previa</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="card-icon">⚡</span>
+                <h3>Flujo de Desarrollo</h3>
+                <p>Simulador interactivo del flujo de trabajo de desarrollo con fases de configuración, desarrollo de backend, frontend, sistema RAG y despliegue.</p>
+                <div class="card-actions">
+                    <button class="btn btn-primary" onclick="openFile('VersaAI-Flujo-Desarrollo-Interactivo.html')">🚀 Iniciar Simulación</button>
+                    <button class="btn btn-secondary" onclick="showPreview('dev-flow')">👁️ Vista Previa</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="card-icon">💻</span>
+                <h3>Entorno de Desarrollo Simulado</h3>
+                <p>IDE simulado con terminal, editor de código y vista previa en tiempo real para ilustrar el flujo de trabajo de desarrollo.</p>
+                <div class="card-actions">
+                    <button class="btn btn-primary" onclick="openFile('VersaAI-Entorno-Desarrollo-Simulado.html')">💻 Abrir IDE</button>
+                    <button class="btn btn-secondary" onclick="showPreview('dev-env')">👁️ Vista Previa</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="card-icon">📊</span>
+                <h3>Configuración Completa</h3>
+                <p>Detalles completos de configuración del proyecto incluyendo Docker Compose, variables de entorno, dependencias y comandos de inicio rápido.</p>
+                <div class="card-actions">
+                    <button class="btn btn-primary" onclick="openFile('VersaAI-Configuracion-Completa.md')">⚙️ Ver Configuración</button>
+                    <button class="btn btn-secondary" onclick="showPreview('config')">👁️ Vista Previa</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="card-icon">📝</span>
+                <h3>Flujo de Trabajo Completo</h3>
+                <p>Guía detallada del flujo de trabajo completo con estructura del proyecto, configuraciones específicas y hoja de ruta de desarrollo.</p>
+                <div class="card-actions">
+                    <button class="btn btn-primary" onclick="openFile('VersaAI-Flujo-Trabajo-Completo.md')">📋 Ver Flujo</button>
+                    <button class="btn btn-secondary" onclick="showPreview('workflow')">👁️ Vista Previa</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <span class="card-icon">🌟</span>
+                <h3>Visión Interactiva Original</h3>
+                <p>Primera visualización interactiva del proyecto con demo del stack tecnológico, estructura del proyecto y comandos de inicio rápido.</p>
+                <div class="card-actions">
+                    <button class="btn btn-primary" onclick="openFile('VersaAI-Platform-Vision-Interactiva.html')">✨ Ver Original</button>
+                    <button class="btn btn-secondary" onclick="showPreview('original')">👁️ Vista Previa</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tech-stack" id="resources">
+            <h2 style="text-align: center; margin-bottom: 20px; color: #333;">🔗 Recursos y Enlaces</h2>
+            <div class="grid" style="margin-top: 0;">
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 15px;">
+                    <h4>📚 Documentación Oficial</h4>
+                    <ul style="margin-top: 10px; line-height: 1.8;">
+                        <li><a href="https://react.dev/" target="_blank">React Documentation</a></li>
+                        <li><a href="https://www.typescriptlang.org/docs/" target="_blank">TypeScript Docs</a></li>
+                        <li><a href="https://docs.djangoproject.com/" target="_blank">Django Documentation</a></li>
+                        <li><a href="https://www.django-rest-framework.org/" target="_blank">Django REST Framework</a></li>
+                    </ul>
+                </div>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 15px;">
+                    <h4>🧠 IA y Machine Learning</h4>
+                    <ul style="margin-top: 10px; line-height: 1.8;">
+                        <li><a href="https://console.groq.com/docs/quickstart" target="_blank">Groq API Quickstart</a></li>
+                        <li><a href="https://docs.trychroma.com/" target="_blank">ChromaDB Documentation</a></li>
+                        <li><a href="https://www.sbert.net/" target="_blank">Sentence Transformers</a></li>
+                        <li><a href="https://python.langchain.com/docs/get_started/introduction" target="_blank">LangChain</a></li>
+                    </ul>
+                </div>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 15px;">
+                    <h4>🐳 Infraestructura</h4>
+                    <ul style="margin-top: 10px; line-height: 1.8;">
+                        <li><a href="https://docs.docker.com/" target="_blank">Docker Documentation</a></li>
+                        <li><a href="https://docs.docker.com/compose/" target="_blank">Docker Compose</a></li>
+                        <li><a href="https://redis.io/docs/" target="_blank">Redis Documentation</a></li>
+                        <li><a href="https://www.postgresql.org/docs/" target="_blank">PostgreSQL Docs</a></li>
+                    </ul>
+                </div>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 15px;">
+                    <h4>🔒 Seguridad</h4>
+                    <ul style="margin-top: 10px; line-height: 1.8;">
+                        <li><a href="https://jwt.io/introduction" target="_blank">JWT Introduction</a></li>
+                        <li><a href="https://docs.djangoproject.com/en/4.2/topics/security/" target="_blank">Django Security</a></li>
+                        <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS" target="_blank">CORS Documentation</a></li>
+                        <li><a href="https://docs.celeryq.dev/" target="_blank">Celery Documentation</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para vistas previas -->
+    <div id="previewModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Crear partículas animadas
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 4 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Abrir archivo
+        function openFile(filename) {
+            // En un entorno real, esto abriría el archivo
+            alert(`Abriendo: ${filename}\n\nEn un entorno de desarrollo real, esto abriría el archivo correspondiente.`);
+        }
+
+        // Mostrar vista previa
+        function showPreview(type) {
+            const modal = document.getElementById('previewModal');
+            const content = document.getElementById('modalContent');
+            
+            let previewContent = '';
+            
+            switch(type) {
+                case 'tech-doc':
+                    previewContent = `
+                        <h2>📋 Documentación Técnica Completa</h2>
+                        <p>Esta documentación incluye:</p>
+                        <ul>
+                            <li>🏗️ Estructura completa del proyecto</li>
+                            <li>🐳 Configuración de Docker Compose</li>
+                            <li>🐍 Configuraciones del backend Django</li>
+                            <li>⚛️ Configuraciones del frontend React</li>
+                            <li>🧠 Sistema RAG con ChromaDB y Groq</li>
+                            <li>🔒 Configuraciones de seguridad</li>
+                            <li>📜 Scripts de automatización</li>
+                            <li>🔗 Enlaces a documentación oficial</li>
+                        </ul>
+                    `;
+                    break;
+                case '3d-vision':
+                    previewContent = `
+                        <h2>🎨 Visión Interactiva 3D</h2>
+                        <p>Experiencia visual inmersiva que incluye:</p>
+                        <ul>
+                            <li>🌟 Animaciones 3D y efectos visuales</li>
+                            <li>🏗️ Diagramas interactivos de arquitectura</li>
+                            <li>🎯 Demo del stack tecnológico</li>
+                            <li>🚀 Simulación del flujo de desarrollo</li>
+                            <li>📊 Visualización de métricas</li>
+                            <li>🎨 Interfaz moderna y responsive</li>
+                        </ul>
+                    `;
+                    break;
+                case 'architecture':
+                    previewContent = `
+                        <h2>🏗️ Arquitectura Interactiva</h2>
+                        <p>Diagrama SVG interactivo que muestra:</p>
+                        <ul>
+                            <li>⚛️ Frontend React con TypeScript</li>
+                            <li>🔧 Widget embebible en JavaScript</li>
+                            <li>🌐 API Gateway con Django REST</li>
+                            <li>🧠 Servicios de IA (Groq, ChromaDB)</li>
+                            <li>⚡ Celery Worker para tareas asíncronas</li>
+                            <li>🗄️ Bases de datos (PostgreSQL, Redis)</li>
+                            <li>🐳 Contenedores Docker</li>
+                        </ul>
+                    `;
+                    break;
+                default:
+                    previewContent = `
+                        <h2>Vista Previa</h2>
+                        <p>Contenido del archivo seleccionado...</p>
+                    `;
+            }
+            
+            content.innerHTML = previewContent;
+            modal.style.display = 'block';
+        }
+
+        // Cerrar modal
+        function closeModal() {
+            document.getElementById('previewModal').style.display = 'none';
+        }
+
+        // Cerrar modal al hacer clic fuera
+        window.onclick = function(event) {
+            const modal = document.getElementById('previewModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Navegación suave
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animar barras de progreso al cargar
+        window.addEventListener('load', function() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach((bar, index) => {
+                setTimeout(() => {
+                    const width = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(() => {
+                        bar.style.width = width;
+                    }, 100);
+                }, index * 200);
+            });
+        });
+
+        // Inicializar partículas
+        createParticles();
+
+        // Efecto de escritura para el título
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.innerHTML = '';
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        // Aplicar efecto de escritura al título principal
+        setTimeout(() => {
+            const title = document.querySelector('.header h1');
+            const originalText = title.textContent;
+            typeWriter(title, originalText, 150);
+        }, 500);
+    </script>
+</body>
+</html>

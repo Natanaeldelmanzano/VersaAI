@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico VersaAI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        .status {
+            background: #4CAF50;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .error {
+            background: #f44336;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        button {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+        }
+        button:hover {
+            background: #1976D2;
+        }
+        #counter {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Diagnóstico VersaAI</h1>
+        <p>Esta página verifica si el servidor web está funcionando correctamente.</p>
+        
+        <div class="status">
+            ✅ HTML cargado correctamente
+        </div>
+        
+        <div class="status">
+            ✅ CSS aplicado correctamente
+        </div>
+        
+        <div id="js-status" class="error">
+            ❌ JavaScript no ejecutado
+        </div>
+        
+        <div id="counter">0</div>
+        
+        <button onclick="increment()">Incrementar Contador</button>
+        <button onclick="testVue()">Probar Vue.js</button>
+        <button onclick="testAPI()">Probar API</button>
+        
+        <div id="vue-status"></div>
+        <div id="api-status"></div>
+        
+        <h3>Información del Sistema:</h3>
+        <ul>
+            <li><strong>URL:</strong> <span id="current-url"></span></li>
+            <li><strong>User Agent:</strong> <span id="user-agent"></span></li>
+            <li><strong>Timestamp:</strong> <span id="timestamp"></span></li>
+        </ul>
+        
+        <h3>Enlaces de Navegación:</h3>
+        <button onclick="window.location.href='http://localhost:3000/'">Ir a Vue App</button>
+        <button onclick="window.location.href='http://localhost:8000/api/docs'">Ir a API Docs</button>
+    </div>
+    
+    <script>
+        let counter = 0;
+        
+        // Verificar que JavaScript funciona
+        document.getElementById('js-status').innerHTML = '✅ JavaScript funcionando correctamente';
+        document.getElementById('js-status').className = 'status';
+        
+        // Mostrar información del sistema
+        document.getElementById('current-url').textContent = window.location.href;
+        document.getElementById('user-agent').textContent = navigator.userAgent;
+        document.getElementById('timestamp').textContent = new Date().toLocaleString();
+        
+        function increment() {
+            counter++;
+            document.getElementById('counter').textContent = counter;
+            console.log('Contador incrementado a:', counter);
+        }
+        
+        function testVue() {
+            const vueStatus = document.getElementById('vue-status');
+            
+            // Intentar cargar Vue desde CDN
+            const script = document.createElement('script');
+            script.src = 'https://unpkg.com/vue@3/dist/vue.global.js';
+            script.onload = function() {
+                vueStatus.innerHTML = '<div class="status">✅ Vue.js 3 cargado desde CDN</div>';
+                console.log('Vue.js cargado:', Vue);
+            };
+            script.onerror = function() {
+                vueStatus.innerHTML = '<div class="error">❌ Error al cargar Vue.js</div>';
+            };
+            document.head.appendChild(script);
+        }
+        
+        async function testAPI() {
+            const apiStatus = document.getElementById('api-status');
+            
+            try {
+                const response = await fetch('http://localhost:8000/api/health');
+                if (response.ok) {
+                    const data = await response.json();
+                    apiStatus.innerHTML = '<div class="status">✅ API Backend funcionando: ' + JSON.stringify(data) + '</div>';
+                } else {
+                    apiStatus.innerHTML = '<div class="error">❌ API Backend respondió con error: ' + response.status + '</div>';
+                }
+            } catch (error) {
+                apiStatus.innerHTML = '<div class="error">❌ Error al conectar con API: ' + error.message + '</div>';
+            }
+        }
+        
+        console.log('🔍 Diagnóstico VersaAI iniciado');
+        console.log('📍 URL actual:', window.location.href);
+        console.log('🌐 User Agent:', navigator.userAgent);
+    </script>
+</body>
+</html>

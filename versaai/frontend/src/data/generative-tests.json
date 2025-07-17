@@ -1,0 +1,169 @@
+{
+  "generative_tests": {
+    "code_generation": [
+      {
+        "id": "code_001",
+        "name": "Generación de Función Python",
+        "prompt": "Genera una función Python que calcule el factorial de un número usando recursión. Incluye documentación y manejo de errores.",
+        "expected_elements": ["def factorial", "recursion", "docstring", "error handling"],
+        "category": "python",
+        "difficulty": "medium"
+      },
+      {
+        "id": "code_002",
+        "name": "Componente Vue.js",
+        "prompt": "Crea un componente Vue.js 3 con Composition API que muestre una lista de tareas con funcionalidad para agregar, editar y eliminar. Usa TypeScript y Tailwind CSS.",
+        "expected_elements": ["<script setup>", "ref", "computed", "TypeScript", "Tailwind"],
+        "category": "vue",
+        "difficulty": "hard"
+      },
+      {
+        "id": "code_003",
+        "name": "API Endpoint FastAPI",
+        "prompt": "Desarrolla un endpoint FastAPI para autenticación de usuarios con JWT. Incluye validación de datos, manejo de errores y documentación automática.",
+        "expected_elements": ["@app.post", "Pydantic", "JWT", "HTTPException", "async def"],
+        "category": "fastapi",
+        "difficulty": "hard"
+      },
+      {
+        "id": "code_004",
+        "name": "Algoritmo de Ordenamiento",
+        "prompt": "Implementa el algoritmo QuickSort en JavaScript con explicación paso a paso y análisis de complejidad temporal.",
+        "expected_elements": ["quicksort", "partition", "recursion", "complexity analysis"],
+        "category": "algorithms",
+        "difficulty": "medium"
+      },
+      {
+        "id": "code_005",
+        "name": "Consulta SQL Compleja",
+        "prompt": "Escribe una consulta SQL que obtenga los 5 productos más vendidos por categoría en los últimos 6 meses, incluyendo el total de ventas y el porcentaje respecto al total.",
+        "expected_elements": ["JOIN", "GROUP BY", "WINDOW FUNCTIONS", "DATE functions", "LIMIT"],
+        "category": "sql",
+        "difficulty": "hard"
+      }
+    ],
+    "image_generation": [
+      {
+        "id": "img_001",
+        "name": "Diagrama de Arquitectura",
+        "prompt": "Genera un diagrama SVG que muestre la arquitectura de una aplicación web con frontend Vue.js, backend FastAPI, base de datos PostgreSQL y Redis para caché.",
+        "expected_elements": ["SVG", "boxes", "arrows", "labels", "clean design"],
+        "category": "architecture",
+        "difficulty": "medium"
+      },
+      {
+        "id": "img_002",
+        "name": "Flujo de Proceso",
+        "prompt": "Crea un diagrama de flujo SVG que represente el proceso de autenticación de usuarios desde el login hasta la obtención del token JWT.",
+        "expected_elements": ["flowchart", "decision points", "process steps", "start/end"],
+        "category": "flowchart",
+        "difficulty": "medium"
+      },
+      {
+        "id": "img_003",
+        "name": "Icono Personalizado",
+        "prompt": "Diseña un icono SVG moderno para un chatbot de IA. Debe ser minimalista, escalable y usar colores azul y verde.",
+        "expected_elements": ["SVG icon", "minimalist", "scalable", "blue/green colors"],
+        "category": "icon",
+        "difficulty": "easy"
+      },
+      {
+        "id": "img_004",
+        "name": "Gráfico de Datos",
+        "prompt": "Genera un gráfico SVG de barras que muestre datos de ventas mensuales. Incluye ejes, etiquetas y una leyenda.",
+        "expected_elements": ["bar chart", "axes", "labels", "legend", "data visualization"],
+        "category": "chart",
+        "difficulty": "hard"
+      }
+    ],
+    "logic_tests": [
+      {
+        "id": "logic_001",
+        "name": "Problema de Lógica Matemática",
+        "prompt": "Resuelve: Si en una habitación hay 3 interruptores y 3 bombillas en otra habitación, y solo puedes ir una vez a la habitación de las bombillas, ¿cómo determinas qué interruptor controla cada bombilla?",
+        "expected_elements": ["step by step", "logical reasoning", "practical solution"],
+        "category": "puzzle",
+        "difficulty": "medium"
+      },
+      {
+        "id": "logic_002",
+        "name": "Optimización de Algoritmo",
+        "prompt": "Dado un array de números enteros, encuentra el par de números cuya suma sea más cercana a cero. Optimiza para O(n log n).",
+        "expected_elements": ["algorithm", "optimization", "time complexity", "solution"],
+        "category": "algorithms",
+        "difficulty": "hard"
+      },
+      {
+        "id": "logic_003",
+        "name": "Diseño de Sistema",
+        "prompt": "Diseña un sistema de caché distribuido que pueda manejar 1 millón de requests por segundo. Explica la arquitectura, estrategias de invalidación y manejo de fallos.",
+        "expected_elements": ["distributed system", "scalability", "fault tolerance", "cache strategies"],
+        "category": "system_design",
+        "difficulty": "expert"
+      },
+      {
+        "id": "logic_004",
+        "name": "Análisis de Complejidad",
+        "prompt": "Analiza la complejidad temporal y espacial de un algoritmo de búsqueda binaria recursiva vs iterativa. ¿Cuál es mejor y por qué?",
+        "expected_elements": ["time complexity", "space complexity", "recursion vs iteration", "analysis"],
+        "category": "analysis",
+        "difficulty": "medium"
+      },
+      {
+        "id": "logic_005",
+        "name": "Problema de Concurrencia",
+        "prompt": "Explica cómo resolver el problema del productor-consumidor usando semáforos. Proporciona pseudocódigo y explica por qué evita race conditions.",
+        "expected_elements": ["concurrency", "semaphores", "race conditions", "pseudocode"],
+        "category": "concurrency",
+        "difficulty": "hard"
+      }
+    ],
+    "creative_tests": [
+      {
+        "id": "creative_001",
+        "name": "Historia de Usuario Técnica",
+        "prompt": "Escribe una historia de usuario detallada para un desarrollador que necesita implementar un sistema de notificaciones en tiempo real. Incluye criterios de aceptación y casos edge.",
+        "expected_elements": ["user story", "acceptance criteria", "edge cases", "technical details"],
+        "category": "requirements",
+        "difficulty": "medium"
+      },
+      {
+        "id": "creative_002",
+        "name": "Documentación API",
+        "prompt": "Crea documentación completa para una API REST de gestión de usuarios. Incluye ejemplos de requests/responses, códigos de error y guías de uso.",
+        "expected_elements": ["API documentation", "examples", "error codes", "usage guides"],
+        "category": "documentation",
+        "difficulty": "medium"
+      },
+      {
+        "id": "creative_003",
+        "name": "Plan de Testing",
+        "prompt": "Desarrolla un plan de testing completo para una aplicación de chat en tiempo real. Incluye tests unitarios, integración, E2E y performance.",
+        "expected_elements": ["test plan", "unit tests", "integration tests", "E2E", "performance"],
+        "category": "testing",
+        "difficulty": "hard"
+      }
+    ]
+  },
+  "evaluation_criteria": {
+    "code_quality": {
+      "syntax": "Código sintácticamente correcto",
+      "best_practices": "Sigue mejores prácticas del lenguaje",
+      "readability": "Código legible y bien estructurado",
+      "documentation": "Incluye comentarios y documentación",
+      "error_handling": "Manejo apropiado de errores"
+    },
+    "logic_reasoning": {
+      "correctness": "Solución correcta al problema",
+      "efficiency": "Solución eficiente y optimizada",
+      "clarity": "Explicación clara del razonamiento",
+      "completeness": "Considera todos los casos relevantes"
+    },
+    "creativity": {
+      "innovation": "Propone soluciones innovadoras",
+      "practicality": "Soluciones prácticas y aplicables",
+      "detail": "Nivel de detalle apropiado",
+      "structure": "Bien organizado y estructurado"
+    }
+  }
+}

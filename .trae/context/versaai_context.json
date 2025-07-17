@@ -1,0 +1,473 @@
+{
+  "versaai_context": {
+    "project_overview": {
+      "name": "VersaAI",
+      "description": "Plataforma avanzada de chatbots con IA que permite a usuarios interactuar con documentos y obtener respuestas inteligentes",
+      "version": "1.0.0",
+      "architecture": "Microservicios con FastAPI + Vue.js 3",
+      "primary_language": "Spanish",
+      "development_stage": "MVP Development",
+      "target_users": ["Empresas", "Profesionales", "Estudiantes", "Investigadores"]
+    },
+    
+    "technical_stack": {
+      "backend": {
+        "framework": "FastAPI 0.104+",
+        "database": "PostgreSQL 15+",
+        "cache": "Redis 7+",
+        "orm": "SQLAlchemy 2.0+",
+        "validation": "Pydantic 2.0+",
+        "authentication": "JWT with bcrypt",
+        "ai_integration": "Groq AI (Llama, Mixtral, Gemma)",
+        "file_processing": "PyPDF2, python-docx, pandas",
+        "vector_search": "sentence-transformers",
+        "async_support": "asyncio, asyncpg"
+      },
+      "frontend": {
+        "framework": "Vue.js 3.3+",
+        "state_management": "Pinia",
+        "routing": "Vue Router 4",
+        "styling": "Tailwind CSS 3+",
+        "build_tool": "Vite 4+",
+        "type_checking": "TypeScript 5+",
+        "ui_components": "Custom + Headless UI",
+        "icons": "Heroicons",
+        "http_client": "Axios",
+        "real_time": "WebSockets"
+      },
+      "infrastructure": {
+        "containerization": "Docker + Docker Compose",
+        "reverse_proxy": "Nginx",
+        "environment_management": ".env files",
+        "process_management": "Uvicorn",
+        "monitoring": "Custom health checks",
+        "file_storage": "Local filesystem with organized structure"
+      }
+    },
+    
+    "project_structure": {
+      "backend": {
+        "root": "backend/",
+        "main_app": "src/main.py",
+        "core_modules": {
+          "database": "src/core/database.py",
+          "config": "src/core/config.py",
+          "security": "src/core/security.py",
+          "middleware": "src/core/middleware.py"
+        },
+        "models": {
+          "location": "src/models/",
+          "key_models": ["user.py", "conversation.py", "message.py", "file.py", "organization.py"]
+        },
+        "services": {
+          "location": "src/services/",
+          "key_services": ["auth_service.py", "chat_service.py", "file_service.py", "groq_service.py"]
+        },
+        "api": {
+          "location": "src/api/",
+          "routers": ["auth.py", "chat.py", "files.py", "users.py", "admin.py"]
+        },
+        "schemas": {
+          "location": "src/schemas/",
+          "purpose": "Pydantic models for request/response validation"
+        }
+      },
+      "frontend": {
+        "root": "frontend/",
+        "main_app": "src/main.ts",
+        "components": {
+          "location": "src/components/",
+          "structure": ["common/", "chat/", "auth/", "files/", "admin/"]
+        },
+        "stores": {
+          "location": "src/stores/",
+          "key_stores": ["auth.ts", "chat.ts", "files.ts", "ui.ts"]
+        },
+        "views": {
+          "location": "src/views/",
+          "main_views": ["Home.vue", "Chat.vue", "Login.vue", "Dashboard.vue"]
+        },
+        "composables": {
+          "location": "src/composables/",
+          "purpose": "Reusable composition functions"
+        }
+      }
+    },
+    
+    "business_logic": {
+      "core_features": {
+        "user_management": {
+          "description": "Registro, autenticación y gestión de perfiles de usuario",
+          "key_components": ["JWT authentication", "Role-based access", "User preferences"],
+          "security_level": "High"
+        },
+        "chat_system": {
+          "description": "Sistema de chat inteligente con IA para respuestas contextuales",
+          "key_components": ["Groq AI integration", "Conversation history", "Real-time responses"],
+          "ai_models": ["llama-3.1-70b-versatile", "mixtral-8x7b-32768", "gemma-7b-it"]
+        },
+        "file_management": {
+          "description": "Subida, procesamiento y gestión de documentos para contexto de IA",
+          "supported_formats": ["PDF", "DOCX", "TXT", "CSV", "XLSX"],
+          "processing_features": ["Text extraction", "Vector embeddings", "Semantic search"]
+        },
+        "organization_management": {
+          "description": "Gestión de organizaciones y equipos con roles y permisos",
+          "key_components": ["Multi-tenant architecture", "Role hierarchy", "Resource sharing"]
+        }
+      },
+      "data_flow": {
+        "user_registration": "Frontend → Auth API → User Service → Database",
+        "chat_interaction": "Frontend → Chat API → Groq Service → Conversation Service → Database",
+        "file_upload": "Frontend → File API → File Service → Document Processor → Vector Service",
+        "authentication": "Frontend → Auth API → JWT Service → User Validation"
+      },
+      "security_considerations": {
+        "authentication": "JWT tokens with refresh mechanism",
+        "authorization": "Role-based access control (RBAC)",
+        "data_protection": "Password hashing with bcrypt",
+        "api_security": "Rate limiting, CORS, input validation",
+        "file_security": "File type validation, size limits, virus scanning"
+      }
+    },
+    
+    "development_patterns": {
+      "backend_patterns": {
+        "dependency_injection": "FastAPI Depends() for services and database sessions",
+        "async_programming": "Async/await for all I/O operations",
+        "error_handling": "Structured exception handling with custom HTTP exceptions",
+        "validation": "Pydantic models for all request/response data",
+        "logging": "Structured logging with correlation IDs",
+        "testing": "Pytest with async test support and database fixtures"
+      },
+      "frontend_patterns": {
+        "composition_api": "Vue 3 Composition API for all components",
+        "state_management": "Pinia stores with TypeScript support",
+        "component_structure": "Single File Components with <script setup>",
+        "styling": "Tailwind CSS with component-scoped styles",
+        "type_safety": "TypeScript for all code with strict mode",
+        "testing": "Vitest for unit tests, Cypress for E2E"
+      },
+      "code_organization": {
+        "naming_conventions": {
+          "files": "snake_case for Python, kebab-case for Vue",
+          "functions": "snake_case for Python, camelCase for TypeScript",
+          "classes": "PascalCase for both Python and TypeScript",
+          "constants": "UPPER_SNAKE_CASE for both languages"
+        },
+        "import_organization": {
+          "python": "Standard library → Third party → Local imports",
+          "typescript": "Vue/framework → Third party → Local imports"
+        }
+      }
+    },
+    
+    "ai_integration_context": {
+      "groq_configuration": {
+        "api_endpoint": "https://api.groq.com/openai/v1/chat/completions",
+        "authentication": "Bearer token from environment",
+        "rate_limits": "Respect Groq API rate limits",
+        "error_handling": "Graceful degradation on API failures"
+      },
+      "model_selection_strategy": {
+        "llama-3.1-70b-versatile": "General purpose, high quality responses",
+        "mixtral-8x7b-32768": "Long context, document analysis",
+        "gemma-7b-it": "Fast responses, simple queries"
+      },
+      "prompt_engineering": {
+        "system_prompts": "Consistent system prompts for VersaAI context",
+        "user_context": "Include user preferences and conversation history",
+        "document_context": "Inject relevant document excerpts for RAG",
+        "safety_guidelines": "Content moderation and appropriate responses"
+      },
+      "vector_search": {
+        "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+        "chunking_strategy": "Semantic chunking with overlap",
+        "similarity_threshold": "0.7 for relevant document retrieval",
+        "max_context_length": "4000 tokens for model input"
+      }
+    },
+    
+    "database_schema_context": {
+      "database_info": {
+        "type": "PostgreSQL",
+        "version": "15-alpine",
+        "container_name": "versaai_db",
+        "host": "localhost",
+        "port": 5432,
+        "database_name": "versaai",
+        "username": "versaai_user",
+        "connection_url": "postgresql://versaai_user:versaai_password@localhost:5432/versaai",
+        "status": "running and healthy",
+        "docker_volume": "versaai_postgres_data",
+        "encoding": "UTF-8",
+        "collation": "C",
+        "ctype": "C"
+      },
+      "migration_info": {
+        "tool": "Alembic",
+        "current_revision": "56476fb2ea93",
+        "migration_name": "Initial migration",
+        "created_date": "2025-07-09 01:33:07.002988",
+        "status": "applied successfully",
+        "tables_created": 7
+      },
+      "core_entities": {
+        "organizations": {
+          "table_name": "organizations",
+          "purpose": "Multi-tenant organization management",
+          "key_fields": ["id", "name", "description", "domain", "logo_url", "is_active", "max_users", "max_chatbots", "created_at", "updated_at"],
+          "data_types": {
+            "id": "Integer (Primary Key)",
+            "name": "String (Not Null)",
+            "description": "Text (Nullable)",
+            "domain": "String (Nullable)",
+            "logo_url": "String (Nullable)",
+            "is_active": "Boolean (Default True)",
+            "max_users": "Integer (Nullable)",
+            "max_chatbots": "Integer (Nullable)",
+            "created_at": "DateTime with Timezone (Default now())",
+            "updated_at": "DateTime with Timezone (Nullable)"
+          },
+          "indexes": ["ix_organizations_id", "ix_organizations_name (unique)"],
+          "relationships": ["has_many_users", "has_many_chatbots", "has_many_knowledge_bases"]
+        },
+        "users": {
+          "table_name": "users",
+          "purpose": "User accounts and authentication with role-based access",
+          "key_fields": ["id", "email", "username", "full_name", "hashed_password", "is_active", "is_verified", "role", "organization_id", "created_at", "updated_at", "last_login", "avatar_url", "phone", "timezone", "language"],
+          "data_types": {
+            "id": "Integer (Primary Key)",
+            "email": "String (Not Null, Unique)",
+            "username": "String (Not Null, Unique)",
+            "full_name": "String (Not Null)",
+            "hashed_password": "String (Not Null)",
+            "is_active": "Boolean (Default True)",
+            "is_verified": "Boolean (Default False)",
+            "role": "Enum (super_admin, org_admin, user, viewer)",
+            "organization_id": "Integer (Foreign Key)",
+            "created_at": "DateTime with Timezone (Default now())",
+            "updated_at": "DateTime with Timezone (Nullable)",
+            "last_login": "DateTime with Timezone (Nullable)",
+            "avatar_url": "String (Nullable)",
+            "phone": "String (Nullable)",
+            "timezone": "String (Nullable)",
+            "language": "String (Nullable)"
+          },
+          "indexes": ["ix_users_id", "ix_users_email (unique)", "ix_users_username (unique)"],
+          "foreign_keys": ["organization_id -> organizations.id"],
+          "relationships": ["belongs_to_organization", "has_many_conversations", "creates_chatbots", "uploads_documents", "creates_knowledge_bases"]
+        },
+        "knowledge_bases": {
+          "table_name": "knowledge_bases",
+          "purpose": "Knowledge base management for document storage and AI retrieval",
+          "key_fields": ["id", "name", "description", "organization_id", "created_by_id", "is_active", "embedding_model", "chunk_size", "chunk_overlap", "created_at", "updated_at"],
+          "data_types": {
+            "id": "Integer (Primary Key)",
+            "name": "String (Not Null)",
+            "description": "Text (Nullable)",
+            "organization_id": "Integer (Foreign Key, Not Null)",
+            "created_by_id": "Integer (Foreign Key, Not Null)",
+            "is_active": "Boolean (Default True)",
+            "embedding_model": "String (Nullable)",
+            "chunk_size": "Integer (Nullable)",
+            "chunk_overlap": "Integer (Nullable)",
+            "created_at": "DateTime with Timezone (Default now())",
+            "updated_at": "DateTime with Timezone (Nullable)"
+          },
+          "indexes": ["ix_knowledge_bases_id", "ix_knowledge_bases_name"],
+          "foreign_keys": ["organization_id -> organizations.id", "created_by_id -> users.id"],
+          "relationships": ["belongs_to_organization", "created_by_user", "has_many_documents", "used_by_chatbots"]
+        },
+        "chatbots": {
+          "table_name": "chatbots",
+          "purpose": "AI chatbot configurations and settings",
+          "key_fields": ["id", "name", "description", "system_prompt", "model_name", "temperature", "max_tokens", "organization_id", "created_by_id", "knowledge_base_id", "is_active", "is_public", "avatar_url", "welcome_message", "created_at", "updated_at"],
+          "data_types": {
+            "id": "Integer (Primary Key)",
+            "name": "String (Not Null)",
+            "description": "Text (Nullable)",
+            "system_prompt": "Text (Nullable)",
+            "model_name": "String (Nullable)",
+            "temperature": "Float (Nullable)",
+            "max_tokens": "Integer (Nullable)",
+            "organization_id": "Integer (Foreign Key, Not Null)",
+            "created_by_id": "Integer (Foreign Key, Not Null)",
+            "knowledge_base_id": "Integer (Foreign Key, Nullable)",
+            "is_active": "Boolean (Default True)",
+            "is_public": "Boolean (Default False)",
+            "avatar_url": "String (Nullable)",
+            "welcome_message": "Text (Nullable)",
+            "created_at": "DateTime with Timezone (Default now())",
+            "updated_at": "DateTime with Timezone (Nullable)"
+          },
+          "indexes": ["ix_chatbots_id", "ix_chatbots_name"],
+          "foreign_keys": ["organization_id -> organizations.id", "created_by_id -> users.id", "knowledge_base_id -> knowledge_bases.id"],
+          "relationships": ["belongs_to_organization", "created_by_user", "uses_knowledge_base", "has_many_conversations"]
+        },
+        "conversations": {
+          "table_name": "conversations",
+          "purpose": "Chat conversations between users and chatbots",
+          "key_fields": ["id", "title", "user_id", "chatbot_id", "is_active", "created_at", "updated_at"],
+          "data_types": {
+            "id": "Integer (Primary Key)",
+            "title": "String (Nullable)",
+            "user_id": "Integer (Foreign Key, Not Null)",
+            "chatbot_id": "Integer (Foreign Key, Not Null)",
+            "is_active": "Boolean (Default True)",
+            "created_at": "DateTime with Timezone (Default now())",
+            "updated_at": "DateTime with Timezone (Nullable)"
+          },
+          "indexes": ["ix_conversations_id"],
+          "foreign_keys": ["user_id -> users.id", "chatbot_id -> chatbots.id"],
+          "relationships": ["belongs_to_user", "belongs_to_chatbot", "has_many_messages"]
+        },
+        "documents": {
+          "table_name": "documents",
+          "purpose": "Document management for knowledge bases with processing status",
+          "key_fields": ["id", "filename", "original_filename", "file_type", "file_size", "file_path", "knowledge_base_id", "uploaded_by_id", "status", "chunk_count", "metadata", "created_at", "updated_at"],
+          "data_types": {
+            "id": "Integer (Primary Key)",
+            "filename": "String (Not Null)",
+            "original_filename": "String (Not Null)",
+            "file_type": "String (Not Null)",
+            "file_size": "Integer (Not Null)",
+            "file_path": "String (Not Null)",
+            "knowledge_base_id": "Integer (Foreign Key, Not Null)",
+            "uploaded_by_id": "Integer (Foreign Key, Not Null)",
+            "status": "Enum (pending, processing, completed, failed)",
+            "chunk_count": "Integer (Nullable)",
+            "metadata": "JSON (Nullable)",
+            "created_at": "DateTime with Timezone (Default now())",
+            "updated_at": "DateTime with Timezone (Nullable)"
+          },
+          "indexes": ["ix_documents_id", "ix_documents_filename"],
+          "foreign_keys": ["knowledge_base_id -> knowledge_bases.id", "uploaded_by_id -> users.id"],
+          "relationships": ["belongs_to_knowledge_base", "uploaded_by_user"]
+        },
+        "messages": {
+          "table_name": "messages",
+          "purpose": "Individual chat messages within conversations",
+          "key_fields": ["id", "conversation_id", "role", "content", "metadata", "created_at"],
+          "data_types": {
+            "id": "Integer (Primary Key)",
+            "conversation_id": "Integer (Foreign Key, Not Null)",
+            "role": "Enum (user, assistant, system)",
+            "content": "Text (Not Null)",
+            "metadata": "JSON (Nullable)",
+            "created_at": "DateTime with Timezone (Default now())"
+          },
+          "indexes": ["ix_messages_id"],
+          "foreign_keys": ["conversation_id -> conversations.id"],
+          "relationships": ["belongs_to_conversation"]
+        }
+      },
+      "indexing_strategy": {
+        "primary_indexes": ["organizations.id", "users.id", "knowledge_bases.id", "chatbots.id", "conversations.id", "documents.id", "messages.id"],
+        "unique_indexes": ["organizations.name", "users.email", "users.username"],
+        "performance_indexes": ["users.organization_id", "conversations.user_id", "conversations.chatbot_id", "messages.conversation_id", "documents.knowledge_base_id"],
+        "search_optimization": ["documents.filename", "knowledge_bases.name", "chatbots.name"]
+      },
+      "enum_definitions": {
+        "UserRole": ["super_admin", "org_admin", "user", "viewer"],
+        "DocumentStatus": ["pending", "processing", "completed", "failed"],
+        "MessageRole": ["user", "assistant", "system"]
+      },
+      "json_fields": {
+        "documents.metadata": "Document processing metadata, file properties, extraction results",
+        "messages.metadata": "Message metadata, AI model info, processing time, context used"
+      }
+    },
+    
+    "environment_context": {
+      "development": {
+        "database": {
+          "type": "PostgreSQL 15-alpine (Docker)",
+          "container": "versaai_db",
+          "status": "running and healthy",
+          "connection": "postgresql://versaai_user:versaai_password@localhost:5432/versaai",
+          "features": ["Connection pooling", "Auto-reconnect", "Migration support"]
+        },
+        "cache": {
+          "type": "Redis 7-alpine (Docker)",
+          "container": "versaai_redis",
+          "connection": "redis://localhost:6379/0",
+          "features": ["Session storage", "Rate limiting", "Caching"]
+        },
+        "debug_mode": "Enabled with detailed error messages and SQL logging",
+        "hot_reload": "Both backend (uvicorn) and frontend (vite) auto-reload",
+        "cors_policy": "Permissive for local development (all origins allowed)",
+        "api_url": "http://localhost:8000",
+        "frontend_url": "http://localhost:5173"
+      },
+      "production": {
+        "database": {
+          "type": "PostgreSQL with connection pooling",
+          "pool_size": 5,
+          "pool_timeout": 30,
+          "features": ["SSL connections", "Read replicas", "Backup automation"]
+        },
+        "cache": {
+          "type": "Redis with persistence",
+          "memory_policy": "allkeys-lru",
+          "max_memory": "256mb"
+        },
+        "security": "Strict CORS, rate limiting, input validation, HTTPS only",
+        "performance": "Redis caching, optimized queries, CDN integration",
+        "monitoring": "Health checks, error tracking, metrics, logging aggregation"
+      },
+      "docker_setup": {
+        "network": "versaai_network (172.20.0.0/16)",
+        "volumes": ["versaai_postgres_data", "versaai_redis_data"],
+        "health_checks": {
+          "postgres": "pg_isready -U versaai_user -d versaai",
+          "redis": "redis-cli ping",
+          "api": "curl -f http://localhost:8000/health"
+        },
+        "restart_policy": "unless-stopped"
+      }
+    },
+    
+    "user_experience_context": {
+      "design_principles": {
+        "simplicity": "Clean, intuitive interface for all user types",
+        "responsiveness": "Mobile-first design with desktop optimization",
+        "accessibility": "WCAG 2.1 AA compliance",
+        "performance": "Fast loading times and smooth interactions"
+      },
+      "user_workflows": {
+        "new_user_onboarding": "Registration → Email verification → Profile setup → First chat",
+        "document_interaction": "Upload → Processing → Chat with document context",
+        "team_collaboration": "Organization setup → User invitation → Shared conversations",
+        "admin_management": "User management → Analytics → System configuration"
+      },
+      "error_handling_ux": {
+        "validation_errors": "Inline validation with helpful messages",
+        "api_errors": "User-friendly error messages with retry options",
+        "loading_states": "Clear loading indicators and progress feedback",
+        "offline_handling": "Graceful degradation when connectivity is lost"
+      }
+    },
+    
+    "quality_assurance": {
+      "testing_strategy": {
+        "unit_tests": "Individual function and component testing",
+        "integration_tests": "API endpoint and service integration testing",
+        "e2e_tests": "Complete user workflow testing",
+        "performance_tests": "Load testing for API endpoints"
+      },
+      "code_quality_metrics": {
+        "test_coverage": "Minimum 80% for backend, 70% for frontend",
+        "type_coverage": "100% TypeScript coverage for frontend",
+        "complexity_limits": "Maximum cyclomatic complexity of 10",
+        "documentation": "All public APIs and components documented"
+      },
+      "security_testing": {
+        "authentication_tests": "JWT token validation and expiration",
+        "authorization_tests": "Role-based access control verification",
+        "input_validation": "SQL injection and XSS prevention",
+        "file_upload_security": "Malicious file detection and prevention"
+      }
+    }
+  }
+}

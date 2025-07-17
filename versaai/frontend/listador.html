@@ -1,0 +1,1217 @@
+html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 Analizador Avanzado de Proyectos - Directory Scanner Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .control-group {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .control-group h3 {
+            margin-bottom: 15px;
+            color: #ffd700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #ffd700;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .results {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .result-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .result-panel h3 {
+            color: #ffd700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-tree {
+            font-family: 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .file-item {
+            padding: 2px 0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .file-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        .folder {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .file {
+            color: #87ceeb;
+        }
+
+        .image {
+            color: #98fb98;
+        }
+
+        .code {
+            color: #ffa500;
+        }
+
+        .config {
+            color: #ff69b4;
+        }
+
+        .analysis-item {
+            background: rgba(255, 255, 255, 0.05);
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #ffd700;
+        }
+
+        .analysis-item strong {
+            color: #ffd700;
+        }
+
+        .dependency-item {
+            background: rgba(255, 255, 255, 0.05);
+            margin: 5px 0;
+            padding: 8px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .version {
+            color: #98fb98;
+            font-size: 0.9em;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ff6b6b);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .export-btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .results {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Directory Scanner Pro</h1>
+            <p>Analizador Avanzado de Proyectos - Estructura, Dependencias y Contenido</p>
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <h3>📁 Seleccionar Directorio</h3>
+                <input type="file" id="directoryInput" webkitdirectory directory multiple>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <button class="btn" onclick="analyzeDirectory()">🚀 Analizar Proyecto</button>
+            </div>
+
+            <div class="control-group">
+                <h3>⚙️ Opciones de Análisis</h3>
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="analyzeImages" checked>
+                        <label>🖼️ Analizar Imágenes</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="analyzeRoutes" checked>
+                        <label>🛣️ Extraer Rutas</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="analyzeDependencies" checked>
+                        <label>📦 Dependencias</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="analyzeIdentifiers" checked>
+                        <label>🏷️ Identificadores</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="analyzeConfigs" checked>
+                        <label>⚙️ Configuraciones</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="analyzeSecrets" checked>
+                        <label>🔐 Posibles Secretos</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <h3>🔍 Búsqueda y Filtros</h3>
+                <input type="text" class="search-box" id="searchBox" placeholder="Buscar archivos, rutas, identificadores...">
+                <div class="checkbox-group">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="showHidden">
+                        <label>👁️ Mostrar Ocultos</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="excludeNodeModules" checked>
+                        <label>🚫 Excluir node_modules</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats" id="statsContainer" style="display: none;">
+            <div class="stat-card">
+                <div class="stat-number" id="totalFiles">0</div>
+                <div class="stat-label">Archivos Total</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalFolders">0</div>
+                <div class="stat-label">Carpetas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalSize">0 KB</div>
+                <div class="stat-label">Tamaño Total</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="codeFiles">0</div>
+                <div class="stat-label">Archivos de Código</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="imageFiles">0</div>
+                <div class="stat-label">Imágenes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="configFiles">0</div>
+                <div class="stat-label">Configuraciones</div>
+            </div>
+        </div>
+
+        <div class="results" id="resultsContainer" style="display: none;">
+            <div class="result-panel">
+                <h3>🌳 Estructura del Proyecto</h3>
+                <input type="text" class="search-box" id="treeSearch" placeholder="Filtrar estructura...">
+                <div class="file-tree" id="fileTree"></div>
+                <div class="export-buttons">
+                    <button class="export-btn" onclick="exportTree()">📄 Exportar Estructura</button>
+                    <button class="export-btn" onclick="exportJSON()">📋 Exportar JSON</button>
+                </div>
+            </div>
+
+            <div class="result-panel">
+                <h3>📊 Análisis Detallado</h3>
+                <div id="analysisResults"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let projectData = {
+            files: [],
+            folders: [],
+            analysis: {
+                routes: [],
+                images: [],
+                dependencies: [],
+                identifiers: [],
+                configs: [],
+                secrets: []
+            },
+            stats: {
+                totalFiles: 0,
+                totalFolders: 0,
+                totalSize: 0,
+                codeFiles: 0,
+                imageFiles: 0,
+                configFiles: 0
+            }
+        };
+
+        const fileExtensions = {
+            code: ['.js', '.ts', '.jsx', '.tsx', '.vue', '.py', '.java', '.cpp', '.c', '.cs', '.php', '.rb', '.go', '.rs', '.swift'],
+            image: ['.jpg', '.jpeg', '.png', '.gif', '.svg', '.webp', '.ico', '.bmp'],
+            config: ['.json', '.yaml', '.yml', '.toml', '.ini', '.conf', '.env', '.config'],
+            style: ['.css', '.scss', '.sass', '.less', '.styl'],
+            markup: ['.html', '.htm', '.xml', '.md', '.mdx']
+        };
+
+        async function analyzeDirectory() {
+            const input = document.getElementById('directoryInput');
+            const files = Array.from(input.files);
+            
+            if (files.length === 0) {
+                alert('Por favor selecciona un directorio');
+                return;
+            }
+
+            // Reset data
+            projectData = {
+                files: [],
+                folders: [],
+                analysis: {
+                    routes: [],
+                    images: [],
+                    dependencies: [],
+                    identifiers: [],
+                    configs: [],
+                    secrets: []
+                },
+                stats: {
+                    totalFiles: 0,
+                    totalFolders: 0,
+                    totalSize: 0,
+                    codeFiles: 0,
+                    imageFiles: 0,
+                    configFiles: 0
+                }
+            };
+
+            const progressFill = document.getElementById('progressFill');
+            const excludeNodeModules = document.getElementById('excludeNodeModules').checked;
+            const showHidden = document.getElementById('showHidden').checked;
+
+            // Filter files
+            const filteredFiles = files.filter(file => {
+                const path = file.webkitRelativePath;
+                if (excludeNodeModules && path.includes('node_modules/')) return false;
+                if (!showHidden && path.split('/').some(part => part.startsWith('.') && part !== '.')) return false;
+                return true;
+            });
+
+            const totalFiles = filteredFiles.length;
+            let processedFiles = 0;
+
+            // Process files
+            for (const file of filteredFiles) {
+                await processFile(file);
+                processedFiles++;
+                
+                // Update progress
+                const progress = (processedFiles / totalFiles) * 100;
+                progressFill.style.width = progress + '%';
+            }
+
+            // Show results
+            displayResults();
+            document.getElementById('statsContainer').style.display = 'grid';
+            document.getElementById('resultsContainer').style.display = 'grid';
+        }
+
+        async function processFile(file) {
+            const path = file.webkitRelativePath;
+            const pathParts = path.split('/');
+            const fileName = pathParts[pathParts.length - 1];
+            const extension = getFileExtension(fileName);
+            
+            // Update stats
+            projectData.stats.totalFiles++;
+            projectData.stats.totalSize += file.size;
+
+            // Categorize file
+            if (isCodeFile(extension)) {
+                projectData.stats.codeFiles++;
+            } else if (isImageFile(extension)) {
+                projectData.stats.imageFiles++;
+            } else if (isConfigFile(extension)) {
+                projectData.stats.configFiles++;
+            }
+
+            // Store file info
+            const fileInfo = {
+                name: fileName,
+                path: path,
+                size: file.size,
+                type: getFileType(extension),
+                extension: extension,
+                lastModified: file.lastModified
+            };
+
+            projectData.files.push(fileInfo);
+
+            // Analyze file content if it's a text file
+            if (isTextFile(extension)) {
+                try {
+                    const content = await file.text();
+                    await analyzeFileContent(fileInfo, content);
+                } catch (error) {
+                    console.warn(`No se pudo leer el archivo: ${path}`, error);
+                }
+            }
+
+            // Track folders
+            const folderPath = pathParts.slice(0, -1).join('/');
+            if (folderPath && !projectData.folders.includes(folderPath)) {
+                projectData.folders.push(folderPath);
+                projectData.stats.totalFolders++;
+            }
+        }
+
+        async function analyzeFileContent(fileInfo, content) {
+            const analyzeRoutes = document.getElementById('analyzeRoutes').checked;
+            const analyzeImages = document.getElementById('analyzeImages').checked;
+            const analyzeDependencies = document.getElementById('analyzeDependencies').checked;
+            const analyzeIdentifiers = document.getElementById('analyzeIdentifiers').checked;
+            const analyzeConfigs = document.getElementById('analyzeConfigs').checked;
+            const analyzeSecrets = document.getElementById('analyzeSecrets').checked;
+
+            // Analyze routes
+            if (analyzeRoutes) {
+                const routes = extractRoutes(content, fileInfo);
+                projectData.analysis.routes.push(...routes);
+            }
+
+            // Analyze image references
+            if (analyzeImages) {
+                const images = extractImageReferences(content, fileInfo);
+                projectData.analysis.images.push(...images);
+            }
+
+            // Analyze dependencies
+            if (analyzeDependencies && (fileInfo.name === 'package.json' || fileInfo.name === 'requirements.txt' || fileInfo.name === 'Gemfile')) {
+                const dependencies = extractDependencies(content, fileInfo);
+                projectData.analysis.dependencies.push(...dependencies);
+            }
+
+            // Analyze identifiers
+            if (analyzeIdentifiers) {
+                const identifiers = extractIdentifiers(content, fileInfo);
+                projectData.analysis.identifiers.push(...identifiers);
+            }
+
+            // Analyze configurations
+            if (analyzeConfigs && isConfigFile(fileInfo.extension)) {
+                const configs = extractConfigurations(content, fileInfo);
+                projectData.analysis.configs.push(...configs);
+            }
+
+            // Analyze potential secrets
+            if (analyzeSecrets) {
+                const secrets = extractPotentialSecrets(content, fileInfo);
+                projectData.analysis.secrets.push(...secrets);
+            }
+        }
+
+        function extractRoutes(content, fileInfo) {
+            const routes = [];
+            const routePatterns = [
+                /(?:app\.(?:get|post|put|delete|patch)\s*\(\s*['"`]([^'"`]+)['"`])/gi,
+                /(?:router\.(?:get|post|put|delete|patch)\s*\(\s*['"`]([^'"`]+)['"`])/gi,
+                /(?:@(?:Get|Post|Put|Delete|Patch)\s*\(\s*['"`]([^'"`]+)['"`])/gi,
+                /(?:path\s*:\s*['"`]([^'"`]+)['"`])/gi,
+                /(?:Route::(?:get|post|put|delete|patch)\s*\(\s*['"`]([^'"`]+)['"`])/gi
+            ];
+
+            routePatterns.forEach(pattern => {
+                let match;
+                while ((match = pattern.exec(content)) !== null) {
+                    routes.push({
+                        route: match[1],
+                        file: fileInfo.path,
+                        type: 'API Route'
+                    });
+                }
+            });
+
+            return routes;
+        }
+
+        function extractImageReferences(content, fileInfo) {
+            const images = [];
+            const imagePatterns = [
+                /(?:src|href)\s*=\s*['"`]([^'"`]*\.(?:jpg|jpeg|png|gif|svg|webp|ico|bmp))['"`]/gi,
+                /url\s*\(\s*['"`]?([^'"`\)]*\.(?:jpg|jpeg|png|gif|svg|webp|ico|bmp))['"`]?\s*\)/gi,
+                /(?:import|require)\s*\(\s*['"`]([^'"`]*\.(?:jpg|jpeg|png|gif|svg|webp|ico|bmp))['"`]\s*\)/gi
+            ];
+
+            imagePatterns.forEach(pattern => {
+                let match;
+                while ((match = pattern.exec(content)) !== null) {
+                    images.push({
+                        image: match[1],
+                        file: fileInfo.path,
+                        type: 'Image Reference'
+                    });
+                }
+            });
+
+            return images;
+        }
+
+        function extractDependencies(content, fileInfo) {
+            const dependencies = [];
+            
+            if (fileInfo.name === 'package.json') {
+                try {
+                    const json = JSON.parse(content);
+                    const deps = { ...json.dependencies, ...json.devDependencies };
+                    
+                    Object.entries(deps).forEach(([name, version]) => {
+                        dependencies.push({
+                            name: name,
+                            version: version,
+                            file: fileInfo.path,
+                            type: 'NPM Package'
+                        });
+                    });
+                } catch (error) {
+                    console.warn('Error parsing package.json:', error);
+                }
+            } else if (fileInfo.name === 'requirements.txt') {
+                const lines = content.split('\n');
+                lines.forEach(line => {
+                    const match = line.trim().match(/^([^=<>!]+)([=<>!].+)?$/);
+                    if (match) {
+                        dependencies.push({
+                            name: match[1].trim(),
+                            version: match[2] || '',
+                            file: fileInfo.path,
+                            type: 'Python Package'
+                        });
+                    }
+                });
+            }
+
+            return dependencies;
+        }
+
+        function extractIdentifiers(content, fileInfo) {
+            const identifiers = [];
+            const patterns = [
+                /(?:class|interface|enum)\s+([A-Z][a-zA-Z0-9_]*)/g,
+                /(?:function|const|let|var)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/g,
+                /(?:def)\s+([a-zA-Z_][a-zA-Z0-9_]*)/g,
+                /(?:id|className|class)\s*=\s*['"`]([^'"`]+)['"`]/g
+            ];
+
+            patterns.forEach(pattern => {
+                let match;
+                while ((match = pattern.exec(content)) !== null) {
+                    identifiers.push({
+                        identifier: match[1],
+                        file: fileInfo.path,
+                        type: 'Code Identifier'
+                    });
+                }
+            });
+
+            return identifiers;
+        }
+
+        function extractConfigurations(content, fileInfo) {
+            const configs = [];
+            
+            try {
+                if (fileInfo.extension === '.json') {
+                    const json = JSON.parse(content);
+                    extractConfigFromObject(json, configs, fileInfo.path);
+                } else if (fileInfo.extension === '.env') {
+                    const lines = content.split('\n');
+                    lines.forEach(line => {
+                        const match = line.match(/^([A-Z_]+)\s*=\s*(.+)$/);
+                        if (match) {
+                            configs.push({
+                                key: match[1],
+                                value: match[2],
+                                file: fileInfo.path,
+                                type: 'Environment Variable'
+                            });
+                        }
+                    });
+                }
+            } catch (error) {
+                console.warn('Error parsing config file:', error);
+            }
+
+            return configs;
+        }
+
+        function extractConfigFromObject(obj, configs, filePath, prefix = '') {
+            Object.entries(obj).forEach(([key, value]) => {
+                const fullKey = prefix ? `${prefix}.${key}` : key;
+                
+                if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                    extractConfigFromObject(value, configs, filePath, fullKey);
+                } else {
+                    configs.push({
+                        key: fullKey,
+                        value: JSON.stringify(value),
+                        file: filePath,
+                        type: 'Configuration'
+                    });
+                }
+            });
+        }
+
+        function extractPotentialSecrets(content, fileInfo) {
+            const secrets = [];
+            const secretPatterns = [
+                /(?:api[_-]?key|apikey)\s*[:=]\s*['"`]([^'"`]+)['"`]/gi,
+                /(?:secret|password|pwd|pass)\s*[:=]\s*['"`]([^'"`]+)['"`]/gi,
+                /(?:token|auth[_-]?token)\s*[:=]\s*['"`]([^'"`]+)['"`]/gi,
+                /(?:database[_-]?url|db[_-]?url)\s*[:=]\s*['"`]([^'"`]+)['"`]/gi
+            ];
+
+            secretPatterns.forEach(pattern => {
+                let match;
+                while ((match = pattern.exec(content)) !== null) {
+                    secrets.push({
+                        type: 'Potential Secret',
+                        value: match[1].substring(0, 10) + '***',
+                        file: fileInfo.path,
+                        line: content.substring(0, match.index).split('\n').length
+                    });
+                }
+            });
+
+            return secrets;
+        }
+
+        function displayResults() {
+            updateStats();
+            displayFileTree();
+            displayAnalysis();
+        }
+
+        function updateStats() {
+            document.getElementById('totalFiles').textContent = projectData.stats.totalFiles;
+            document.getElementById('totalFolders').textContent = projectData.stats.totalFolders;
+            document.getElementById('totalSize').textContent = formatFileSize(projectData.stats.totalSize);
+            document.getElementById('codeFiles').textContent = projectData.stats.codeFiles;
+            document.getElementById('imageFiles').textContent = projectData.stats.imageFiles;
+            document.getElementById('configFiles').textContent = projectData.stats.configFiles;
+        }
+
+        function displayFileTree() {
+            const treeContainer = document.getElementById('fileTree');
+            const tree = buildFileTree();
+            treeContainer.innerHTML = renderFileTree(tree);
+        }
+
+        function buildFileTree() {
+            const tree = {};
+            
+            projectData.files.forEach(file => {
+                const parts = file.path.split('/');
+                let current = tree;
+                
+                parts.forEach((part, index) => {
+                    if (!current[part]) {
+                        current[part] = {
+                            type: index === parts.length - 1 ? 'file' : 'folder',
+                            children: {},
+                            fileInfo: index === parts.length - 1 ? file : null
+                        };
+                    }
+                    current = current[part].children;
+                });
+            });
+            
+            return tree;
+        }
+
+        function renderFileTree(tree, level = 0) {
+            let html = '';
+            const indent = '  '.repeat(level);
+            
+            Object.entries(tree).forEach(([name, node]) => {
+                const icon = node.type === 'folder' ? '📁' : getFileIcon(node.fileInfo?.extension);
+                const className = node.type === 'folder' ? 'folder' : getFileClass(node.fileInfo?.extension);
+                
+                html += `<div class="file-item ${className}" style="padding-left: ${level * 20}px;">`;
+                html += `${icon} ${name}`;
+                if (node.fileInfo) {
+                    html += ` <span style="opacity: 0.6; font-size: 0.8em;">(${formatFileSize(node.fileInfo.size)})</span>`;
+                }
+                html += `</div>`;
+                
+                if (Object.keys(node.children).length > 0) {
+                    html += renderFileTree(node.children, level + 1);
+                }
+            });
+            
+            return html;
+        }
+
+        function displayAnalysis() {
+            const container = document.getElementById('analysisResults');
+            let html = '';
+
+            // Routes
+            if (projectData.analysis.routes.length > 0) {
+                html += '<h4>🛣️ Rutas Encontradas</h4>';
+                projectData.analysis.routes.forEach(route => {
+                    html += `<div class="analysis-item">
+                        <strong>${route.route}</strong><br>
+                        <small>📄 ${route.file}</small>
+                    </div>`;
+                });
+            }
+
+                        // Images
+            if (projectData.analysis.images.length > 0) {
+                html += '<h4>🖼️ Referencias de Imágenes</h4>';
+                projectData.analysis.images.forEach(img => {
+                    html += `<div class="analysis-item">
+                        <strong>${img.image}</strong><br>
+                        <small>📄 ${img.file}</small>
+                    </div>`;
+                });
+            }
+
+            // Dependencies
+            if (projectData.analysis.dependencies.length > 0) {
+                html += '<h4>📦 Dependencias</h4>';
+                projectData.analysis.dependencies.forEach(dep => {
+                    html += `<div class="dependency-item">
+                        <div>
+                            <strong>${dep.name}</strong>
+                            <div class="version">${dep.version}</div>
+                        </div>
+                        <div style="font-size: 0.8em; opacity: 0.7;">${dep.type}</div>
+                    </div>`;
+                });
+            }
+
+            // Identifiers
+            if (projectData.analysis.identifiers.length > 0) {
+                html += '<h4>🏷️ Identificadores</h4>';
+                const uniqueIdentifiers = [...new Set(projectData.analysis.identifiers.map(id => id.identifier))];
+                uniqueIdentifiers.slice(0, 50).forEach(identifier => {
+                    const files = projectData.analysis.identifiers
+                        .filter(id => id.identifier === identifier)
+                        .map(id => id.file);
+                    
+                    html += `<div class="analysis-item">
+                        <strong>${identifier}</strong><br>
+                        <small>📄 Encontrado en ${files.length} archivo(s)</small>
+                    </div>`;
+                });
+                
+                if (uniqueIdentifiers.length > 50) {
+                    html += `<div class="analysis-item" style="opacity: 0.7;">
+                        <small>... y ${uniqueIdentifiers.length - 50} identificadores más</small>
+                    </div>`;
+                }
+            }
+
+            // Configurations
+            if (projectData.analysis.configs.length > 0) {
+                html += '<h4>⚙️ Configuraciones</h4>';
+                projectData.analysis.configs.slice(0, 20).forEach(config => {
+                    html += `<div class="analysis-item">
+                        <strong>${config.key}</strong><br>
+                        <small>📄 ${config.file}</small>
+                    </div>`;
+                });
+                
+                if (projectData.analysis.configs.length > 20) {
+                    html += `<div class="analysis-item" style="opacity: 0.7;">
+                        <small>... y ${projectData.analysis.configs.length - 20} configuraciones más</small>
+                    </div>`;
+                }
+            }
+
+            // Potential Secrets
+            if (projectData.analysis.secrets.length > 0) {
+                html += '<h4>🔐 Posibles Secretos Detectados</h4>';
+                html += '<div style="background: rgba(255, 0, 0, 0.1); padding: 10px; border-radius: 5px; margin-bottom: 10px; border-left: 4px solid #ff0000;">';
+                html += '<strong>⚠️ ADVERTENCIA:</strong> Se detectaron posibles secretos o información sensible en el código.';
+                html += '</div>';
+                
+                projectData.analysis.secrets.forEach(secret => {
+                    html += `<div class="analysis-item" style="border-left-color: #ff0000;">
+                        <strong>${secret.type}</strong><br>
+                        <small>📄 ${secret.file} (línea ${secret.line})</small><br>
+                        <small style="color: #ff6b6b;">Valor: ${secret.value}</small>
+                    </div>`;
+                });
+            }
+
+            if (html === '') {
+                html = '<div style="text-align: center; opacity: 0.7; padding: 20px;">No se encontraron elementos para analizar con las opciones seleccionadas.</div>';
+            }
+
+            container.innerHTML = html;
+        }
+
+        // Utility functions
+        function getFileExtension(filename) {
+            return filename.toLowerCase().substring(filename.lastIndexOf('.'));
+        }
+
+        function getFileType(extension) {
+            if (fileExtensions.code.includes(extension)) return 'code';
+            if (fileExtensions.image.includes(extension)) return 'image';
+            if (fileExtensions.config.includes(extension)) return 'config';
+            if (fileExtensions.style.includes(extension)) return 'style';
+            if (fileExtensions.markup.includes(extension)) return 'markup';
+            return 'other';
+        }
+
+        function getFileIcon(extension) {
+            const type = getFileType(extension);
+            const icons = {
+                code: '💻',
+                image: '🖼️',
+                config: '⚙️',
+                style: '🎨',
+                markup: '📄',
+                other: '📄'
+            };
+            return icons[type] || '📄';
+        }
+
+        function getFileClass(extension) {
+            const type = getFileType(extension);
+            return type === 'code' ? 'code' : 
+                   type === 'image' ? 'image' : 
+                   type === 'config' ? 'config' : 'file';
+        }
+
+        function isCodeFile(extension) {
+            return fileExtensions.code.includes(extension);
+        }
+
+        function isImageFile(extension) {
+            return fileExtensions.image.includes(extension);
+        }
+
+        function isConfigFile(extension) {
+            return fileExtensions.config.includes(extension);
+        }
+
+        function isTextFile(extension) {
+            const textExtensions = [
+                ...fileExtensions.code,
+                ...fileExtensions.config,
+                ...fileExtensions.style,
+                ...fileExtensions.markup,
+                '.txt', '.log', '.md', '.readme', '.gitignore', '.env'
+            ];
+            return textExtensions.includes(extension);
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Export functions
+        function exportTree() {
+            const tree = buildFileTree();
+            const treeText = generateTreeText(tree);
+            downloadFile('project-structure.txt', treeText);
+        }
+
+        function exportJSON() {
+            const data = {
+                projectData: projectData,
+                timestamp: new Date().toISOString(),
+                summary: {
+                    totalFiles: projectData.stats.totalFiles,
+                    totalFolders: projectData.stats.totalFolders,
+                    totalSize: projectData.stats.totalSize,
+                    analysisResults: {
+                        routes: projectData.analysis.routes.length,
+                        images: projectData.analysis.images.length,
+                        dependencies: projectData.analysis.dependencies.length,
+                        identifiers: projectData.analysis.identifiers.length,
+                        configs: projectData.analysis.configs.length,
+                        secrets: projectData.analysis.secrets.length
+                    }
+                }
+            };
+            
+            downloadFile('project-analysis.json', JSON.stringify(data, null, 2));
+        }
+
+        function generateTreeText(tree, level = 0) {
+            let text = '';
+            const indent = '  '.repeat(level);
+            
+            Object.entries(tree).forEach(([name, node]) => {
+                const icon = node.type === 'folder' ? '📁' : getFileIcon(node.fileInfo?.extension);
+                text += `${indent}${icon} ${name}`;
+                
+                if (node.fileInfo) {
+                    text += ` (${formatFileSize(node.fileInfo.size)})`;
+                }
+                
+                text += '\n';
+                
+                if (Object.keys(node.children).length > 0) {
+                    text += generateTreeText(node.children, level + 1);
+                }
+            });
+            
+            return text;
+        }
+
+        function downloadFile(filename, content) {
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Search functionality
+        document.getElementById('treeSearch').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const fileItems = document.querySelectorAll('.file-item');
+            
+            fileItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(searchTerm) || searchTerm === '') {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        document.getElementById('searchBox').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            if (searchTerm === '') {
+                displayAnalysis();
+                return;
+            }
+
+            // Filter analysis results based on search term
+            const filteredData = {
+                routes: projectData.analysis.routes.filter(item => 
+                    item.route.toLowerCase().includes(searchTerm) || 
+                    item.file.toLowerCase().includes(searchTerm)
+                ),
+                images: projectData.analysis.images.filter(item => 
+                    item.image.toLowerCase().includes(searchTerm) || 
+                    item.file.toLowerCase().includes(searchTerm)
+                ),
+                dependencies: projectData.analysis.dependencies.filter(item => 
+                    item.name.toLowerCase().includes(searchTerm)
+                ),
+                identifiers: projectData.analysis.identifiers.filter(item => 
+                    item.identifier.toLowerCase().includes(searchTerm)
+                ),
+                configs: projectData.analysis.configs.filter(item => 
+                    item.key.toLowerCase().includes(searchTerm) || 
+                    item.file.toLowerCase().includes(searchTerm)
+                ),
+                secrets: projectData.analysis.secrets.filter(item => 
+                    item.file.toLowerCase().includes(searchTerm)
+                )
+            };
+
+            // Temporarily replace analysis data for display
+            const originalAnalysis = projectData.analysis;
+            projectData.analysis = filteredData;
+            displayAnalysis();
+            projectData.analysis = originalAnalysis;
+        });
+
+        // Initialize tooltips and help
+        function showHelp() {
+            alert(`🔍 Directory Scanner Pro - Guía de Uso
+
+📁 CARGAR PROYECTO:
+- Selecciona una carpeta completa usando el botón "Seleccionar Directorio"
+- La herramienta analizará automáticamente todos los archivos
+
+⚙️ OPCIONES DE ANÁLISIS:
+• Imágenes: Encuentra referencias a archivos de imagen
+• Rutas: Extrae rutas de API y endpoints
+• Dependencias: Analiza package.json, requirements.txt, etc.
+• Identificadores: Encuentra clases, funciones, IDs
+• Configuraciones: Analiza archivos de configuración
+• Secretos: Detecta posibles claves API y contraseñas
+
+🔍 BÚSQUEDA:
+- Usa las cajas de búsqueda para filtrar resultados
+- Busca por nombre de archivo, ruta, o contenido
+
+📊 EXPORTAR:
+- Estructura: Exporta el árbol de directorios
+- JSON: Exporta análisis completo en formato JSON
+
+⚠️ SEGURIDAD:
+- La herramienta detecta posibles secretos en el código
+- Revisa las advertencias de seguridad
+
+💡 CONSEJOS:
+- Excluye node_modules para análisis más rápido
+- Usa filtros para enfocar el análisis
+- Los archivos grandes pueden tardar más en procesarse`);
+        }
+
+        // Add help button
+        document.addEventListener('DOMContentLoaded', function() {
+            const header = document.querySelector('.header');
+            const helpBtn = document.createElement('button');
+            helpBtn.innerHTML = '❓ Ayuda';
+            helpBtn.className = 'btn';
+            helpBtn.style.maxWidth = '200px';
+            helpBtn.style.margin = '10px auto';
+            helpBtn.onclick = showHelp;
+            header.appendChild(helpBtn);
+        });
+
+        // Performance monitoring
+        let analysisStartTime;
+        
+        function startAnalysis() {
+            analysisStartTime = performance.now();
+            console.log('🚀 Iniciando análisis del proyecto...');
+        }
+
+        function endAnalysis() {
+            if (analysisStartTime) {
+                const duration = ((performance.now() - analysisStartTime) / 1000).toFixed(2);
+                console.log(`✅ Análisis completado en ${duration} segundos`);
+                
+                // Show completion notification
+                const notification = document.createElement('div');
+                notification.innerHTML = `✅ Análisis completado en ${duration}s - ${projectData.stats.totalFiles} archivos procesados`;
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: linear-gradient(45deg, #28a745, #20c997);
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                    z-index: 1000;
+                    animation: slideIn 0.3s ease;
+                `;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 5000);
+            }
+        }
+
+        // Override analyzeDirectory to include performance monitoring
+        const originalAnalyzeDirectory = analyzeDirectory;
+        analyzeDirectory = async function() {
+            startAnalysis();
+            await originalAnalyzeDirectory();
+            endAnalysis();
+        };
+
+        // Add CSS animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
